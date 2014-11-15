@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>eu.matejkormuth.pexel</groupId>
+	<artifactId>pexel-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Pexel Platform</name>
+	<url>http://www.pexel.eu/platform</url>
+	<description>Pexel is platform for easy creating and sweet deployment &amp; managment of minecraft minigame networks.</description>
+	<inceptionYear>2014</inceptionYear>
+	<issueManagement>
+		<system>GitHub</system>
+	</issueManagement>
+	<ciManagement>
+		<system>jenkins</system>
+		<url>ci.mertex.eu</url>
+	</ciManagement>
+	<properties>
+		<build.number>unknown</build.number>
+		<netty.version>4.0.23.Final</netty.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<MyDir>jar</MyDir>
+	</properties>
+	<packaging>pom</packaging>
+	<modules>
+		<module>master</module>
+		<module>slave</module>
+		<module>commons</module>
+		<module>bungeepatcher</module>
+	</modules>
+	<build>
+		<plugins>
+	        <plugin>
+	            <artifactId>maven-compiler-plugin</artifactId>
+	            <configuration>
+	                <source>1.7</source>
+	                <target>1.7</target>
+	            </configuration>
+	        </plugin>
+	    </plugins>
+    </build>
+</project>
