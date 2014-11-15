@@ -25,7 +25,7 @@ public class BanUtils {
     private static final SimpleDateFormat format = new SimpleDateFormat(
                                                          "yyyy 'years', MM 'moths', dd 'days' 'and' HH 'hours', mm 'minutes', ss 'seconds'");
     
-    public static final String formatBannedMessage(final PlayerBan ban) {
+    public static final String formatBannedMessage(final Ban ban) {
         if (ban.isPermanent()) {
             return "You have been banned from " + ban.getPart().getBannableName()
                     + " permanently!";

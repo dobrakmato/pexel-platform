@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>eu.matejkormuth.pexel</groupId>
-		<artifactId>pexel-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
-	<artifactId>slave</artifactId>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>eu.matejkormuth.pexel</groupId>
+    <artifactId>pexel-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>slave</artifactId>
 	<build>
 		<plugins>
 			<plugin>
@@ -21,7 +21,7 @@
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
 				</configuration>
-				<executions>
+				    <executions>
 					<execution>
 						<id>make-assembly</id> <!-- this is used for inheritance merges -->
 						<phase>package</phase> <!-- bind to the packaging phase -->
@@ -41,7 +41,7 @@
 		</dependency>
 		<dependency>
 			<groupId>io.netty</groupId>
-			<artifactId>netty-all</artifactId>
+			<artifactId>netty-all</artifactId> 
 			<version>${netty.version}</version>
 		</dependency>
 		<dependency>

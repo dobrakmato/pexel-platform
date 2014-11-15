@@ -92,7 +92,7 @@ public class SlaveServer extends ServerInfo implements Requestable {
     public void sendRequest(final Request request) {
         if (this.side == ServerSide.REMOTE) {
             // Sending from master
-            PexelMaster.getInstance().getServer().send(request, this);
+            ((MasterServer) ServerInfo.localServer()).send(request, this);
         }
         else {
             throw new RuntimeException("Can't send request to local server.");
@@ -103,7 +103,7 @@ public class SlaveServer extends ServerInfo implements Requestable {
     public void sendResponse(final Response response) {
         if (this.side == ServerSide.REMOTE) {
             // Sending from master
-            PexelMaster.getInstance().getServer().send(response, this);
+            ((MasterServer) ServerInfo.localServer()).send(response, this);
         }
         else {
             throw new RuntimeException("Can't send response to local server.");

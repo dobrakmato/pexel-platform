@@ -18,7 +18,7 @@
 // @formatter:on
 package eu.matejkormuth.pexel.network;
 
-import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.api.ProxyServer;
 
 /**
  * Class that executes {@link Proxy} functions on BungeeCord server.
@@ -31,8 +31,8 @@ public class BungeeProxy implements Proxy {
     
     @Override
     public void connect(final PlayerInfo player, final ServerInfo target) {
-        BungeeCord.getInstance()
+        ProxyServer.getInstance()
                 .getPlayer(player.uuid)
-                .connect(BungeeCord.getInstance().getServerInfo(target.getName()));
+                .connect(ProxyServer.getInstance().getServerInfo(target.getName()));
     }
 }
