@@ -16,29 +16,20 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network.responses;
+package eu.matejkormuth.pexel.commons.minigame;
 
-import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.List;
 
-import eu.matejkormuth.pexel.network.Response;
-
-public class ServerStatusResponse extends Response {
-    public long maxMem;
-    public long usedMem;
+/**
+ * All minigame types / tags.
+ */
+public enum MinigameType {
+    TNT,
+    CREEPER,
+    PVP;
     
-    public ServerStatusResponse(final long maxMem, final long usedMem) {
-        this.maxMem = maxMem;
-        this.usedMem = usedMem;
-    }
-    
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(2 * 8).putLong(this.maxMem).putLong(this.usedMem);
-    }
-    
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.maxMem = buffer.getLong();
-        this.usedMem = buffer.getLong();
+    public static final List<MinigameType> makeTypes(final MinigameType... types) {
+        return Arrays.asList(types);
     }
 }

@@ -16,29 +16,31 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network.responses;
+package eu.matejkormuth.pexel.slave.boot;
 
-import java.nio.ByteBuffer;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import eu.matejkormuth.pexel.network.Response;
+import eu.matejkormuth.pexel.slave.PexelSlave;
 
-public class ServerStatusResponse extends Response {
-    public long maxMem;
-    public long usedMem;
-    
-    public ServerStatusResponse(final long maxMem, final long usedMem) {
-        this.maxMem = maxMem;
-        this.usedMem = usedMem;
+/**
+ * Bukkit (spigot compactibile) bootloader.
+ */
+public class PexelSlaveBukkitPlugin extends JavaPlugin {
+    @Override
+    public void onEnable() {
+        this.getLogger().info(
+                "[BOOT] Bootstrapping PexelSlave throught PexelSlaveBukkitPlugin...");
+        PexelSlave.init(this.getDataFolder());
+        // Start sync.
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this,
+                PexelSlave.getInstance().getSync().getOnTick(), 0L, 1L);
     }
     
     @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(2 * 8).putLong(this.maxMem).putLong(this.usedMem);
-    }
-    
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.maxMem = buffer.getLong();
-        this.usedMem = buffer.getLong();
+    public void onDisable() {
+        this.getLogger().info(
+                "[BOOT] Disabling PexelSlave throught PexelSlaveBukkitPlugin...");
+        // TODO: Maybe implement some safe-shutdown, so tasks in Sync wont be lost.
     }
 }

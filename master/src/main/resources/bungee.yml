@@ -1,0 +1,4 @@
+name: PexelMaster
+main: eu.matejkormuth.pexel.master.boot.PexelMasterBungeePlugin
+version: 3.0
+author: dobrakmato

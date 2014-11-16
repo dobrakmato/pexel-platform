@@ -20,6 +20,8 @@ package eu.matejkormuth.pexel.network;
 
 import java.nio.ByteBuffer;
 
+import com.google.common.base.Charsets;
+
 public class NettyRegisterMesssage {
     private NettyRegisterMesssage() {
         
@@ -33,15 +35,16 @@ public class NettyRegisterMesssage {
                 .put((byte) 45)
                 .put((byte) 89)
                 .put((byte) 31)
-                .put(authkey.getBytes())
-                .put(name.getBytes())
+                .put(authkey.getBytes(Charsets.UTF_8))
+                .put(name.getBytes(Charsets.UTF_8))
                 .array();
     }
     
     public static boolean validate(final byte[] array, final String authkey) {
         if (array.length <= 128) {
             if (array[0] == 0 && array[1] == 45 && array[2] == 89 && array[3] == 31) {
-                return authkey.equals(new String(ByteBuffer.wrap(array, 4, 128).array()));
+                return authkey.equals(new String(ByteBuffer.wrap(array, 4, 128).array(),
+                        Charsets.UTF_8));
             }
             else {
                 return false;
@@ -53,6 +56,7 @@ public class NettyRegisterMesssage {
     }
     
     public static String getName(final byte[] payload) {
-        return new String(ByteBuffer.wrap(payload, 132, payload.length - 132).array());
+        return new String(ByteBuffer.wrap(payload, 132, payload.length - 132).array(),
+                Charsets.UTF_8);
     }
 }

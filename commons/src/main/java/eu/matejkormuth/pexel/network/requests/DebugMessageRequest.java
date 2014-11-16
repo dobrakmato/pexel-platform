@@ -16,29 +16,40 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network.responses;
+package eu.matejkormuth.pexel.network.requests;
 
 import java.nio.ByteBuffer;
 
-import eu.matejkormuth.pexel.network.Response;
+import com.google.common.base.Charsets;
 
-public class ServerStatusResponse extends Response {
-    public long maxMem;
-    public long usedMem;
+import eu.matejkormuth.pexel.network.Request;
+
+public class DebugMessageRequest extends Request {
+    public byte   catID;
+    public byte   typeID;
+    public String content;
     
-    public ServerStatusResponse(final long maxMem, final long usedMem) {
-        this.maxMem = maxMem;
-        this.usedMem = usedMem;
+    public DebugMessageRequest(final byte catID, final byte typeID, final String content) {
+        super();
+        this.catID = catID;
+        this.typeID = typeID;
+        this.content = content;
     }
     
     @Override
     public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(2 * 8).putLong(this.maxMem).putLong(this.usedMem);
+        return ByteBuffer.allocate(this.content.length() + 2)
+                .put(this.catID)
+                .put(this.typeID)
+                .put(this.content.getBytes());
     }
     
     @Override
     public void fromByteBuffer(final ByteBuffer buffer) {
-        this.maxMem = buffer.getLong();
-        this.usedMem = buffer.getLong();
+        this.catID = buffer.get();
+        this.typeID = buffer.get();
+        byte[] content = new byte[buffer.remaining()];
+        buffer.get(content);
+        this.content = new String(content, Charsets.UTF_8);
     }
 }

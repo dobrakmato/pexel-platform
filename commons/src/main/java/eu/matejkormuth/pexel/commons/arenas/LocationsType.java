@@ -16,29 +16,21 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network.responses;
+package eu.matejkormuth.pexel.commons.arenas;
 
-import java.nio.ByteBuffer;
+import javax.xml.bind.annotation.XmlType;
 
-import eu.matejkormuth.pexel.network.Response;
-
-public class ServerStatusResponse extends Response {
-    public long maxMem;
-    public long usedMem;
-    
-    public ServerStatusResponse(final long maxMem, final long usedMem) {
-        this.maxMem = maxMem;
-        this.usedMem = usedMem;
-    }
-    
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(2 * 8).putLong(this.maxMem).putLong(this.usedMem);
-    }
-    
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.maxMem = buffer.getLong();
-        this.usedMem = buffer.getLong();
-    }
+/**
+ * Type of locations in {@link MapData}.
+ */
+@XmlType(name = "locationtype")
+public enum LocationsType {
+    /**
+     * Co-ordinates are in absolute values.
+     */
+    ABSOLUTE,
+    /**
+     * Co-ordinates are in relative values. Absolute values are evaulated using {@link MapData#anchor}.
+     */
+    RELATIVE;
 }

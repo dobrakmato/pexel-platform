@@ -16,29 +16,24 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network.responses;
+package eu.matejkormuth.pexel.commons;
 
-import java.nio.ByteBuffer;
+import org.bukkit.Location;
 
-import eu.matejkormuth.pexel.network.Response;
-
-public class ServerStatusResponse extends Response {
-    public long maxMem;
-    public long usedMem;
+public class RegionTransformer {
     
-    public ServerStatusResponse(final long maxMem, final long usedMem) {
-        this.maxMem = maxMem;
-        this.usedMem = usedMem;
+    /**
+     * Transforms relative region to absolute with specified anchor.
+     * 
+     * @param relative
+     *            relative region
+     * @param anchor
+     *            absolute anchor
+     * @return absoluted region
+     */
+    public static Region toAbsolute(final Region relative, final Location anchor) {
+        return new Region(anchor.toVector().add(relative.v1), anchor.toVector().add(
+                relative.v2), anchor.getWorld());
     }
     
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(2 * 8).putLong(this.maxMem).putLong(this.usedMem);
-    }
-    
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.maxMem = buffer.getLong();
-        this.usedMem = buffer.getLong();
-    }
 }

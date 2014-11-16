@@ -16,29 +16,15 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network.responses;
+package eu.matejkormuth.pexel.commons.arenas;
 
-import java.nio.ByteBuffer;
-
-import eu.matejkormuth.pexel.network.Response;
-
-public class ServerStatusResponse extends Response {
-    public long maxMem;
-    public long usedMem;
+/**
+ * Base exception for invalid {@link MapData}.
+ */
+public class InvalidMapDataException extends RuntimeException {
+    private static final long serialVersionUID = -4753376360641192951L;
     
-    public ServerStatusResponse(final long maxMem, final long usedMem) {
-        this.maxMem = maxMem;
-        this.usedMem = usedMem;
-    }
-    
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(2 * 8).putLong(this.maxMem).putLong(this.usedMem);
-    }
-    
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.maxMem = buffer.getLong();
-        this.usedMem = buffer.getLong();
+    public InvalidMapDataException(final String string) {
+        super(string);
     }
 }

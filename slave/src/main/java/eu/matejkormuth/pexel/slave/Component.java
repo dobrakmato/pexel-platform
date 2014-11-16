@@ -16,29 +16,42 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network.responses;
+package eu.matejkormuth.pexel.slave;
 
-import java.nio.ByteBuffer;
+import eu.matejkormuth.pexel.utils.Logger;
 
-import eu.matejkormuth.pexel.network.Response;
-
-public class ServerStatusResponse extends Response {
-    public long maxMem;
-    public long usedMem;
+/**
+ * Interface that represents component in MasterServer.
+ */
+public abstract class Component {
+    private PexelSlave slave;
+    private Logger     logger;
     
-    public ServerStatusResponse(final long maxMem, final long usedMem) {
-        this.maxMem = maxMem;
-        this.usedMem = usedMem;
+    /**
+     * Returns current {@link PexelMaster} instance.
+     */
+    public PexelSlave getSlave() {
+        return this.slave;
     }
     
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(2 * 8).putLong(this.maxMem).putLong(this.usedMem);
+    /**
+     * Returns child logger for this component derived from master logger.
+     * 
+     * @return child logger
+     */
+    public Logger getLogger() {
+        if (this.logger == null) {
+            return this.logger = this.slave.getLogger().getChild(
+                    this.getClass().getSimpleName());
+        }
+        else {
+            return this.logger;
+        }
     }
     
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.maxMem = buffer.getLong();
-        this.usedMem = buffer.getLong();
-    }
+    public void onEnable() {
+    };
+    
+    public void onDisable() {
+    };
 }

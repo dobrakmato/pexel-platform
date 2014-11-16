@@ -14,9 +14,14 @@
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.glassfish.jersey.containers</groupId>
-      <artifactId>jersey-container-jdk-http</artifactId>
-      <version>2.2</version>
+      <groupId>com.sun.jersey.contribs</groupId>
+      <artifactId>jersey-simple-server</artifactId>
+      <version>1.10</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-core</artifactId>
+      <version>1.10</version>
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
@@ -28,6 +33,12 @@
       <artifactId>guava</artifactId>
       <version>18.0</version>
     </dependency>
+    <dependency>
+      <groupId>net.md-5</groupId>
+      <artifactId>bungeecord-api</artifactId>
+      <version>1.7-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -36,7 +47,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass></mainClass>
+              <mainClass>eu.matejkormuth.pexel.master.boot.PexelMasterStandalone</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>

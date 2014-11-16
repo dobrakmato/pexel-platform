@@ -18,6 +18,7 @@
 // @formatter:on
 package eu.matejkormuth.pexel.network;
 
+import eu.matejkormuth.pexel.network.requests.DebugMessageRequest;
 import eu.matejkormuth.pexel.network.requests.ServerStatusRequest;
 import eu.matejkormuth.pexel.network.responses.ServerStatusResponse;
 
@@ -27,6 +28,7 @@ import eu.matejkormuth.pexel.network.responses.ServerStatusResponse;
 public class PexelProtocol extends Protocol {
     public PexelProtocol() {
         this.registerRequest(1, ServerStatusRequest.class);
+        this.registerRequest(2, DebugMessageRequest.class);
         
         this.registerResponse(1, ServerStatusResponse.class);
     }

@@ -18,7 +18,6 @@
 // @formatter:on
 package eu.matejkormuth.pexel.network;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
@@ -39,25 +38,17 @@ public class SlaveServer extends ServerInfo implements Requestable {
     protected Configuration          config;
     protected Logger                 log;
     
-    public SlaveServer(final String name) {
+    public SlaveServer(final String name, final Configuration config, final Logger logger) {
         super(name);
         
-        this.log = new Logger("SlaveServer");
-        this.log.info("Loading Slave server...");
+        this.log = logger.getChild("Net");
         
-        // Load configuration.
-        File f = new File("./config.xml");
-        if (!f.exists()) {
-            this.log.info("Configuration file not found, generating default one!");
-            Configuration.createDefault(ServerType.SLAVE, f);
-        }
-        this.log.info("Loading configuration...");
-        this.config = Configuration.load(f);
+        this.config = config;
         
         this.side = ServerSide.LOCAL;
-        
+        this.log.info("Initializing protocol...");
         this.protocol = new PexelProtocol();
-        
+        this.log.info("Initializing Messenger...");
         this.messenger = new Messenger(new CallbackHandler(this), this.protocol);
         
         this.masterServerInfo = new ServerInfo("master") {
@@ -73,15 +64,21 @@ public class SlaveServer extends ServerInfo implements Requestable {
                         response.toByteBuffer().array());
             }
         };
-        
+        this.log.info("Initializing NettyClientComunicator...");
         this.comunicator = new NettyClientComunicator(this.messenger,
                 this.config.getAsInt("port"), this.config.getAsString("masterIp"),
                 this.config.getAsString("authKey"), this);
         
         ServerInfo.setLocalServer(this);
+        this.log.info("Network part loaded successfully!");
     }
     
-    protected SlaveServer(final boolean fromMaster, final String name) {
+    /**
+     * Hidden constructor. Used only from {@link NettyServerComunicator}.
+     * 
+     * @param name
+     */
+    protected SlaveServer(final String name) {
         super(name);
         
         // Does not register this as local server.

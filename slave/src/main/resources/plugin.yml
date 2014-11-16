@@ -1,0 +1,4 @@
+name: PexelSlave
+main: eu.matejkormuth.pexel.slave.PexelSlaveBukkitPlugin
+version: 3.0
+author: dobrakmato

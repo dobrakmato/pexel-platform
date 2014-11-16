@@ -16,29 +16,23 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network.responses;
+package eu.matejkormuth.pexel.commons.minigame;
 
-import java.nio.ByteBuffer;
-
-import eu.matejkormuth.pexel.network.Response;
-
-public class ServerStatusResponse extends Response {
-    public long maxMem;
-    public long usedMem;
-    
-    public ServerStatusResponse(final long maxMem, final long usedMem) {
-        this.maxMem = maxMem;
-        this.usedMem = usedMem;
-    }
-    
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(2 * 8).putLong(this.maxMem).putLong(this.usedMem);
-    }
-    
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.maxMem = buffer.getLong();
-        this.usedMem = buffer.getLong();
-    }
+/**
+ * All categories of minigames.
+ */
+public enum MinigameCategory {
+    /**
+     * Aracade minigame (ex. Tnt Tag).
+     */
+    ARCADE,
+    /**
+     * Minigame that is about to survive (ex. Survival Games).
+     */
+    SURVIVAL,
+    /**
+     * Mingiame that is ready for tournaments (ex. Kingdom Wars, Annihilation). Minigames in this category have enabled
+     * negative points for leaving match before match ends.
+     */
+    TOURNAMENT;
 }

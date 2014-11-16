@@ -16,29 +16,34 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network.responses;
+package eu.matejkormuth.pexel.commons.arenas;
 
-import java.nio.ByteBuffer;
-
-import eu.matejkormuth.pexel.network.Response;
-
-public class ServerStatusResponse extends Response {
-    public long maxMem;
-    public long usedMem;
-    
-    public ServerStatusResponse(final long maxMem, final long usedMem) {
-        this.maxMem = maxMem;
-        this.usedMem = usedMem;
-    }
-    
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(2 * 8).putLong(this.maxMem).putLong(this.usedMem);
-    }
-    
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.maxMem = buffer.getLong();
-        this.usedMem = buffer.getLong();
-    }
+/**
+ * Reasons for disconnecting from arena.
+ */
+public enum DisconnectReason {
+    /**
+     * Player has invoked disconnect from server.
+     */
+    PLAYER_DISCONNECT,
+    /**
+     * Player has lost connection to server.
+     */
+    PLAYER_CONNECTION_LOST,
+    /**
+     * Player has used /leave command or left by his decision.
+     */
+    PLAYER_LEAVE,
+    /**
+     * Invoked by game (eg. player has lost match).
+     */
+    LEAVE_BY_GAME,
+    /**
+     * Invoked by admin (eg. kicked for violating rules).
+     */
+    KICK_BY_SERVER,
+    /**
+     * Unknown or other reason. (Avoid using this one)
+     */
+    UNKNOWN,
 }

@@ -22,7 +22,7 @@
 					</descriptorRefs>
 				</configuration>
 				    <executions>
-					<execution>
+					<execution> 
 						<id>make-assembly</id> <!-- this is used for inheritance merges -->
 						<phase>package</phase> <!-- bind to the packaging phase -->
 						<goals>
@@ -33,7 +33,13 @@
 			</plugin>
 		</plugins>
 	</build>
-	<dependencies>
+  	<dependencies>
+        <dependency>
+        <groupId>org.bukkit</groupId>
+        <artifactId>bukkit</artifactId>
+        <version>1.7.9-R0.2</version>
+        <scope>provided</scope>
+      </dependency>
 		<dependency>
 			<groupId>eu.matejkormuth.pexel</groupId>
 			<artifactId>commons</artifactId>

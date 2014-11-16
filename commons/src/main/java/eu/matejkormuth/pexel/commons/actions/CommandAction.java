@@ -16,29 +16,29 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network.responses;
+package eu.matejkormuth.pexel.commons.actions;
 
-import java.nio.ByteBuffer;
+import org.bukkit.entity.Player;
 
-import eu.matejkormuth.pexel.network.Response;
-
-public class ServerStatusResponse extends Response {
-    public long maxMem;
-    public long usedMem;
+/**
+ * Basic sudo command player action.
+ */
+public class CommandAction implements Action {
+    private String command = "";
     
-    public ServerStatusResponse(final long maxMem, final long usedMem) {
-        this.maxMem = maxMem;
-        this.usedMem = usedMem;
+    /**
+     * Creates a new command action. Command should <b> not contain</b> slash. <code>%player%</code> in command will be
+     * replaced with name of player, that is this command executing for.
+     * 
+     * @param command
+     *            command of this action
+     */
+    public CommandAction(final String command) {
+        this.command = command;
     }
     
     @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(2 * 8).putLong(this.maxMem).putLong(this.usedMem);
-    }
-    
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.maxMem = buffer.getLong();
-        this.usedMem = buffer.getLong();
+    public void execute(final Player player) {
+        player.performCommand(this.command.replace("%player%", player.getName()));
     }
 }

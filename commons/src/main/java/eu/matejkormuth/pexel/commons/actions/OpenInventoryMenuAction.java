@@ -16,29 +16,30 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network.responses;
+package eu.matejkormuth.pexel.commons.actions;
 
-import java.nio.ByteBuffer;
+import org.bukkit.entity.Player;
 
-import eu.matejkormuth.pexel.network.Response;
+import eu.matejkormuth.pexel.commons.menu.InventoryMenu;
 
-public class ServerStatusResponse extends Response {
-    public long maxMem;
-    public long usedMem;
+/**
+ * Inventory menu action that opens another inventory menu.
+ */
+public class OpenInventoryMenuAction implements Action {
+    private final InventoryMenu inventoryMenu;
     
-    public ServerStatusResponse(final long maxMem, final long usedMem) {
-        this.maxMem = maxMem;
-        this.usedMem = usedMem;
+    /**
+     * Creates new action that opens specified inventory menu when player clicks icon.
+     * 
+     * @param im
+     *            another InventoryMenu
+     */
+    public OpenInventoryMenuAction(final InventoryMenu im) {
+        this.inventoryMenu = im;
     }
     
     @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(2 * 8).putLong(this.maxMem).putLong(this.usedMem);
-    }
-    
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.maxMem = buffer.getLong();
-        this.usedMem = buffer.getLong();
+    public void execute(final Player player) {
+        this.inventoryMenu.showTo(player);
     }
 }

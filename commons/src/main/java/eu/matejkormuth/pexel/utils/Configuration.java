@@ -32,6 +32,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.commons.lang.math.RandomUtils;
+
 import eu.matejkormuth.pexel.network.ServerType;
 
 /**
@@ -139,16 +141,24 @@ public class Configuration {
         public String value;
     }
     
+    public static final String KEY_AUTHKEY    = "authKey";
+    public static final String KEY_PORT       = "port";
+    public static final String KEY_PORT_API   = "portApi";
+    public static final String KEY_MASTER_IP  = "masterIp";
+    public static final String KEY_SLAVE_NAME = "slaveName";
+    
     public static void createDefault(final ServerType type, final File f) {
         Configuration c = new Configuration();
         if (type == ServerType.MASTER) {
-            c.set("authKey", "{insert 128 chars long auth key here}");
-            c.set("port", "29631");
+            c.set(Configuration.KEY_AUTHKEY, "{insert 128 chars long auth key here}");
+            c.set(Configuration.KEY_PORT, "29631");
+            c.set(Configuration.KEY_PORT_API, "10361");
         }
         else {
-            c.set("authKey", "{insert 128 chars long auth key here}");
-            c.set("port", "29631");
-            c.set("masterIp", "0.0.0.0");
+            c.set(Configuration.KEY_AUTHKEY, "{insert 128 chars long auth key here}");
+            c.set(Configuration.KEY_PORT, "29631");
+            c.set(Configuration.KEY_MASTER_IP, "0.0.0.0");
+            c.set(Configuration.KEY_SLAVE_NAME, "coolslave" + RandomUtils.nextInt());
         }
         
         c.save(f);

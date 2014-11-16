@@ -76,6 +76,7 @@ public class MasterServer extends ServerInfo implements Requestable {
         // Update instance in ServerInfo
         ServerInfo.setLocalServer(this);
         this.side = ServerSide.LOCAL;
+        this.log.info("Network part loaded successfully!");
     }
     
     // Adds a slave server.
