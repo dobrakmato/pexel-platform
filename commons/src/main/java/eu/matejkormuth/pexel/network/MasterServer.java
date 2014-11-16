@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-import eu.matejkormuth.pexel.utils.Configuration;
-import eu.matejkormuth.pexel.utils.Logger;
+import eu.matejkormuth.pexel.commons.Configuration;
+import eu.matejkormuth.pexel.commons.Logger;
 
 /**
  * Main class of master server.
@@ -45,7 +45,7 @@ public class MasterServer extends ServerInfo implements Requestable {
     private final Map<String, SlaveServer> slaves        = new HashMap<String, SlaveServer>();
     
     public MasterServer(final String name, final Configuration config,
-            final Logger logger) {
+            final Logger logger, final Protocol protocol) {
         super(name);
         
         // Logger.
@@ -60,7 +60,7 @@ public class MasterServer extends ServerInfo implements Requestable {
         this.proxy = new BungeeProxy();
         
         // Protocol - PexelProtocol has registered all packets.
-        this.protocol = new PexelProtocol();
+        this.protocol = protocol;
         
         // Callback handler.
         this.callbackHandler = new CallbackHandler(this);

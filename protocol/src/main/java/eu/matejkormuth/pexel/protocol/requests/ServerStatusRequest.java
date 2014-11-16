@@ -16,22 +16,14 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network.requests;
+package eu.matejkormuth.pexel.protocol.requests;
 
-import java.nio.ByteBuffer;
+import eu.matejkormuth.pexel.network.Callback;
+import eu.matejkormuth.pexel.network.EmptyAsyncRequest;
+import eu.matejkormuth.pexel.protocol.responses.ServerStatusResponse;
 
-import eu.matejkormuth.pexel.network.Request;
-
-public class SlaveServerMaintenanceModeRequest extends Request {
-    byte modeEnabled;
-    
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(1).put(this.modeEnabled);
-    }
-    
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.modeEnabled = buffer.get();
+public class ServerStatusRequest extends EmptyAsyncRequest {
+    public ServerStatusRequest(final Callback<ServerStatusResponse> callback) {
+        super(callback);
     }
 }

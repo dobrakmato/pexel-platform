@@ -16,7 +16,7 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.utils;
+package eu.matejkormuth.pexel.commons;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -150,12 +150,14 @@ public class Configuration {
     public static void createDefault(final ServerType type, final File f) {
         Configuration c = new Configuration();
         if (type == ServerType.MASTER) {
-            c.set(Configuration.KEY_AUTHKEY, "{insert 128 chars long auth key here}");
+            c.set(Configuration.KEY_AUTHKEY,
+                    "replace_this_default_authkey_with_custom_one_long_128_cahracters_You_can_find_generator_at_http://pexel.eu/platform_____________");
             c.set(Configuration.KEY_PORT, "29631");
             c.set(Configuration.KEY_PORT_API, "10361");
         }
         else {
-            c.set(Configuration.KEY_AUTHKEY, "{insert 128 chars long auth key here}");
+            c.set(Configuration.KEY_AUTHKEY,
+                    "replace_this_default_authkey_with_custom_one_long_128_cahracters_You_can_find_generator_at_http://pexel.eu/platform_____________");
             c.set(Configuration.KEY_PORT, "29631");
             c.set(Configuration.KEY_MASTER_IP, "0.0.0.0");
             c.set(Configuration.KEY_SLAVE_NAME, "coolslave" + RandomUtils.nextInt());

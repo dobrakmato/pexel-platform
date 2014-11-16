@@ -16,7 +16,7 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network.requests;
+package eu.matejkormuth.pexel.protocol.requests;
 
 import java.nio.ByteBuffer;
 

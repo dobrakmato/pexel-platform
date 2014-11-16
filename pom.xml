@@ -27,6 +27,7 @@
     <module>slave</module>
     <module>commons</module>
     <module>bungeepatcher</module>
+    <module>protocol</module>
   </modules>
   <repositories>
     <repository>

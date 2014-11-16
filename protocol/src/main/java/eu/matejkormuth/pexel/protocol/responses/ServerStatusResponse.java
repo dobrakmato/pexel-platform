@@ -16,14 +16,29 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network.requests;
+package eu.matejkormuth.pexel.protocol.responses;
 
-import eu.matejkormuth.pexel.network.Callback;
-import eu.matejkormuth.pexel.network.EmptyAsyncRequest;
-import eu.matejkormuth.pexel.network.responses.ServerStatusResponse;
+import java.nio.ByteBuffer;
 
-public class ServerStatusRequest extends EmptyAsyncRequest {
-    public ServerStatusRequest(final Callback<ServerStatusResponse> callback) {
-        super(callback);
+import eu.matejkormuth.pexel.network.Response;
+
+public class ServerStatusResponse extends Response {
+    public long maxMem;
+    public long usedMem;
+    
+    public ServerStatusResponse(final long maxMem, final long usedMem) {
+        this.maxMem = maxMem;
+        this.usedMem = usedMem;
+    }
+    
+    @Override
+    public ByteBuffer toByteBuffer() {
+        return ByteBuffer.allocate(2 * 8).putLong(this.maxMem).putLong(this.usedMem);
+    }
+    
+    @Override
+    public void fromByteBuffer(final ByteBuffer buffer) {
+        this.maxMem = buffer.getLong();
+        this.usedMem = buffer.getLong();
     }
 }

@@ -45,7 +45,7 @@ import java.util.Map;
 
 import javax.net.ssl.SSLException;
 
-import eu.matejkormuth.pexel.utils.Logger;
+import eu.matejkormuth.pexel.commons.Logger;
 
 public class NettyServerComunicator extends MessageComunicator {
     protected final ChannelGroup                     channels        = new DefaultChannelGroup(

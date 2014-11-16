@@ -23,14 +23,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import eu.matejkormuth.pexel.commons.Configuration;
+import eu.matejkormuth.pexel.commons.Logger;
+import eu.matejkormuth.pexel.master.restapi.ApiServer;
 import eu.matejkormuth.pexel.network.Callback;
 import eu.matejkormuth.pexel.network.MasterServer;
 import eu.matejkormuth.pexel.network.ServerType;
 import eu.matejkormuth.pexel.network.SlaveServer;
-import eu.matejkormuth.pexel.network.requests.ServerStatusRequest;
-import eu.matejkormuth.pexel.network.responses.ServerStatusResponse;
-import eu.matejkormuth.pexel.utils.Configuration;
-import eu.matejkormuth.pexel.utils.Logger;
+import eu.matejkormuth.pexel.protocol.PexelProtocol;
+import eu.matejkormuth.pexel.protocol.requests.ServerStatusRequest;
+import eu.matejkormuth.pexel.protocol.responses.ServerStatusResponse;
 
 /**
  * Pexel master server singleton object.
@@ -77,10 +79,15 @@ public final class PexelMaster {
         }, 2, TimeUnit.SECONDS);
         
         // Set up network.
-        this.master = new MasterServer("master", this.config, this.log);
+        this.master = new MasterServer("master", this.config, this.log,
+                new PexelProtocol());
         
         // Set up API server.
+        this.addComponent(new ApiServer());
         
+        // Enable components.
+        this.log.info("Enabling all components now!");
+        this.enableComponents();
     }
     
     // Each 2 seconds sends ServerStatusRequest to all servers.
@@ -129,12 +136,13 @@ public final class PexelMaster {
     }
     
     protected void enableComponent(final Component e) {
-        this.log.info("Enabling " + e.getClass().getSimpleName() + "...");
+        this.log.info("Enabling [" + e.getClass().getSimpleName() + "] ...");
+        e.master = this;
         e.onEnable();
     }
     
     protected void disableComponent(final Component e) {
-        this.log.info("Disabling " + e.getClass().getSimpleName() + "...");
+        this.log.info("Disabling [" + e.getClass().getSimpleName() + "] ...");
         e.onDisable();
     }
     

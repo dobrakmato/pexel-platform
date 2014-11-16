@@ -23,10 +23,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.matejkormuth.pexel.commons.Configuration;
+import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.network.ServerType;
 import eu.matejkormuth.pexel.network.SlaveServer;
-import eu.matejkormuth.pexel.utils.Configuration;
-import eu.matejkormuth.pexel.utils.Logger;
+import eu.matejkormuth.pexel.protocol.PexelProtocol;
 
 /**
  * PexelSlave server singleton object.
@@ -69,7 +70,7 @@ public class PexelSlave {
         // Connect to master - other thread.
         this.server = new SlaveServer(
                 this.config.getAsString(Configuration.KEY_SLAVE_NAME), this.config,
-                this.log);
+                this.log, new PexelProtocol());
     }
     
     public static void init(final File dataFolder) {

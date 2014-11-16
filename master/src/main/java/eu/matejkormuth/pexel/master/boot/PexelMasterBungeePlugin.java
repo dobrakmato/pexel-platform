@@ -39,7 +39,7 @@ public class PexelMasterBungeePlugin extends Plugin {
         try {
             bsm = Class.forName("BungeeSecurityManager");
         } catch (ClassNotFoundException e1) {
-            e1.printStackTrace();
+            //e1.printStackTrace();
             try {
                 this.getLogger()
                         .severe("Determination of BungeeCord patching status failed! Things may not work properly!");

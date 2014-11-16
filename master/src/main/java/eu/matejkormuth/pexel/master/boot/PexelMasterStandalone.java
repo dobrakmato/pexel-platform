@@ -20,6 +20,6 @@ package eu.matejkormuth.pexel.master.boot;
 
 public class PexelMasterStandalone {
     public static void main(final String[] args) {
-        
+        System.out.println("Hi, this is not supported yet! :)");
     }
 }

@@ -18,14 +18,14 @@
 // @formatter:on
 package eu.matejkormuth.pexel.master;
 
-import eu.matejkormuth.pexel.utils.Logger;
+import eu.matejkormuth.pexel.commons.Logger;
 
 /**
  * Interface that represents component in MasterServer.
  */
 public abstract class Component {
-    private PexelMaster master;
-    private Logger      logger;
+    protected PexelMaster master;
+    private Logger        logger;
     
     /**
      * Returns current {@link PexelMaster} instance.

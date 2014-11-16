@@ -30,7 +30,7 @@ Minigames can be loaded and registered as bukkit/spigot/sponge plugins or as jar
 
 BungeePatcher
 --------
-**BungeePatcher** does replace original **BugneeSecurityManager** in jar with custom one. This is done because Bungee's security manager does not allows calling many functions that **Master** parts requires (Scheduling, Threading, Network stuff). 
+**BungeePatcher** does replace original **BugneeSecurityManager** in BungeeCord.jar with custom one. This is done because Bungee's security manager does not allows calling many functions that **Master** parts requires (Scheduling, Threading, Network stuff). 
 
 ### Usage
 - Just drop *bungeepatcher.jar* to folder containing your *BungeeCord.jar* file and run patcher using command `java -jar bungeepatcher.jar`. 

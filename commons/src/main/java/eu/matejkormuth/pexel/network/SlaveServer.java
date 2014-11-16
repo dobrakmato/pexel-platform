@@ -22,8 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-import eu.matejkormuth.pexel.utils.Configuration;
-import eu.matejkormuth.pexel.utils.Logger;
+import eu.matejkormuth.pexel.commons.Configuration;
+import eu.matejkormuth.pexel.commons.Logger;
 
 public class SlaveServer extends ServerInfo implements Requestable {
     
@@ -38,7 +38,8 @@ public class SlaveServer extends ServerInfo implements Requestable {
     protected Configuration          config;
     protected Logger                 log;
     
-    public SlaveServer(final String name, final Configuration config, final Logger logger) {
+    public SlaveServer(final String name, final Configuration config,
+            final Logger logger, final Protocol protocol) {
         super(name);
         
         this.log = logger.getChild("Net");
@@ -47,7 +48,7 @@ public class SlaveServer extends ServerInfo implements Requestable {
         
         this.side = ServerSide.LOCAL;
         this.log.info("Initializing protocol...");
-        this.protocol = new PexelProtocol();
+        this.protocol = protocol;
         this.log.info("Initializing Messenger...");
         this.messenger = new Messenger(new CallbackHandler(this), this.protocol);
         

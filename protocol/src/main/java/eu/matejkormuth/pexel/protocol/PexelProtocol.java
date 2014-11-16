@@ -16,11 +16,12 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network;
+package eu.matejkormuth.pexel.protocol;
 
-import eu.matejkormuth.pexel.network.requests.DebugMessageRequest;
-import eu.matejkormuth.pexel.network.requests.ServerStatusRequest;
-import eu.matejkormuth.pexel.network.responses.ServerStatusResponse;
+import eu.matejkormuth.pexel.network.Protocol;
+import eu.matejkormuth.pexel.protocol.requests.DebugMessageRequest;
+import eu.matejkormuth.pexel.protocol.requests.ServerStatusRequest;
+import eu.matejkormuth.pexel.protocol.responses.ServerStatusResponse;
 
 /**
  * Protocol that supports all pexel request and responses.

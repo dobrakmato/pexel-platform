@@ -21,23 +21,29 @@ package eu.matejkormuth.pexel.master.restapi;
 import java.io.Closeable;
 import java.io.IOException;
 
+import com.sun.jersey.api.core.DefaultResourceConfig;
 import com.sun.jersey.simple.container.SimpleServerFactory;
 
+import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.master.Component;
-import eu.matejkormuth.pexel.utils.Configuration;
 
 /**
  * Class that respresents REST API server.
  */
-public class RESTServer extends Component {
+public class ApiServer extends Component {
     private Closeable server;
     
     @Override
     public void onEnable() {
         try {
             String address = "http://0.0.0.0:"
-                    + this.getMaster().getConfiguration().getAsInt(Configuration.KEY_PORT_API);
-            this.server = SimpleServerFactory.create(address);
+                    + this.getMaster()
+                            .getConfiguration()
+                            .getAsInt(Configuration.KEY_PORT_API);
+            
+            DefaultResourceConfig resourceConfig = new DefaultResourceConfig(
+                    ApiResource.class);
+            this.server = SimpleServerFactory.create(address, resourceConfig);
         } catch (IllegalArgumentException | IOException e) {
             e.printStackTrace();
         }
