@@ -42,7 +42,7 @@ public class ApiServer extends Component {
                             .getAsInt(Configuration.KEY_PORT_API);
             
             DefaultResourceConfig resourceConfig = new DefaultResourceConfig(
-                    ApiResource.class);
+                    ApiResource.class, StringBodyWriter.class);
             this.server = SimpleServerFactory.create(address, resourceConfig);
         } catch (IllegalArgumentException | IOException e) {
             e.printStackTrace();

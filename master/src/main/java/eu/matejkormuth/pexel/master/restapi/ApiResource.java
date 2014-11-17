@@ -6,12 +6,18 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path(value = "/api")
+@Path(value = "api")
+@Produces({ MediaType.APPLICATION_JSON })
 public class ApiResource {
     @GET
     @Path("/test/{id}")
-    @Produces({ MediaType.APPLICATION_JSON })
     public String test(@PathParam("id") final int id) {
         return "{\"test\":55}";
+    }
+    
+    @GET
+    @Path("/servers")
+    public String servers() {
+        return "[]";
     }
 }

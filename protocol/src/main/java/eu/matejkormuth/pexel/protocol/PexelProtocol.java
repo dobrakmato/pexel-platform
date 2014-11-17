@@ -18,18 +18,31 @@
 // @formatter:on
 package eu.matejkormuth.pexel.protocol;
 
+import java.nio.charset.Charset;
+
+import com.google.common.base.Charsets;
+
 import eu.matejkormuth.pexel.network.Protocol;
 import eu.matejkormuth.pexel.protocol.requests.DebugMessageRequest;
+import eu.matejkormuth.pexel.protocol.requests.FileTransferRequest;
+import eu.matejkormuth.pexel.protocol.requests.ServerConfigurationRequest;
 import eu.matejkormuth.pexel.protocol.requests.ServerStatusRequest;
+import eu.matejkormuth.pexel.protocol.requests.SlaveServerMaintenanceModeRequest;
 import eu.matejkormuth.pexel.protocol.responses.ServerStatusResponse;
 
 /**
  * Protocol that supports all pexel request and responses.
  */
 public class PexelProtocol extends Protocol {
+    // Protocol charset.
+    public static final Charset CHARSET = Charsets.UTF_8;
+    
     public PexelProtocol() {
         this.registerRequest(1, ServerStatusRequest.class);
         this.registerRequest(2, DebugMessageRequest.class);
+        this.registerRequest(3, FileTransferRequest.class);
+        this.registerRequest(4, ServerConfigurationRequest.class);
+        this.registerRequest(5, SlaveServerMaintenanceModeRequest.class);
         
         this.registerResponse(1, ServerStatusResponse.class);
     }

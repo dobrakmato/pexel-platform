@@ -43,12 +43,9 @@ public class MultiValueMap<K, V> implements Serializable {
     }
     
     public V get(final K key, final int index) {
-        if (this.internalMap.containsKey(key)) {
-            return this.internalMap.get(key).get(index);
-        }
-        else {
-            return null;
-        }
+        if (this.internalMap.containsKey(key)) { return this.internalMap.get(key).get(
+                index); }
+        return null;
     }
     
     public Collection<V> getAll(final K key) {
@@ -68,7 +65,9 @@ public class MultiValueMap<K, V> implements Serializable {
     }
     
     public boolean remove(final K key, final V value) {
-        return this.internalMap.get(key).remove(value);
+        if (this.internalMap.containsKey(key)) { return this.internalMap.get(key)
+                .remove(value); }
+        return false;
     }
     
     public List<V> removeAll(final K key) {
@@ -76,12 +75,8 @@ public class MultiValueMap<K, V> implements Serializable {
     }
     
     public int size(final K key) {
-        if (this.internalMap.get(key) != null) {
-            return this.internalMap.get(key).size();
-        }
-        else {
-            return 0;
-        }
+        if (this.internalMap.get(key) != null) { return this.internalMap.get(key).size(); }
+        return 0;
     }
     
     public int size() {
@@ -93,12 +88,8 @@ public class MultiValueMap<K, V> implements Serializable {
     }
     
     public boolean isEmpty(final K key) {
-        if (this.internalMap.containsKey(key)) {
-            return this.internalMap.get(key).size() == 0;
-        }
-        else {
-            return true;
-        }
+        if (this.internalMap.containsKey(key)) { return this.internalMap.get(key).size() == 0; }
+        return true;
     }
     
     public boolean containsKey(final K key) {
@@ -106,12 +97,9 @@ public class MultiValueMap<K, V> implements Serializable {
     }
     
     public boolean containsValue(final K key, final V value) {
-        if (this.internalMap.containsKey(key)) {
-            return this.internalMap.get(key).contains(value);
-        }
-        else {
-            return false;
-        }
+        if (this.internalMap.containsKey(key)) { return this.internalMap.get(key)
+                .contains(value); }
+        return false;
     }
     
     public Set<K> keySet() {

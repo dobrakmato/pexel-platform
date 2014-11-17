@@ -105,7 +105,7 @@ public class NettyServerComunicator extends MessageComunicator {
             this.b = new ServerBootstrap();
             this.b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .handler(new LoggingHandler(LogLevel.ERROR))
+                    .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new NettyServerComunicatorInitializer(sslCtx));
             
             this.b.bind(port).sync().channel().closeFuture().sync();
