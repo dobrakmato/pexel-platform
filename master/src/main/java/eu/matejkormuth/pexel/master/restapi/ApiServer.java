@@ -20,6 +20,9 @@ package eu.matejkormuth.pexel.master.restapi;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.net.ssl.SSLContext;
 
 import com.sun.jersey.api.core.DefaultResourceConfig;
 import com.sun.jersey.simple.container.SimpleServerFactory;
@@ -31,20 +34,33 @@ import eu.matejkormuth.pexel.master.MasterComponent;
  * Class that respresents REST API server.
  */
 public class ApiServer extends MasterComponent {
-    private Closeable server;
+    private Closeable http_server;
+    private Closeable https_server;
     
     @Override
     public void onEnable() {
         try {
-            String address = "http://0.0.0.0:"
+            String http_address = "http://0.0.0.0:"
                     + this.getMaster()
                             .getConfiguration()
-                            .getAsInt(Configuration.KEY_PORT_API);
+                            .getAsInt(Configuration.KEY_PORT_API_HTTP);
+            String https_address = "https://0.0.0.0:"
+                    + this.getMaster()
+                            .getConfiguration()
+                            .getAsInt(Configuration.KEY_PORT_API_HTTPS);
             
             DefaultResourceConfig resourceConfig = new DefaultResourceConfig(
                     ApiResource.class, StringBodyWriter.class);
-            this.server = SimpleServerFactory.create(address, resourceConfig);
-        } catch (IllegalArgumentException | IOException e) {
+            this.logger.info("Starting HTTP api server...");
+            this.http_server = SimpleServerFactory.create(http_address, resourceConfig);
+            
+            //SelfSignedCertificate ssc = new SelfSignedCertificate();
+            this.logger.info("Starting HTTPS api server...");
+            SSLContext ctx = SSLContext.getInstance("TLS");
+            
+            this.https_server = SimpleServerFactory.create(https_address, ctx,
+                    resourceConfig);
+        } catch (IllegalArgumentException | IOException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
     }
@@ -52,7 +68,9 @@ public class ApiServer extends MasterComponent {
     @Override
     public void onDisable() {
         try {
-            this.server.close();
+            this.logger.info("Stopping HTTP and HTTPS api servers...");
+            this.http_server.close();
+            this.https_server.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -92,13 +92,22 @@ public class Storage extends Component {
     }
     
     private void updateIndex() {
-        this.logger.info("Updating index file...");
-        this.scanAsync();
+        this.logger.info("Updating index...");
+        
+        // Async scan.
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Storage.this.scanAsync();
+                Storage.this.checkForUpdates();
+            }
+        }, "Storage-IndexUpdater/FSScanner").start();
     }
     
     // Called from another thread.
     private void scanAsync() {
         this.logger.info("Starting async file structure scan...");
+        // Lock object.
         this.lock.lock();
         
         // Maps
@@ -117,10 +126,27 @@ public class Storage extends Component {
             }
         }
         
+        // Unlock object.
         this.lock.unlock();
+        
+        // Log a message.
         this.logger.info("File structure scan finished!");
         this.logger.info("Found " + this.minigames.size() + " plugins, "
                 + this.maps.size() + " maps, " + this.tags.size() + " tags!");
+    }
+    
+    // Called from other thread.
+    protected void checkForUpdates() {
+        this.logger.info("Checking for updates for plugins...");
+        for (MinigameDescriptor desc : this.minigames) {
+            // TODO: If auto updates enabled.
+            this.update(desc);
+        }
+    }
+    
+    private void update(final MinigameDescriptor desc) {
+        // TODO Auto-generated method stub
+        
     }
     
     private void scanPluginDir(final File folder) {
@@ -128,12 +154,20 @@ public class Storage extends Component {
         File desc = new File(folder, "description.xml");
         
         if (jar.exists() && desc.exists()) {
-            MinigameDescriptor descriptor = MinigameDescriptor.load(desc);
-            // Add minigame plugin.
-            this.minigames.add(descriptor);
+            try {
+                MinigameDescriptor descriptor = MinigameDescriptor.load(desc);
+                
+                // Add minigame plugin.
+                this.minigames.add(descriptor);
+                
+                // Add tags.
+                this.tags.addAll(Arrays.asList(descriptor.getTags()));
+                
+            } catch (Exception ex) {
+                this.logger.error("File " + desc.getAbsolutePath()
+                        + " is not valid descriptor!");
+            }
             
-            // Add tags.
-            this.tags.addAll(Arrays.asList(descriptor.getTags()));
         }
         else {
             this.logger.error("Folder " + folder.getAbsolutePath()
@@ -142,7 +176,7 @@ public class Storage extends Component {
     }
     
     private void scanMapDir(final File folder) {
-        
+        // TODO: Not implemented.
     }
     
     public Collection<MinigameDescriptor> getAvaiablePlugins() {

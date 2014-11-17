@@ -143,7 +143,8 @@ public class Configuration {
     
     public static final String KEY_AUTHKEY           = "authKey";
     public static final String KEY_PORT              = "port";
-    public static final String KEY_PORT_API          = "portApi";
+    public static final String KEY_PORT_API_HTTP     = "portApiHttp";
+    public static final String KEY_PORT_API_HTTPS    = "portApiHttps";
     public static final String KEY_MASTER_IP         = "masterIp";
     public static final String KEY_SLAVE_NAME        = "slaveName";
     public static final String KEY_LIMBO_SERVER_NAME = "limboServer";
@@ -154,7 +155,8 @@ public class Configuration {
             c.set(Configuration.KEY_AUTHKEY,
                     "replace_this_default_authkey_with_custom_one_long_128_cahracters_You_can_find_generator_at_http://pexel.eu/platform_____________");
             c.set(Configuration.KEY_PORT, "29631");
-            c.set(Configuration.KEY_PORT_API, "10361");
+            c.set(Configuration.KEY_PORT_API_HTTP, "10361");
+            c.set(Configuration.KEY_PORT_API_HTTPS, "10362");
         }
         else {
             c.set(Configuration.KEY_AUTHKEY,
