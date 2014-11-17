@@ -16,31 +16,25 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.protocol.responses;
+package eu.matejkormuth.pexel.protocol.requests;
 
 import java.nio.ByteBuffer;
 
-import eu.matejkormuth.pexel.network.Response;
+import eu.matejkormuth.pexel.network.Request;
+import eu.matejkormuth.pexel.protocol.PexelProtocol;
+import eu.matejkormuth.pexel.protocol.ServerMode;
 
-public class ServerStatusResponse extends Response {
-    public long maxMem;
-    public long usedMem;
-    public int  slots;
-    public int  playerCount;
-    
-    public ServerStatusResponse(final long maxMem, final long usedMem) {
-        this.maxMem = maxMem;
-        this.usedMem = usedMem;
-    }
+public class SlaveServerSetModeRequest extends Request {
+    public ServerMode mode;
     
     @Override
     public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(2 * 8).putLong(this.maxMem).putLong(this.usedMem);
+        return ByteBuffer.allocate(1).put(
+                this.mode.name().getBytes(PexelProtocol.CHARSET));
     }
     
     @Override
     public void fromByteBuffer(final ByteBuffer buffer) {
-        this.maxMem = buffer.getLong();
-        this.usedMem = buffer.getLong();
+        this.mode = ServerMode.valueOf(new String(buffer.array(), PexelProtocol.CHARSET));
     }
 }

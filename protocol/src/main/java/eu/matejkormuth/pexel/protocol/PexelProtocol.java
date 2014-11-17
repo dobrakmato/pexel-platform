@@ -27,7 +27,7 @@ import eu.matejkormuth.pexel.protocol.requests.DebugMessageRequest;
 import eu.matejkormuth.pexel.protocol.requests.FileTransferRequest;
 import eu.matejkormuth.pexel.protocol.requests.ServerConfigurationRequest;
 import eu.matejkormuth.pexel.protocol.requests.ServerStatusRequest;
-import eu.matejkormuth.pexel.protocol.requests.SlaveServerMaintenanceModeRequest;
+import eu.matejkormuth.pexel.protocol.requests.SlaveServerSetModeRequest;
 import eu.matejkormuth.pexel.protocol.responses.ServerStatusResponse;
 
 /**
@@ -42,7 +42,7 @@ public class PexelProtocol extends Protocol {
         this.registerRequest(2, DebugMessageRequest.class);
         this.registerRequest(3, FileTransferRequest.class);
         this.registerRequest(4, ServerConfigurationRequest.class);
-        this.registerRequest(5, SlaveServerMaintenanceModeRequest.class);
+        this.registerRequest(5, SlaveServerSetModeRequest.class);
         
         this.registerResponse(1, ServerStatusResponse.class);
     }

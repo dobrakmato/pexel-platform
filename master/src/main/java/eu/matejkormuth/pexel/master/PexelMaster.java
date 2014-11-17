@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.Logger;
+import eu.matejkormuth.pexel.commons.LoggerHolder;
 import eu.matejkormuth.pexel.master.restapi.ApiServer;
 import eu.matejkormuth.pexel.network.Callback;
 import eu.matejkormuth.pexel.network.MasterServer;
@@ -37,20 +38,20 @@ import eu.matejkormuth.pexel.protocol.responses.ServerStatusResponse;
 /**
  * Pexel master server singleton object.
  */
-public final class PexelMaster {
+public final class PexelMaster implements LoggerHolder {
     private static PexelMaster instance = null;
     
     public static final PexelMaster getInstance() {
         return PexelMaster.instance;
     }
     
-    protected MasterServer    master;
-    protected Logger          log;
-    protected Configuration   config;
-    protected final Scheduler scheduler;
+    protected MasterServer          master;
+    protected Logger                log;
+    protected Configuration         config;
+    protected final Scheduler       scheduler;
     
-    protected List<Component> components        = new ArrayList<Component>();
-    protected boolean         componentsEnabled = false;
+    protected List<MasterComponent> components        = new ArrayList<MasterComponent>();
+    protected boolean               componentsEnabled = false;
     
     private PexelMaster(final File dataFolder) {
         this.log = new Logger("PexelMaster");
@@ -115,7 +116,7 @@ public final class PexelMaster {
      * @param component
      *            component to add
      */
-    public void addComponent(final Component component) {
+    public void addComponent(final MasterComponent component) {
         this.components.add(component);
         
         if (this.componentsEnabled) {
@@ -124,24 +125,25 @@ public final class PexelMaster {
     }
     
     protected void enableComponents() {
-        for (Component c : this.components) {
+        for (MasterComponent c : this.components) {
             this.enableComponent(c);
         }
     }
     
     protected void disableComponents() {
-        for (Component c : this.components) {
+        for (MasterComponent c : this.components) {
             this.disableComponent(c);
         }
     }
     
-    protected void enableComponent(final Component e) {
+    protected void enableComponent(final MasterComponent e) {
         this.log.info("Enabling [" + e.getClass().getSimpleName() + "] ...");
         e.master = this;
+        e._initLogger(this);
         e.onEnable();
     }
     
-    protected void disableComponent(final Component e) {
+    protected void disableComponent(final MasterComponent e) {
         this.log.info("Disabling [" + e.getClass().getSimpleName() + "] ...");
         e.onDisable();
     }
@@ -158,6 +160,7 @@ public final class PexelMaster {
         PexelMaster.instance = new PexelMaster(dataFolder);
     }
     
+    @Override
     public Logger getLogger() {
         return this.log;
     }

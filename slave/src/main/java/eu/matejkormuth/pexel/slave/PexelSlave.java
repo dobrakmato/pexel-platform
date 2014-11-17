@@ -28,6 +28,7 @@ import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.network.ServerType;
 import eu.matejkormuth.pexel.network.SlaveServer;
 import eu.matejkormuth.pexel.protocol.PexelProtocol;
+import eu.matejkormuth.pexel.protocol.ServerMode;
 
 /**
  * PexelSlave server singleton object.
@@ -39,6 +40,8 @@ public class PexelSlave {
     protected Logger          log;
     protected Configuration   config;
     protected Sync            sync;
+    
+    protected ServerMode      mode;
     
     protected List<Component> components        = new ArrayList<Component>();
     protected boolean         componentsEnabled = false;
@@ -83,6 +86,10 @@ public class PexelSlave {
     
     public Configuration getConfiguration() {
         return this.config;
+    }
+    
+    public ServerMode getMode() {
+        return this.mode;
     }
     
     public Sync getSync() {

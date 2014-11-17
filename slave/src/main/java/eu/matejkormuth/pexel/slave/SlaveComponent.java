@@ -16,31 +16,28 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.protocol.responses;
+package eu.matejkormuth.pexel.slave;
 
-import java.nio.ByteBuffer;
+import eu.matejkormuth.pexel.commons.Component;
 
-import eu.matejkormuth.pexel.network.Response;
-
-public class ServerStatusResponse extends Response {
-    public long maxMem;
-    public long usedMem;
-    public int  slots;
-    public int  playerCount;
+/**
+ * Interface that represents component in MasterServer.
+ */
+public abstract class SlaveComponent extends Component {
+    private PexelSlave slave;
     
-    public ServerStatusResponse(final long maxMem, final long usedMem) {
-        this.maxMem = maxMem;
-        this.usedMem = usedMem;
+    /**
+     * Returns current {@link PexelMaster} instance.
+     */
+    public PexelSlave getSlave() {
+        return this.slave;
     }
     
     @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(2 * 8).putLong(this.maxMem).putLong(this.usedMem);
-    }
+    public void onEnable() {
+    };
     
     @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.maxMem = buffer.getLong();
-        this.usedMem = buffer.getLong();
-    }
+    public void onDisable() {
+    };
 }

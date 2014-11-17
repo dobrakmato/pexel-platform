@@ -1,4 +1,4 @@
-Pexel Platform
+Pexel Platform [![Build Status](https://travis-ci.org/dobrakmato/pexel-platform.svg?branch=master)](https://travis-ci.org/dobrakmato/pexel-platform)
 ==============
 Platform for sweet deployment & managment of minecraft minigame networks.
 ----------------------------

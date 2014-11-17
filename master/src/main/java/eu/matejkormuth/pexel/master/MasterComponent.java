@@ -16,22 +16,20 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.protocol.requests;
+package eu.matejkormuth.pexel.master;
 
-import java.nio.ByteBuffer;
+import eu.matejkormuth.pexel.commons.Component;
 
-import eu.matejkormuth.pexel.network.Request;
-
-public class SlaveServerMaintenanceModeRequest extends Request {
-    byte modeEnabled;
+/**
+ * Interface that represents component in MasterServer.
+ */
+public abstract class MasterComponent extends Component {
+    protected PexelMaster master;
     
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(1).put(this.modeEnabled);
-    }
-    
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.modeEnabled = buffer.get();
+    /**
+     * Returns current {@link PexelMaster} instance.
+     */
+    public PexelMaster getMaster() {
+        return this.master;
     }
 }

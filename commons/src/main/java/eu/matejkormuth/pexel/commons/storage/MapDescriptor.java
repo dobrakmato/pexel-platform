@@ -16,42 +16,44 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.master;
+package eu.matejkormuth.pexel.commons.storage;
 
-import eu.matejkormuth.pexel.commons.Logger;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import eu.matejkormuth.pexel.commons.JsonType;
+import eu.matejkormuth.pexel.commons.SaveType;
 
 /**
- * Interface that represents component in MasterServer.
+ * Description of map.
  */
-public abstract class Component {
-    protected PexelMaster master;
-    private Logger        logger;
+@JsonType
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class MapDescriptor extends Description {
+    private SaveType saveType;
+    private String   minigame;
     
     /**
-     * Returns current {@link PexelMaster} instance.
+     * Only for JAXB.
      */
-    public PexelMaster getMaster() {
-        return this.master;
+    public MapDescriptor() {
     }
     
-    /**
-     * Returns child logger for this component derived from master logger.
-     * 
-     * @return child logger
-     */
-    public Logger getLogger() {
-        if (this.logger == null) {
-            return this.logger = this.master.getLogger().getChild(
-                    this.getClass().getSimpleName());
-        }
-        else {
-            return this.logger;
-        }
+    public SaveType getSaveType() {
+        return this.saveType;
     }
     
-    public void onEnable() {
-    };
+    public void setSaveType(final SaveType saveType) {
+        this.saveType = saveType;
+    }
     
-    public void onDisable() {
-    };
+    public String getMinigame() {
+        return this.minigame;
+    }
+    
+    public void setMinigame(final String minigame) {
+        this.minigame = minigame;
+    }
 }

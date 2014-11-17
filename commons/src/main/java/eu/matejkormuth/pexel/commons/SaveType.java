@@ -16,42 +16,18 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.slave;
-
-import eu.matejkormuth.pexel.commons.Logger;
+package eu.matejkormuth.pexel.commons;
 
 /**
- * Interface that represents component in MasterServer.
+ * Enum that specifies all supported savegame types.
  */
-public abstract class Component {
-    private PexelSlave slave;
-    private Logger     logger;
-    
+public enum SaveType {
     /**
-     * Returns current {@link PexelMaster} instance.
+     * Minecraft world save.
      */
-    public PexelSlave getSlave() {
-        return this.slave;
-    }
-    
+    MINECRAFT_WORLD,
     /**
-     * Returns child logger for this component derived from master logger.
-     * 
-     * @return child logger
+     * Schematic file.
      */
-    public Logger getLogger() {
-        if (this.logger == null) {
-            return this.logger = this.slave.getLogger().getChild(
-                    this.getClass().getSimpleName());
-        }
-        else {
-            return this.logger;
-        }
-    }
-    
-    public void onEnable() {
-    };
-    
-    public void onDisable() {
-    };
+    SCHEMATIC;
 }

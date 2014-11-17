@@ -2,6 +2,7 @@ package eu.matejkormuth.pexel.slave;
 
 import java.util.UUID;
 
+import eu.matejkormuth.pexel.commons.Commitable;
 import eu.matejkormuth.pexel.commons.MetadataStore;
 import eu.matejkormuth.pexel.commons.Metadatable;
 import eu.matejkormuth.pexel.commons.structures.Profile;

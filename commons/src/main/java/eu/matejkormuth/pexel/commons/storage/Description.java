@@ -1,3 +1,21 @@
+// @formatter:off
+/*
+ * Pexel Project - Minecraft minigame server platform. 
+ * Copyright (C) 2014 Matej Kormuth <http://www.matejkormuth.eu>
+ * 
+ * This file is part of Pexel.
+ * 
+ * Pexel is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * 
+ * Pexel is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>.
+ *
+ */
+// @formatter:on
 package eu.matejkormuth.pexel.commons.storage;
 
 import java.io.File;
@@ -7,17 +25,21 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import eu.matejkormuth.pexel.commons.JsonType;
 
 /**
  * Global description.
  */
-@XmlType
+@JsonType
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Description {
-    private String author;
-    private String name;
-    private String revision;
+    private String   author;
+    private String   name;
+    private String   revision;
+    private String[] tags;
     
     /**
      * Only for JAXB.
@@ -47,6 +69,14 @@ public class Description {
     
     public void setRevision(final String revision) {
         this.revision = revision;
+    }
+    
+    public String[] getTags() {
+        return this.tags;
+    }
+    
+    public void setTags(final String[] tags) {
+        this.tags = tags;
     }
     
     public void save(final File f) {

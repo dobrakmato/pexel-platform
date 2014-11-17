@@ -16,31 +16,16 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.protocol.responses;
+package eu.matejkormuth.pexel.commons;
 
-import java.nio.ByteBuffer;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
 
-import eu.matejkormuth.pexel.network.Response;
-
-public class ServerStatusResponse extends Response {
-    public long maxMem;
-    public long usedMem;
-    public int  slots;
-    public int  playerCount;
+/**
+ * Annotation that specifies the class could be converted to JSON, so it should not have circular references and
+ * non-json serializable vaules that are not transient.
+ */
+@Target({ ElementType.TYPE })
+public @interface JsonType {
     
-    public ServerStatusResponse(final long maxMem, final long usedMem) {
-        this.maxMem = maxMem;
-        this.usedMem = usedMem;
-    }
-    
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(2 * 8).putLong(this.maxMem).putLong(this.usedMem);
-    }
-    
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.maxMem = buffer.getLong();
-        this.usedMem = buffer.getLong();
-    }
 }

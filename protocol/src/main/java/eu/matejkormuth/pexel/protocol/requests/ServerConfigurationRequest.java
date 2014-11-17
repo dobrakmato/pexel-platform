@@ -16,17 +16,23 @@ public class ServerConfigurationRequest extends Request {
     public Set<String>          minigames;
     public Set<MatchmakingGame> games;
     public ServerSoftware       software;
+    public String               softwareVersion;
+    public int                  slots;
     
     static class ServerConfiguration {
         public Set<String>          minigames;
         public Set<MatchmakingGame> games;
         public ServerSoftware       software;
+        public int                  slots;
+        public String               softwareVersion;
         
         public ServerConfiguration from(
                 final ServerConfigurationRequest serverConfigurationRequest) {
             this.minigames = serverConfigurationRequest.minigames;
             this.games = serverConfigurationRequest.games;
             this.software = serverConfigurationRequest.software;
+            this.slots = serverConfigurationRequest.slots;
+            this.softwareVersion = serverConfigurationRequest.softwareVersion;
             return this;
         }
         
@@ -34,6 +40,8 @@ public class ServerConfigurationRequest extends Request {
             serverConfigurationRequest.minigames = this.minigames;
             serverConfigurationRequest.games = this.games;
             serverConfigurationRequest.software = this.software;
+            serverConfigurationRequest.slots = this.slots;
+            serverConfigurationRequest.softwareVersion = this.softwareVersion;
         }
     }
     

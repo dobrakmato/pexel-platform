@@ -16,31 +16,14 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.protocol.responses;
+package eu.matejkormuth.pexel.commons;
 
-import java.nio.ByteBuffer;
-
-import eu.matejkormuth.pexel.network.Response;
-
-public class ServerStatusResponse extends Response {
-    public long maxMem;
-    public long usedMem;
-    public int  slots;
-    public int  playerCount;
-    
-    public ServerStatusResponse(final long maxMem, final long usedMem) {
-        this.maxMem = maxMem;
-        this.usedMem = usedMem;
-    }
-    
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(2 * 8).putLong(this.maxMem).putLong(this.usedMem);
-    }
-    
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.maxMem = buffer.getLong();
-        this.usedMem = buffer.getLong();
-    }
+/**
+ * Interaface that specifies commitable type.
+ */
+public interface Commitable {
+    /**
+     * Updates values in data storage (database).
+     */
+    public void commit();
 }

@@ -16,31 +16,38 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.protocol.responses;
+package eu.matejkormuth.pexel.commons;
 
-import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
-import eu.matejkormuth.pexel.network.Response;
-
-public class ServerStatusResponse extends Response {
-    public long maxMem;
-    public long usedMem;
-    public int  slots;
-    public int  playerCount;
+/**
+ * Enum that specifies transfer purpose.
+ */
+public enum TransferPurpose {
+    /**
+     * Installing on slave purpose. File will be installed on slave server.
+     */
+    INSTALLING_ON_SLAVE(0);
     
-    public ServerStatusResponse(final long maxMem, final long usedMem) {
-        this.maxMem = maxMem;
-        this.usedMem = usedMem;
+    private byte b;
+    
+    private TransferPurpose(final int i) {
+        this.b = (byte) i;
     }
     
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(2 * 8).putLong(this.maxMem).putLong(this.usedMem);
+    public byte getByte() {
+        return this.b;
     }
     
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.maxMem = buffer.getLong();
-        this.usedMem = buffer.getLong();
+    public static TransferPurpose fromByte(final byte b) {
+        return mapping.get(b);
+    }
+    
+    private static Map<Byte, TransferPurpose> mapping = new HashMap<Byte, TransferPurpose>();
+    static {
+        for (TransferPurpose tp : TransferPurpose.values()) {
+            TransferPurpose.mapping.put(tp.b, tp);
+        }
     }
 }

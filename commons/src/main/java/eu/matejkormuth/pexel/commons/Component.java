@@ -16,31 +16,36 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.protocol.responses;
+package eu.matejkormuth.pexel.commons;
 
-import java.nio.ByteBuffer;
-
-import eu.matejkormuth.pexel.network.Response;
-
-public class ServerStatusResponse extends Response {
-    public long maxMem;
-    public long usedMem;
-    public int  slots;
-    public int  playerCount;
+/**
+ * Interface that represents component that can be enabled, disabled and have own {@link Logger}.
+ */
+public abstract class Component {
+    protected Logger logger;
     
-    public ServerStatusResponse(final long maxMem, final long usedMem) {
-        this.maxMem = maxMem;
-        this.usedMem = usedMem;
+    /**
+     * Called when internal logic of component (not buisness logic) should be initialized.
+     * 
+     * @param parentLogger
+     *            object that contains parent logger.
+     */
+    public void _initLogger(final LoggerHolder parentLogger) {
+        this.logger = parentLogger.getLogger().getChild(this.getClass().getSimpleName());
     }
     
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(2 * 8).putLong(this.maxMem).putLong(this.usedMem);
+    /**
+     * Returns child logger for this component derived from master logger.
+     * 
+     * @return child logger
+     */
+    public Logger getLogger() {
+        return this.logger;
     }
     
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.maxMem = buffer.getLong();
-        this.usedMem = buffer.getLong();
-    }
+    public void onEnable() {
+    };
+    
+    public void onDisable() {
+    };
 }

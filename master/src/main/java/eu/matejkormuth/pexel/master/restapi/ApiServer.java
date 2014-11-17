@@ -25,12 +25,12 @@ import com.sun.jersey.api.core.DefaultResourceConfig;
 import com.sun.jersey.simple.container.SimpleServerFactory;
 
 import eu.matejkormuth.pexel.commons.Configuration;
-import eu.matejkormuth.pexel.master.Component;
+import eu.matejkormuth.pexel.master.MasterComponent;
 
 /**
  * Class that respresents REST API server.
  */
-public class ApiServer extends Component {
+public class ApiServer extends MasterComponent {
     private Closeable server;
     
     @Override
