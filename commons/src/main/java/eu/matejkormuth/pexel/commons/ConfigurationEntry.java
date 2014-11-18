@@ -21,12 +21,12 @@ package eu.matejkormuth.pexel.commons;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Entry (name and value) in configuration.
  */
-@XmlType
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ConfigurationEntry {
     /**

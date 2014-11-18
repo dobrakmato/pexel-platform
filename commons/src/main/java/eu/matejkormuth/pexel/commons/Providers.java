@@ -18,6 +18,8 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons;
 
+import java.util.Random;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -28,5 +30,15 @@ public class Providers {
     /**
      * Global network JSON provider.
      */
-    public static final Gson JSON = new GsonBuilder().setPrettyPrinting().create();
+    public static final Gson               JSON        = new GsonBuilder().setPrettyPrinting()
+                                                               .create();
+    /**
+     * Global random provider.
+     */
+    public static final Random             RANDOM      = new Random();
+    
+    /**
+     * Global random name provider.
+     */
+    public static final RandomNameProvider RANDOM_NAME = new RandomNameProvider();
 }

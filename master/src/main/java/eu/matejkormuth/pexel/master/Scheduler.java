@@ -53,4 +53,12 @@ public class Scheduler {
             final long initialDelay, final long delay, final TimeUnit unit) {
         return this.service.scheduleWithFixedDelay(command, initialDelay, delay, unit);
     }
+    
+    public void shutdown() {
+        this.service.shutdown();
+    }
+    
+    public void shutdownNow() {
+        this.service.shutdownNow();
+    }
 }

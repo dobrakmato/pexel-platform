@@ -26,10 +26,10 @@ import java.util.List;
 import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.commons.PluginLoader;
+import eu.matejkormuth.pexel.commons.Providers;
 import eu.matejkormuth.pexel.commons.ServerMode;
 import eu.matejkormuth.pexel.commons.SlaveServerSoftware;
 import eu.matejkormuth.pexel.commons.Storage;
-import eu.matejkormuth.pexel.network.ServerType;
 import eu.matejkormuth.pexel.network.SlaveServer;
 import eu.matejkormuth.pexel.protocol.PexelProtocol;
 import eu.matejkormuth.pexel.slave.pluginloaders.BukkitPluginLoader;
@@ -61,11 +61,13 @@ public class PexelSlave {
         // Load configuration.
         File f = new File(dataFolder.getAbsolutePath() + "/config.xml");
         if (!f.exists()) {
-            this.log.info("Configuration file not found, generating default one!");
-            Configuration.createDefault(ServerType.SLAVE, f);
+            this.log.info("Configuration file not found!");
+            this.config = new Configuration(f);
         }
-        this.log.info("Loading configuration...");
-        this.config = Configuration.load(f);
+        else {
+            this.log.info("Loading configuration...");
+            this.config = Configuration.load(f);
+        }
         
         // Initialize PluginLoader
         switch (software) {
@@ -99,9 +101,14 @@ public class PexelSlave {
         this.sync = new Sync();
         
         // Connect to master - other thread.
-        this.server = new SlaveServer(
-                this.config.getAsString(Configuration.KEY_SLAVE_NAME), this.config,
-                this.log, new PexelProtocol());
+        this.server = new SlaveServer(this.config.getSection(PexelSlave.class)
+                .get(Configuration.Keys.KEY_SLAVE_NAME, Providers.RANDOM_NAME.next())
+                .asString(), this.config.getSection(SlaveServer.class), this.log,
+                new PexelProtocol());
+    }
+    
+    public void shutdown() {
+        
     }
     
     public static void init(final File dataFolder, final SlaveServerSoftware software) {

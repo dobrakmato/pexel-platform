@@ -18,6 +18,8 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -25,10 +27,11 @@ import java.util.Date;
  * Class that represents logger.
  */
 public class Logger {
-    private SimpleDateFormat format;
-    private final Logger     parent;
-    private final String     name;
-    public boolean           timestamp;
+    private SimpleDateFormat   format;
+    private final Logger       parent;
+    private final String       name;
+    private OutputStreamWriter writer;
+    public boolean             timestamp;
     
     public Logger(final String name) {
         this.name = name;
@@ -38,6 +41,10 @@ public class Logger {
     private Logger(final Logger parent, final String name) {
         this.parent = parent;
         this.name = name;
+    }
+    
+    public void setOutput(final OutputStreamWriter writter) {
+        this.writer = writter;
     }
     
     public void info(final String msg) {
@@ -80,12 +87,29 @@ public class Logger {
         return new Logger(this, name);
     }
     
+    public void close() {
+        try {
+            this.writer.close();
+        } catch (IOException e) {
+        }
+    }
+    
     protected void log(final String msg) {
         if (this.timestamp) {
-            System.out.println(this.timeStamp() + " [" + this.name + "] " + msg);
+            String s = this.timeStamp() + " [" + this.name + "] " + msg;
+            System.out.println(s);
+            try {
+                this.writer.write(s + "\r\n");
+            } catch (IOException e) {
+            }
         }
         else {
-            System.out.println("[" + this.name + "] " + msg);
+            String s = "[" + this.name + "] " + msg;
+            System.out.println(s);
+            try {
+                this.writer.write(s + "\r\n");
+            } catch (IOException e) {
+            }
         }
     }
     

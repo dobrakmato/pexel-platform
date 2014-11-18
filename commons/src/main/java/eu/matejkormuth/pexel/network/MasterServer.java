@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import eu.matejkormuth.pexel.commons.Configuration;
+import eu.matejkormuth.pexel.commons.ConfigurationSection;
 import eu.matejkormuth.pexel.commons.Logger;
 
 /**
@@ -37,14 +38,14 @@ public class MasterServer extends ServerInfo implements Requestable {
     private final Messenger                messenger;
     private final CallbackHandler          callbackHandler;                                   // May be replaced with array of listeners.
     private final MessageComunicator       comunicator;
-    private final Configuration            config;
+    private final ConfigurationSection     config;
     
     private final AtomicLong               lastRequestID = new AtomicLong();
     private final Map<Long, Callback<?>>   callbacks     = new HashMap<Long, Callback<?>>(
                                                                  255);
     private final Map<String, SlaveServer> slaves        = new HashMap<String, SlaveServer>();
     
-    public MasterServer(final String name, final Configuration config,
+    public MasterServer(final String name, final ConfigurationSection config,
             final Logger logger, final Protocol protocol) {
         super(name);
         
@@ -69,8 +70,10 @@ public class MasterServer extends ServerInfo implements Requestable {
         this.messenger = new Messenger(this.callbackHandler, this.protocol);
         
         // Start netty comunicator.
-        this.comunicator = new NettyServerComunicator(this.messenger,
-                this.config.getAsInt("port"), this.config.getAsString("authKey"), this);
+        this.comunicator = new NettyServerComunicator(this.messenger, this.config.get(
+                Configuration.Keys.KEY_PORT, 29631).asInteger(), this.config.get(
+                Configuration.Keys.KEY_AUTHKEY, Configuration.Defaults.AUTH_KEY)
+                .asString(), this);
         this.comunicator.start();
         
         // Update instance in ServerInfo
@@ -98,7 +101,7 @@ public class MasterServer extends ServerInfo implements Requestable {
      * 
      * @return configuration object of master server
      */
-    public Configuration getConfiguration() {
+    public ConfigurationSection getConfiguration() {
         return this.config;
     }
     

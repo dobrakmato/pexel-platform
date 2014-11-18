@@ -43,11 +43,15 @@ public class ApiServer extends MasterComponent {
             String http_address = "http://0.0.0.0:"
                     + this.getMaster()
                             .getConfiguration()
-                            .getAsInt(Configuration.KEY_PORT_API_HTTP);
+                            .getSection(ApiServer.class)
+                            .get(Configuration.Keys.KEY_PORT_API_HTTP, 10361)
+                            .asInteger();
             String https_address = "https://0.0.0.0:"
                     + this.getMaster()
                             .getConfiguration()
-                            .getAsInt(Configuration.KEY_PORT_API_HTTPS);
+                            .getSection(ApiServer.class)
+                            .get(Configuration.Keys.KEY_PORT_API_HTTPS, 10362)
+                            .asInteger();
             
             DefaultResourceConfig resourceConfig = new DefaultResourceConfig(
                     ApiResource.class, StringBodyWriter.class);

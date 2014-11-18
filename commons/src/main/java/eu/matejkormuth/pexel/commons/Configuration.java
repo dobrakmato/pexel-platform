@@ -26,58 +26,70 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
-import org.apache.commons.lang.math.RandomUtils;
-
-import eu.matejkormuth.pexel.network.ServerType;
 
 /**
  * Class that provides configuration.
  */
-@XmlRootElement(name = "configuration")
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Configuration {
-    protected transient Map<String, String> data  = new HashMap<String, String>();
-    protected List<ConfigurationEntry>      entry = new ArrayList<ConfigurationEntry>();
+public class Configuration extends Unmarshaller.Listener {
+    protected transient File                              file;
+    protected transient Map<String, ConfigurationSection> sections;
+    protected List<ConfigurationSection>                  section = new ArrayList<ConfigurationSection>();
     
     public Configuration() {
-        
+    }
+    
+    public Configuration(final File file) {
+        this.file = file;
+        this.sections = new HashMap<String, ConfigurationSection>();
     }
     
     /**
-     * Returns values by specified key.
+     * Returns configuration section or if sections does not exists, it creates empty one.
      * 
-     * @param key
-     *            key
-     * @return value
+     * @return configuration section
      */
-    public String get(final String key) {
-        return this.data.get(key);
-    }
-    
-    public String getAsString(final String key) {
-        return this.data.get(key).toString();
-    }
-    
-    public int getAsInt(final String key) {
-        return Integer.parseInt(this.data.get(key));
+    public ConfigurationSection getSection(final String key) {
+        if (this.sections.containsKey(key)) { return this.sections.get(key); }
+        return this.createSection(key);
     }
     
     /**
-     * Set's value by key.
+     * Returns configuration section or if sections does not exists, it creates empty one.
+     * 
+     * @return configuration section
+     */
+    public ConfigurationSection getSection(final Class<?> clazz) {
+        return this.getSection(clazz.getCanonicalName());
+    }
+    
+    /**
+     * Creates section for specified key.
      * 
      * @param key
      *            key
-     * @param value
-     *            value
+     * @return newwly created configuration section
      */
-    public void set(final String key, final String value) {
-        this.data.put(key, value);
+    public ConfigurationSection createSection(final String key) {
+        if (this.sections.containsKey(key)) { throw new RuntimeException(
+                "Section already exists!"); }
+        ConfigurationSection section = new ConfigurationSection(key);
+        this.section.add(section);
+        this.sections.put(key, section);
+        return section;
+    }
+    
+    /**
+     * Saves this configuration to file that was loaded from. (Can throw exception, if called on non-from file loaded
+     * Configuration).
+     */
+    public void save() {
+        this.save(this.file);
     }
     
     /**
@@ -87,9 +99,6 @@ public class Configuration {
      *            file to save configuration.
      */
     public void save(final File file) {
-        for (String key : this.data.keySet()) {
-            this.entry.add(new ConfigurationEntry(key, this.data.get(key)));
-        }
         try {
             JAXBContext cont = JAXBContext.newInstance(Configuration.class);
             javax.xml.bind.Marshaller m = cont.createMarshaller();
@@ -98,7 +107,6 @@ public class Configuration {
         } catch (JAXBException e) {
             e.printStackTrace();
         }
-        this.entry.clear();
     }
     
     /**
@@ -112,63 +120,41 @@ public class Configuration {
         Configuration conf = new Configuration();
         try {
             JAXBContext cont = JAXBContext.newInstance(Configuration.class);
-            conf = (Configuration) cont.createUnmarshaller().unmarshal(file);
-            
-            for (ConfigurationEntry entry : conf.entry) {
-                conf.data.put(entry.key, entry.value);
-            }
-            
+            Unmarshaller un = cont.createUnmarshaller();
+            conf = (Configuration) un.unmarshal(file);
+            conf.file = file;
             return conf;
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
     }
     
-    @XmlType(name = "entry")
-    protected static class ConfigurationEntry {
-        public ConfigurationEntry() {
-            
+    @Override
+    public void afterUnmarshal(final Object target, final Object parent) {
+        //Create map.
+        this.sections = new HashMap<String, ConfigurationSection>(this.section.size());
+        for (ConfigurationSection section : this.section) {
+            this.sections.put(section.getKey(), section);
         }
-        
-        public ConfigurationEntry(final String key, final String value) {
-            this.key = key;
-            this.value = value;
-        }
-        
-        @XmlAttribute(name = "key")
-        public String key;
-        @XmlAttribute(name = "value")
-        public String value;
     }
     
-    public static final String KEY_AUTHKEY             = "authKey";
-    public static final String KEY_PORT                = "port";
-    public static final String KEY_PORT_API_HTTP       = "portApiHttp";
-    public static final String KEY_PORT_API_HTTPS      = "portApiHttps";
-    public static final String KEY_MASTER_IP           = "masterIp";
-    public static final String KEY_SLAVE_NAME          = "slaveName";
-    public static final String KEY_LIMBO_SERVER_NAME   = "limboServer";
-    // Storage keys.
-    public static final String KEY_STORAGE_AUTOUPDATES = "autoUpdates";
-    public static final String KEY_STORAGE_ONLYTRUSTED = "onlyTrustedSources";
+    /**
+     * Class that specifies all default valid configuration keys.
+     */
+    public static final class Keys {
+        public static final String KEY_AUTHKEY             = "authKey";
+        public static final String KEY_PORT                = "port";
+        public static final String KEY_PORT_API_HTTP       = "portApiHttp";
+        public static final String KEY_PORT_API_HTTPS      = "portApiHttps";
+        public static final String KEY_MASTER_IP           = "masterIp";
+        public static final String KEY_SLAVE_NAME          = "slaveName";
+        public static final String KEY_LIMBO_SERVER_NAME   = "limboServer";
+        // Storage keys.
+        public static final String KEY_STORAGE_AUTOUPDATES = "autoUpdates";
+        public static final String KEY_STORAGE_ONLYTRUSTED = "onlyTrustedSources";
+    }
     
-    public static void createDefault(final ServerType type, final File f) {
-        Configuration c = new Configuration();
-        if (type == ServerType.MASTER) {
-            c.set(Configuration.KEY_AUTHKEY,
-                    "replace_this_default_authkey_with_custom_one_long_128_cahracters_You_can_find_generator_at_http://pexel.eu/platform_____________");
-            c.set(Configuration.KEY_PORT, "29631");
-            c.set(Configuration.KEY_PORT_API_HTTP, "10361");
-            c.set(Configuration.KEY_PORT_API_HTTPS, "10362");
-        }
-        else {
-            c.set(Configuration.KEY_AUTHKEY,
-                    "replace_this_default_authkey_with_custom_one_long_128_cahracters_You_can_find_generator_at_http://pexel.eu/platform_____________");
-            c.set(Configuration.KEY_PORT, "29631");
-            c.set(Configuration.KEY_MASTER_IP, "0.0.0.0");
-            c.set(Configuration.KEY_SLAVE_NAME, "coolslave" + RandomUtils.nextInt());
-        }
-        
-        c.save(f);
+    public static final class Defaults {
+        public static final String AUTH_KEY = "_DSbXyV9($3t&vjA&)6pTGo*#(*W^m%8PM/o/G)8y1cu)lV^kDj39xQ1uMypZs)q58EQqDAPfC9eOG)Z9iDUG^x0HV#i__yUY3m_hMFm@prEWpeGyIc4DzG**x^/ntG*";
     }
 }

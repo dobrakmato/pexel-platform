@@ -19,6 +19,8 @@
 package eu.matejkormuth.pexel.master;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -31,7 +33,6 @@ import eu.matejkormuth.pexel.commons.Storage;
 import eu.matejkormuth.pexel.master.restapi.ApiServer;
 import eu.matejkormuth.pexel.network.Callback;
 import eu.matejkormuth.pexel.network.MasterServer;
-import eu.matejkormuth.pexel.network.ServerType;
 import eu.matejkormuth.pexel.network.SlaveServer;
 import eu.matejkormuth.pexel.protocol.PexelProtocol;
 import eu.matejkormuth.pexel.protocol.requests.ServerStatusRequest;
@@ -58,18 +59,27 @@ public final class PexelMaster implements LoggerHolder {
     
     private PexelMaster(final File dataFolder) {
         this.log = new Logger("PexelMaster");
-        this.log.timestamp = false;
+        this.log.timestamp = true;
+        
+        try {
+            this.log.setOutput(new FileWriter(dataFolder.getAbsolutePath()
+                    + "/pexel.log"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         
         this.log.info("Booting up PexelMaster...");
         
         // Load configuration.
         File f = new File(dataFolder.getAbsolutePath() + "/config.xml");
         if (!f.exists()) {
-            this.log.info("Configuration file not found, generating default one!");
-            Configuration.createDefault(ServerType.MASTER, f);
+            this.log.info("Configuration file not found!");
+            this.config = new Configuration(f);
         }
-        this.log.info("Loading configuration...");
-        this.config = Configuration.load(f);
+        else {
+            this.log.info("Loading configuration...");
+            this.config = Configuration.load(f);
+        }
         
         // Load storage.
         File storageFolder = new File(dataFolder.getAbsolutePath() + "/storage");
@@ -89,7 +99,8 @@ public final class PexelMaster implements LoggerHolder {
         }, 2, TimeUnit.SECONDS);
         
         // Set up network.
-        this.master = new MasterServer("master", this.config, this.log,
+        this.master = new MasterServer("master",
+                this.config.getSection(MasterServer.class), this.log,
                 new PexelProtocol());
         
         // Set up API server.
@@ -98,6 +109,30 @@ public final class PexelMaster implements LoggerHolder {
         // Enable components.
         this.log.info("Enabling all components now!");
         this.enableComponents();
+    }
+    
+    /**
+     * Shut's down all processes, saves files and turns off server.
+     */
+    public void shutdown() {
+        //TODO: Wait before are all other things done.
+        this.log.info("Shutting down server...");
+        this.master.shutdown();
+        
+        this.log.info("Disabling scheduler...");
+        this.scheduler.shutdownNow(); // TODO: Too
+        
+        this.log.info("Disabling all components...");
+        this.disableComponents();
+        
+        this.log.info("Saving configuration...");
+        this.config.save();
+        
+        this.log.info("Shutting down!");
+        this.log.info("Thanks for using and bye!");
+        
+        // Close logger.
+        this.log.close();
     }
     
     // Each 2 seconds sends ServerStatusRequest to all servers.

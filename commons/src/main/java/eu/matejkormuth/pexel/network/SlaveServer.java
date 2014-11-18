@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import eu.matejkormuth.pexel.commons.Configuration;
+import eu.matejkormuth.pexel.commons.ConfigurationSection;
 import eu.matejkormuth.pexel.commons.Logger;
 
 public class SlaveServer extends ServerInfo implements Requestable {
@@ -35,10 +36,10 @@ public class SlaveServer extends ServerInfo implements Requestable {
     protected MessageComunicator     comunicator;
     protected ServerInfo             masterServerInfo;
     protected Protocol               protocol;
-    protected Configuration          config;
+    protected ConfigurationSection   config;
     protected Logger                 log;
     
-    public SlaveServer(final String name, final Configuration config,
+    public SlaveServer(final String name, final ConfigurationSection config,
             final Logger logger, final Protocol protocol) {
         super(name);
         
@@ -66,9 +67,11 @@ public class SlaveServer extends ServerInfo implements Requestable {
             }
         };
         this.log.info("Initializing NettyClientComunicator...");
-        this.comunicator = new NettyClientComunicator(this.messenger,
-                this.config.getAsInt("port"), this.config.getAsString("masterIp"),
-                this.config.getAsString("authKey"), this);
+        this.comunicator = new NettyClientComunicator(this.messenger, this.config.get(
+                Configuration.Keys.KEY_PORT, 29631).asInteger(), this.config.get(
+                Configuration.Keys.KEY_MASTER_IP, "127.0.0.1").asString(),
+                this.config.get(Configuration.Keys.KEY_AUTHKEY,
+                        Configuration.Defaults.AUTH_KEY).asString(), this);
         
         ServerInfo.setLocalServer(this);
         this.log.info("Network part loaded successfully!");

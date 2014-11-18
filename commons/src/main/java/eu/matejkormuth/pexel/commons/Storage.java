@@ -163,7 +163,8 @@ public class Storage extends Component {
         this.logger.info("Checking for updates for plugins...");
         for (MinigameDescriptor desc : this.minigames) {
             // If auto updates enabled.
-            if (this.config.get(Configuration.KEY_STORAGE_AUTOUPDATES, true).asBoolean()) {
+            if (this.config.get(Configuration.Keys.KEY_STORAGE_AUTOUPDATES, true)
+                    .asBoolean()) {
                 this.update(desc);
             }
         }
@@ -185,7 +186,7 @@ public class Storage extends Component {
             
             // If this plugin comes from trusted location, then download update.
             if (trusted
-                    && this.config.get(Configuration.KEY_STORAGE_ONLYTRUSTED, true)
+                    && this.config.get(Configuration.Keys.KEY_STORAGE_ONLYTRUSTED, true)
                             .asBoolean()) {
                 this.uncheckedUpdate(desc);
             }

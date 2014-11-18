@@ -18,6 +18,7 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -26,19 +27,38 @@ import java.util.Map;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlList;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Section of configuration.
  */
-@XmlType(name = "section")
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ConfigurationSection extends Unmarshaller.Listener {
-    @XmlList
+    @XmlAttribute
+    protected String                                    key;
     protected List<ConfigurationEntry>                  entry;
     // Internal map.
     protected transient Map<String, ConfigurationEntry> map;
+    
+    public ConfigurationSection() {
+        
+    }
+    
+    public ConfigurationSection(final String key) {
+        this.key = key;
+        this.entry = new ArrayList<ConfigurationEntry>();
+        this.map = new HashMap<String, ConfigurationEntry>();
+    }
+    
+    public String getKey() {
+        return this.key;
+    }
+    
+    public void setKey(final String key) {
+        this.key = key;
+    }
     
     /**
      * Returns value by specified key or null if not found.
@@ -65,6 +85,17 @@ public class ConfigurationSection extends Unmarshaller.Listener {
         return this.add(new ConfigurationEntry(key, defaultValue));
     }
     
+    /**
+     * Returns sub section or null if not found.
+     * 
+     * @param key
+     *            section key
+     * @return configuration section
+     */
+    public ConfigurationSection getSection(final String key) {
+        return this.get(key).asSection();
+    }
+    
     public ConfigurationEntry add(final ConfigurationEntry entry) {
         this.entry.add(entry);
         this.map.put(entry.key, entry);
@@ -83,7 +114,6 @@ public class ConfigurationSection extends Unmarshaller.Listener {
     
     @Override
     public void afterUnmarshal(final Object target, final Object parent) {
-        super.afterUnmarshal(target, parent);
         // Create map.
         this.map = new HashMap<String, ConfigurationEntry>(this.entry.size());
         for (ConfigurationEntry entry : this.entry) {

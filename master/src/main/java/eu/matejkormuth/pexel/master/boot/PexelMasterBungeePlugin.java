@@ -83,6 +83,13 @@ public class PexelMasterBungeePlugin extends Plugin {
         this.createMaster();
     }
     
+    @Override
+    public void onDisable() {
+        super.onDisable();
+        this.getLogger().info("[BOOT] Sending shutdown to PexelMaster...");
+        PexelMaster.getInstance().shutdown();
+    }
+    
     public void createMaster() {
         // Get instance for first time - create PexelMaster.
         PexelMaster.init(this.getDataFolder());
