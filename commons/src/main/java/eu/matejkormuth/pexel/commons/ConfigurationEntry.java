@@ -47,6 +47,10 @@ public class ConfigurationEntry {
         this.value = value;
     }
     
+    public ConfigurationEntry(final String key, final Object value) {
+        this(value, key);
+    }
+    
     public ConfigurationEntry(final String key, final byte value) {
         this(value, key);
     }
@@ -113,6 +117,10 @@ public class ConfigurationEntry {
     }
     
     public String asString() {
+        return this.get();
+    }
+    
+    public Boolean asBoolean() {
         return this.get();
     }
     

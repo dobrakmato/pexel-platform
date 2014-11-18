@@ -27,7 +27,7 @@ import eu.matejkormuth.pexel.commons.Component;
 import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.commons.LoggerHolder;
-import eu.matejkormuth.pexel.commons.storage.Storage;
+import eu.matejkormuth.pexel.commons.Storage;
 import eu.matejkormuth.pexel.master.restapi.ApiServer;
 import eu.matejkormuth.pexel.network.Callback;
 import eu.matejkormuth.pexel.network.MasterServer;
@@ -74,7 +74,7 @@ public final class PexelMaster implements LoggerHolder {
         // Load storage.
         File storageFolder = new File(dataFolder.getAbsolutePath() + "/storage");
         storageFolder.mkdirs();
-        this.storage = new Storage(storageFolder);
+        this.storage = new Storage(storageFolder, this.config.getSection(Storage.class));
         this.addComponent(this.storage);
         
         // Set up scheduler.

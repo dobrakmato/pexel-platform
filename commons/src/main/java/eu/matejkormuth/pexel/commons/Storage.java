@@ -16,9 +16,17 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons.storage;
+package eu.matejkormuth.pexel.commons;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,7 +36,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import com.google.common.base.Preconditions;
 
-import eu.matejkormuth.pexel.commons.Component;
+import eu.matejkormuth.pexel.commons.storage.MapDescriptor;
+import eu.matejkormuth.pexel.commons.storage.MinigameDescriptor;
 import eu.matejkormuth.pexel.network.ServerSide;
 
 /**
@@ -38,23 +47,27 @@ public class Storage extends Component {
     protected ServerSide              side;
     protected File                    rootFolder;
     
-    protected Set<MinigameDescriptor> minigames = new HashSet<MinigameDescriptor>();
-    protected Set<MapDescriptor>      maps      = new HashSet<MapDescriptor>();
-    protected Set<String>             tags      = new HashSet<String>();
+    protected ConfigurationSection    config;
     
-    private final ReentrantLock       lock      = new ReentrantLock();
+    protected Set<MinigameDescriptor> minigames    = new HashSet<MinigameDescriptor>();
+    protected Set<MapDescriptor>      maps         = new HashSet<MapDescriptor>();
+    protected Set<String>             tags         = new HashSet<String>();
+    protected Set<URI>                trustedSites = new HashSet<URI>();
+    
+    private final ReentrantLock       lock         = new ReentrantLock();
     
     /**
      * Creates new Storage wrapper object on spcified folder.
      * 
      * @param storageFolder
      */
-    public Storage(final File storageFolder) {
+    public Storage(final File storageFolder, final ConfigurationSection config) {
         Preconditions.checkNotNull(storageFolder);
         Preconditions.checkArgument(storageFolder.exists(), "storageFolder must exist");
         Preconditions.checkArgument(storageFolder.isDirectory(),
                 "storageFolder must be directory");
         
+        this.config = config;
         this.rootFolder = storageFolder;
     }
     
@@ -70,11 +83,21 @@ public class Storage extends Component {
         return new File(this.rootFolder.getAbsolutePath() + "/" + relative);
     }
     
+    private InputStream getRemoteFile(final String url) {
+        try {
+            return new URL(url).openStream();
+        } catch (IOException e) {
+            // Catch silently.
+            return null;
+        }
+    }
+    
     // Method that expands folder structure.
     private void expandStructure() {
         boolean expanded = false;
         expanded |= this.getFile("maps").mkdir();
         expanded |= this.getFile("minigames").mkdir();
+        expanded |= this.getFile(".downloads").mkdir();
         
         if (expanded) {
             this.logger.info("Directory structure expanded!");
@@ -84,7 +107,7 @@ public class Storage extends Component {
     private void loadIndex() {
         File index = this.getFile("index.xml");
         if (index.exists()) {
-            //this.readIndex();
+            //TODO: this.readIndex();
         }
         else {
             this.logger.info("Index not found!");
@@ -139,16 +162,87 @@ public class Storage extends Component {
     protected void checkForUpdates() {
         this.logger.info("Checking for updates for plugins...");
         for (MinigameDescriptor desc : this.minigames) {
-            // TODO: If auto updates enabled.
-            this.update(desc);
+            // If auto updates enabled.
+            if (this.config.get(Configuration.KEY_STORAGE_AUTOUPDATES, true).asBoolean()) {
+                this.update(desc);
+            }
         }
     }
     
+    // Update method that checks if plugin comes from safe location.
     private void update(final MinigameDescriptor desc) {
-        // TODO Auto-generated method stub
-        
+        // Check if source is from trusted domain.
+        try {
+            URI uri = new URI(desc.getSourceUrl());
+            // Trust check.
+            boolean trusted = false;
+            for (URI trusteduri : this.trustedSites) {
+                if (trusteduri.getHost().equals(uri.getHost())
+                        && trusteduri.getPort() == uri.getPort()) {
+                    trusted = true;
+                }
+            }
+            
+            // If this plugin comes from trusted location, then download update.
+            if (trusted
+                    && this.config.get(Configuration.KEY_STORAGE_ONLYTRUSTED, true)
+                            .asBoolean()) {
+                this.uncheckedUpdate(desc);
+            }
+            else {
+                this.logger.warn("Plugin " + desc.getName()
+                        + " comes from untrusted source! Not updating.");
+            }
+            
+        } catch (URISyntaxException e) {
+            this.logger.error("Plugin " + desc.getName() + " has invalid sourceUrl!");
+        }
     }
     
+    // Method that downloads 
+    private void uncheckedUpdate(final MinigameDescriptor localDescriptor) {
+        // Get remote descriptor.
+        InputStream remoteDescriptorFile = this.getRemoteFile(localDescriptor.getSourceUrl()
+                + "/description.xml");
+        // Stupid null check...
+        if (remoteDescriptorFile == null) {
+            this.logger.error("Can't load remote desccriptor of plugin "
+                    + localDescriptor.getName() + "!");
+            return;
+        }
+        
+        MinigameDescriptor remoteDescriptor = MinigameDescriptor.load(remoteDescriptorFile);
+        
+        // If bigger version on remote.
+        if (remoteDescriptor.getRevision().getNumeric() > localDescriptor.getRevision()
+                .getNumeric()) {
+            // Create update directory.
+            this.getFile(
+                    ".downloads/" + localDescriptor.getName() + "/"
+                            + remoteDescriptor.getRevision()).mkdirs();
+            // Download jar.
+            InputStream remoteJar = this.getRemoteFile(localDescriptor.getSourceUrl()
+                    + "/" + remoteDescriptor.getName() + ".jar");
+            try {
+                // Save jar to .downloads folder. 
+                Files.copy(remoteJar,
+                        Paths.get(this.getFile(
+                                "minigames/" + remoteDescriptor.getName() + "/"
+                                        + remoteDescriptor.getName() + ".jar")
+                                .getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                this.logger.error("Error occured (" + e.getMessage()
+                        + ") while saving update "
+                        + remoteDescriptor.getRevision().getName() + " of "
+                        + remoteDescriptor.getName());
+            }
+        }
+        else {
+            // Alredy last version.
+        }
+    }
+    
+    // Method used to scan ./minigames/{minigame}/ folder
     private void scanPluginDir(final File folder) {
         File jar = new File(folder, folder.getName() + ".jar");
         File desc = new File(folder, "description.xml");

@@ -16,25 +16,18 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.protocol.requests;
+package eu.matejkormuth.pexel.master.restapi;
 
-import java.nio.ByteBuffer;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import eu.matejkormuth.pexel.commons.ServerMode;
-import eu.matejkormuth.pexel.network.Request;
-import eu.matejkormuth.pexel.protocol.PexelProtocol;
-
-public class SlaveServerSetModeRequest extends Request {
-    public ServerMode mode;
-    
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(1).put(
-                this.mode.name().getBytes(PexelProtocol.CHARSET));
-    }
-    
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.mode = ServerMode.valueOf(new String(buffer.array(), PexelProtocol.CHARSET));
-    }
+/**
+ * Annotation that specifies that function is part of api.
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.METHOD })
+public @interface ApiPart {
+    String desc() default "";
 }

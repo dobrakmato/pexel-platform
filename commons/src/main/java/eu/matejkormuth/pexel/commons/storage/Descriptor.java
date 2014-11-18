@@ -22,5 +22,10 @@ package eu.matejkormuth.pexel.commons.storage;
  * Interface for descriptor.
  */
 public interface Descriptor {
+    /**
+     * Returns byte array containing all data used for reconstruction of part.
+     * 
+     * @return
+     */
     public byte[] getData();
 }

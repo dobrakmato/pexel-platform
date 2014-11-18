@@ -16,25 +16,22 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.protocol.requests;
+package eu.matejkormuth.pexel.commons;
 
-import java.nio.ByteBuffer;
-
-import eu.matejkormuth.pexel.commons.ServerMode;
-import eu.matejkormuth.pexel.network.Request;
-import eu.matejkormuth.pexel.protocol.PexelProtocol;
-
-public class SlaveServerSetModeRequest extends Request {
-    public ServerMode mode;
-    
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(1).put(
-                this.mode.name().getBytes(PexelProtocol.CHARSET));
-    }
-    
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.mode = ServerMode.valueOf(new String(buffer.array(), PexelProtocol.CHARSET));
-    }
+/**
+ * Class that specifies server modes.
+ */
+public enum ServerMode {
+    /**
+     * Everybody can join. Server shown as opened.
+     */
+    OPENED,
+    /**
+     * Only ops can join. Server shown as in maintenance.
+     */
+    IN_MAINTENANCE,
+    /**
+     * Only ops can join. Server shown as offline.
+     */
+    CLOSED;
 }

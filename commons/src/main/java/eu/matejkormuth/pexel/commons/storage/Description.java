@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.matejkormuth.pexel.commons.JsonType;
+import eu.matejkormuth.pexel.commons.Revision;
 
 /**
  * Global description.
@@ -38,7 +39,7 @@ import eu.matejkormuth.pexel.commons.JsonType;
 public class Description {
     private String   author;
     private String   name;
-    private String   revision;
+    private Revision revision;
     private String[] tags;
     
     /**
@@ -63,11 +64,11 @@ public class Description {
         this.name = name;
     }
     
-    public String getRevision() {
+    public Revision getRevision() {
         return this.revision;
     }
     
-    public void setRevision(final String revision) {
+    public void setRevision(final Revision revision) {
         this.revision = revision;
     }
     

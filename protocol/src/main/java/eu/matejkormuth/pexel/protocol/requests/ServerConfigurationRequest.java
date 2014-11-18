@@ -4,10 +4,10 @@ import java.nio.ByteBuffer;
 import java.util.Set;
 
 import eu.matejkormuth.pexel.commons.Providers;
+import eu.matejkormuth.pexel.commons.SlaveServerSoftware;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
 import eu.matejkormuth.pexel.network.Request;
 import eu.matejkormuth.pexel.protocol.PexelProtocol;
-import eu.matejkormuth.pexel.protocol.ServerSoftware;
 
 /**
  * Reports minigames and maps on this server. Sent by slave server after connecting to master.
@@ -15,14 +15,14 @@ import eu.matejkormuth.pexel.protocol.ServerSoftware;
 public class ServerConfigurationRequest extends Request {
     public Set<String>          minigames;
     public Set<MatchmakingGame> games;
-    public ServerSoftware       software;
+    public SlaveServerSoftware       software;
     public String               softwareVersion;
     public int                  slots;
     
     static class ServerConfiguration {
         public Set<String>          minigames;
         public Set<MatchmakingGame> games;
-        public ServerSoftware       software;
+        public SlaveServerSoftware       software;
         public int                  slots;
         public String               softwareVersion;
         

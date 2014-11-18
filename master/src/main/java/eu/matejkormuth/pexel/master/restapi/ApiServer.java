@@ -56,9 +56,9 @@ public class ApiServer extends MasterComponent {
             
             //SelfSignedCertificate ssc = new SelfSignedCertificate();
             this.logger.info("Starting HTTPS api server...");
-            SSLContext ctx = SSLContext.getInstance("TLS");
+            SSLContext context = SSLContext.getDefault();
             
-            this.https_server = SimpleServerFactory.create(https_address, ctx,
+            this.https_server = SimpleServerFactory.create(https_address, context,
                     resourceConfig);
         } catch (IllegalArgumentException | IOException | NoSuchAlgorithmException e) {
             e.printStackTrace();

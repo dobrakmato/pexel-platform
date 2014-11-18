@@ -141,13 +141,16 @@ public class Configuration {
         public String value;
     }
     
-    public static final String KEY_AUTHKEY           = "authKey";
-    public static final String KEY_PORT              = "port";
-    public static final String KEY_PORT_API_HTTP     = "portApiHttp";
-    public static final String KEY_PORT_API_HTTPS    = "portApiHttps";
-    public static final String KEY_MASTER_IP         = "masterIp";
-    public static final String KEY_SLAVE_NAME        = "slaveName";
-    public static final String KEY_LIMBO_SERVER_NAME = "limboServer";
+    public static final String KEY_AUTHKEY             = "authKey";
+    public static final String KEY_PORT                = "port";
+    public static final String KEY_PORT_API_HTTP       = "portApiHttp";
+    public static final String KEY_PORT_API_HTTPS      = "portApiHttps";
+    public static final String KEY_MASTER_IP           = "masterIp";
+    public static final String KEY_SLAVE_NAME          = "slaveName";
+    public static final String KEY_LIMBO_SERVER_NAME   = "limboServer";
+    // Storage keys.
+    public static final String KEY_STORAGE_AUTOUPDATES = "autoUpdates";
+    public static final String KEY_STORAGE_ONLYTRUSTED = "onlyTrustedSources";
     
     public static void createDefault(final ServerType type, final File f) {
         Configuration c = new Configuration();

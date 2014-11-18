@@ -18,10 +18,12 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlList;
@@ -32,17 +34,41 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType(name = "section")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ConfigurationSection {
+public class ConfigurationSection extends Unmarshaller.Listener {
     @XmlList
     protected List<ConfigurationEntry>                  entry;
+    // Internal map.
     protected transient Map<String, ConfigurationEntry> map;
     
+    /**
+     * Returns value by specified key or null if not found.
+     * 
+     * @param key
+     *            key
+     * @return value
+     */
     public ConfigurationEntry get(final String key) {
-        return null;
+        return this.map.get(key);
     }
     
-    public void put(final ConfigurationEntry entry) {
+    /**
+     * Returns value by key or returns default value. This also adds default value to config.
+     * 
+     * @param key
+     *            key
+     * @param defaultValue
+     *            default values that will be used, when no value is found
+     * @return value
+     */
+    public ConfigurationEntry get(final String key, final Object defaultValue) {
+        if (this.map.containsKey(key)) { return this.get(key); }
+        return this.add(new ConfigurationEntry(key, defaultValue));
+    }
+    
+    public ConfigurationEntry add(final ConfigurationEntry entry) {
         this.entry.add(entry);
+        this.map.put(entry.key, entry);
+        return entry;
     }
     
     public void remove(final String key) {
@@ -50,7 +76,18 @@ public class ConfigurationSection {
             ConfigurationEntry ce = iterator.next();
             if (ce.key.equals(key)) {
                 iterator.remove();
+                this.map.remove(key);
             }
+        }
+    }
+    
+    @Override
+    public void afterUnmarshal(final Object target, final Object parent) {
+        super.afterUnmarshal(target, parent);
+        // Create map.
+        this.map = new HashMap<String, ConfigurationEntry>(this.entry.size());
+        for (ConfigurationEntry entry : this.entry) {
+            this.map.put(entry.key, entry);
         }
     }
 }

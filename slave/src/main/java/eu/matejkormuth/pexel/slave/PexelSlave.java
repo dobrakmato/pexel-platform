@@ -25,10 +25,14 @@ import java.util.List;
 
 import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.Logger;
+import eu.matejkormuth.pexel.commons.PluginLoader;
+import eu.matejkormuth.pexel.commons.ServerMode;
+import eu.matejkormuth.pexel.commons.SlaveServerSoftware;
+import eu.matejkormuth.pexel.commons.Storage;
 import eu.matejkormuth.pexel.network.ServerType;
 import eu.matejkormuth.pexel.network.SlaveServer;
 import eu.matejkormuth.pexel.protocol.PexelProtocol;
-import eu.matejkormuth.pexel.protocol.ServerMode;
+import eu.matejkormuth.pexel.slave.pluginloaders.BukkitPluginLoader;
 
 /**
  * PexelSlave server singleton object.
@@ -40,13 +44,15 @@ public class PexelSlave {
     protected Logger          log;
     protected Configuration   config;
     protected Sync            sync;
+    protected PluginLoader    pluginLoader;
+    protected Storage         storage;
     
     protected ServerMode      mode;
     
     protected List<Component> components        = new ArrayList<Component>();
     protected boolean         componentsEnabled = false;
     
-    public PexelSlave(final File dataFolder) {
+    public PexelSlave(final File dataFolder, final SlaveServerSoftware software) {
         this.log = new Logger("PexelSlave");
         this.log.timestamp = false;
         
@@ -60,6 +66,28 @@ public class PexelSlave {
         }
         this.log.info("Loading configuration...");
         this.config = Configuration.load(f);
+        
+        // Initialize PluginLoader
+        switch (software) {
+            case CRAFTBUKKIT:
+                this.pluginLoader = new BukkitPluginLoader();
+                break;
+            case FORGE:
+                throw new RuntimeException(
+                        "What the hell? You are running unsupported server software!");
+            case SPIGOT:
+                this.pluginLoader = new BukkitPluginLoader();
+                break;
+            case SPONGE:
+                throw new RuntimeException(
+                        "What the hell? You are running unsupported server software!");
+            case STATICMC:
+                this.pluginLoader = null;
+                break;
+            default:
+                throw new RuntimeException(
+                        "What the hell? You are running unsupported server software!");
+        }
         
         // Initialize protects.
         
@@ -76,8 +104,8 @@ public class PexelSlave {
                 this.log, new PexelProtocol());
     }
     
-    public static void init(final File dataFolder) {
-        PexelSlave.instance = new PexelSlave(dataFolder);
+    public static void init(final File dataFolder, final SlaveServerSoftware software) {
+        PexelSlave.instance = new PexelSlave(dataFolder, software);
     }
     
     public static final PexelSlave getInstance() {
@@ -98,5 +126,9 @@ public class PexelSlave {
     
     public Logger getLogger() {
         return this.log;
+    }
+    
+    public Storage getStorage() {
+        return this.storage;
     }
 }

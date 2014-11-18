@@ -16,25 +16,21 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.protocol.requests;
+package eu.matejkormuth.pexel.commons;
 
-import java.nio.ByteBuffer;
+import eu.matejkormuth.pexel.commons.storage.MinigameDescriptor;
 
-import eu.matejkormuth.pexel.commons.ServerMode;
-import eu.matejkormuth.pexel.network.Request;
-import eu.matejkormuth.pexel.protocol.PexelProtocol;
-
-public class SlaveServerSetModeRequest extends Request {
-    public ServerMode mode;
+/**
+ * Interface that specifies how to load and unload plugins on slave server.
+ */
+public interface PluginLoader {
+    /**
+     * Loads plugin by minigame descriptor.
+     */
+    public void load(MinigameDescriptor plugin);
     
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(1).put(
-                this.mode.name().getBytes(PexelProtocol.CHARSET));
-    }
-    
-    @Override
-    public void fromByteBuffer(final ByteBuffer buffer) {
-        this.mode = ServerMode.valueOf(new String(buffer.array(), PexelProtocol.CHARSET));
-    }
+    /**
+     * Unloads plugin by minigame descriptor.
+     */
+    public void unload(MinigameDescriptor plugin);
 }

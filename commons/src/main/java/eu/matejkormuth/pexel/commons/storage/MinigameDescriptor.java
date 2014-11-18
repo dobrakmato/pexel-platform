@@ -19,6 +19,7 @@
 package eu.matejkormuth.pexel.commons.storage;
 
 import java.io.File;
+import java.io.InputStream;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -35,7 +36,8 @@ import eu.matejkormuth.pexel.commons.JsonType;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MinigameDescriptor extends Description implements Descriptor {
-    private String sourceUrl;
+    private String         sourceUrl;
+    private transient File file;
     
     /**
      * Only for JAXB.
@@ -54,7 +56,10 @@ public class MinigameDescriptor extends Description implements Descriptor {
     public static MinigameDescriptor load(final File f) {
         try {
             JAXBContext context = JAXBContext.newInstance(MinigameDescriptor.class);
-            return (MinigameDescriptor) context.createUnmarshaller().unmarshal(f);
+            MinigameDescriptor md = (MinigameDescriptor) context.createUnmarshaller()
+                    .unmarshal(f);
+            md.file = f;
+            return md;
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
@@ -64,5 +69,19 @@ public class MinigameDescriptor extends Description implements Descriptor {
     public byte[] getData() {
         // TODO Auto-generated method stub
         return null;
+    }
+    
+    public static MinigameDescriptor load(final InputStream remoteDescriptorFile) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(MinigameDescriptor.class);
+            return (MinigameDescriptor) context.createUnmarshaller().unmarshal(
+                    remoteDescriptorFile);
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    public File getJar() {
+        return new File(this.file.getAbsolutePath() + "/" + this.getName() + ".jar");
     }
 }
