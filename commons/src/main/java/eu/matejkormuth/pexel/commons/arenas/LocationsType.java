@@ -20,6 +20,8 @@ package eu.matejkormuth.pexel.commons.arenas;
 
 import javax.xml.bind.annotation.XmlType;
 
+import eu.matejkormuth.pexel.commons.MapData;
+
 /**
  * Type of locations in {@link MapData}.
  */

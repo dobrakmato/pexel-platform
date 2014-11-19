@@ -16,17 +16,26 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons.arenas;
+package eu.matejkormuth.pexel.master;
 
-import eu.matejkormuth.pexel.commons.MapData;
+import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingRequest;
 
 /**
- * Base exception for invalid {@link MapData}.
+ * Class that does matchmaking.
  */
-public class InvalidMapDataException extends RuntimeException {
-    private static final long serialVersionUID = -4753376360641192951L;
+public abstract class MatchmakingProvider {
+    protected Matchmaking matchmaking;
     
-    public InvalidMapDataException(final String string) {
-        super(string);
+    protected void setMatchmaking(final Matchmaking matchking) {
+        this.matchmaking = matchking;
     }
+    
+    /**
+     * Should process request and connect players to server.
+     * 
+     * @param request
+     *            request to process
+     */
+    abstract void process(MatchmakingRequest request);
+    
 }

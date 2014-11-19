@@ -16,17 +16,11 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons.arenas;
-
-import eu.matejkormuth.pexel.commons.MapData;
+package eu.matejkormuth.pexel.master.responders;
 
 /**
- * Base exception for invalid {@link MapData}.
+ * Responder for server status packets.
  */
-public class InvalidMapDataException extends RuntimeException {
-    private static final long serialVersionUID = -4753376360641192951L;
+public class ServerStatusResponder {
     
-    public InvalidMapDataException(final String string) {
-        super(string);
-    }
 }

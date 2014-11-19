@@ -30,6 +30,7 @@ import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.commons.LoggerHolder;
 import eu.matejkormuth.pexel.commons.Storage;
+import eu.matejkormuth.pexel.master.responders.ServerStatusResponder;
 import eu.matejkormuth.pexel.master.restapi.ApiServer;
 import eu.matejkormuth.pexel.network.Callback;
 import eu.matejkormuth.pexel.network.MasterServer;
@@ -103,8 +104,14 @@ public final class PexelMaster implements LoggerHolder {
                 this.config.getSection(MasterServer.class), this.log,
                 new PexelProtocol());
         
+        // Set up responders. TODO
+        this.master.getMessenger().addResponder(new ServerStatusResponder());
+        
         // Set up API server.
         this.addComponent(new ApiServer());
+        
+        // Set up matchmaking.
+        this.addComponent(new Matchmaking());
         
         // Enable components.
         this.log.info("Enabling all components now!");
@@ -192,6 +199,21 @@ public final class PexelMaster implements LoggerHolder {
     protected void disableComponent(final Component e) {
         this.log.info("Disabling [" + e.getClass().getSimpleName() + "] ...");
         e.onDisable();
+        Matchmaking m = this.getComponent(Matchmaking.class);
+    }
+    
+    public <T extends Component> T getComponent(final Class<? extends Component> type) {
+        for (Component c : this.components) {
+            if (c.getClass().isAssignableFrom(type)) { return (T) c; }
+        }
+        return null;
+    }
+    
+    public Object getComponent2(final Class<? extends Component> type) {
+        for (Component c : this.components) {
+            if (c.getClass().isAssignableFrom(type)) { return c; }
+        }
+        return null;
     }
     
     public Configuration getConfiguration() {
@@ -213,5 +235,9 @@ public final class PexelMaster implements LoggerHolder {
     
     public Storage getStorage() {
         return this.storage;
+    }
+    
+    public Scheduler getScheduler() {
+        return this.scheduler;
     }
 }

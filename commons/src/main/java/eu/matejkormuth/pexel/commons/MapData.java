@@ -16,7 +16,7 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons.arenas;
+package eu.matejkormuth.pexel.commons;
 
 import java.io.File;
 import java.util.HashMap;
@@ -37,9 +37,8 @@ import javax.xml.bind.annotation.XmlType;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import eu.matejkormuth.pexel.commons.Region;
-import eu.matejkormuth.pexel.commons.RegionTransformer;
-import eu.matejkormuth.pexel.commons.SerializableLocation;
+import eu.matejkormuth.pexel.commons.arenas.InvalidMapDataException;
+import eu.matejkormuth.pexel.commons.arenas.LocationsType;
 
 /**
  * Class that represents data of playable map (not block data).
