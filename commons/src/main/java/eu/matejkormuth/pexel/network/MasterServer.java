@@ -201,4 +201,8 @@ public class MasterServer extends ServerInfo implements Requestable {
     public void removeCallback(final long requestID) {
         this.callbacks.get(requestID);
     }
+    
+    public boolean hasSlave(final String serverName) {
+        return this.slaves.containsKey(serverName);
+    }
 }

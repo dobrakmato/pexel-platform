@@ -68,6 +68,9 @@ public class ConfigurationSection extends Unmarshaller.Listener {
      * @return value
      */
     public ConfigurationEntry get(final String key) {
+        if (this.map == null) {
+            this.afterUnmarshal(null, null);
+        }
         return this.map.get(key);
     }
     
@@ -81,6 +84,9 @@ public class ConfigurationSection extends Unmarshaller.Listener {
      * @return value
      */
     public ConfigurationEntry get(final String key, final Object defaultValue) {
+        if (this.map == null) {
+            this.afterUnmarshal(null, null);
+        }
         if (this.map.containsKey(key)) { return this.get(key); }
         return this.add(new ConfigurationEntry(key, defaultValue));
     }

@@ -55,6 +55,9 @@ public class Configuration extends Unmarshaller.Listener {
      * @return configuration section
      */
     public ConfigurationSection getSection(final String key) {
+        if (this.sections == null) {
+            this.afterUnmarshal(null, null);
+        }
         if (this.sections.containsKey(key)) { return this.sections.get(key); }
         return this.createSection(key);
     }
@@ -121,6 +124,7 @@ public class Configuration extends Unmarshaller.Listener {
         try {
             JAXBContext cont = JAXBContext.newInstance(Configuration.class);
             Unmarshaller un = cont.createUnmarshaller();
+            un.setListener(conf);
             conf = (Configuration) un.unmarshal(file);
             conf.file = file;
             return conf;

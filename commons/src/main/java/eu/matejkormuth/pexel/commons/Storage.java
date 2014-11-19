@@ -27,13 +27,17 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
+import com.google.common.base.Charsets;
+import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 
 import eu.matejkormuth.pexel.commons.storage.MapDescriptor;
@@ -74,8 +78,37 @@ public class Storage extends Component {
     @Override
     public void onEnable() {
         this.expandStructure();
+        this.createFiles();
+        this.loadFiles();
         this.loadIndex();
         this.updateIndex();
+    }
+    
+    private void createFiles() {
+        File trusted = this.getFile("trusted.sites");
+        if (!trusted.exists()) {
+            String[] trustedSites = { "http://alpha.mtkn.eu/" };
+            try {
+                Files.write(Paths.get(trusted.toURI()),
+                        Joiner.on("\n").join(trustedSites).getBytes(Charsets.UTF_8),
+                        StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    private void loadFiles() {
+        File trusted = this.getFile("trusted.sites");
+        try {
+            List<String> strings = Files.readAllLines(Paths.get(trusted.toURI()),
+                    Charsets.UTF_8);
+            for (String s : strings) {
+                this.trustedSites.add(new URI(s));
+            }
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
     
     // Method that returns File object based from relative path.
@@ -178,7 +211,9 @@ public class Storage extends Component {
             // Trust check.
             boolean trusted = false;
             for (URI trusteduri : this.trustedSites) {
-                if (trusteduri.getHost().equals(uri.getHost())
+                if (this.config.get(Configuration.Keys.KEY_STORAGE_ONLYTRUSTED, true)
+                        .asBoolean()
+                        && trusteduri.getHost().equals(uri.getHost())
                         && trusteduri.getPort() == uri.getPort()) {
                     trusted = true;
                 }
@@ -280,5 +315,12 @@ public class Storage extends Component {
     
     public Collection<MapDescriptor> getAvaiableMaps() {
         return Collections.unmodifiableSet(this.maps);
+    }
+    
+    public boolean hasPlugin(final String pluginName) {
+        for (MinigameDescriptor md : this.minigames) {
+            if (md.getName().equalsIgnoreCase(pluginName)) { return true; }
+        }
+        return false;
     }
 }

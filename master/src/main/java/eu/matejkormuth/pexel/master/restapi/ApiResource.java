@@ -21,7 +21,11 @@ package eu.matejkormuth.pexel.master.restapi;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HEAD;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -45,6 +49,16 @@ public class ApiResource {
                 String localHtml = "<div style=\"border:1px solid black;margin:1em;\">";
                 localHtml += "<span style=color:black;background:lime;font-size:18px;display:block;>Path: "
                         + m.getAnnotation(Path.class).value() + "</span>";
+                
+                for (Annotation a : m.getAnnotations()) {
+                    if (a.getClass() == GET.class || a.getClass() == POST.class
+                            || a.getClass() == DELETE.class || a.getClass() == PUT.class
+                            || a.getClass() == HEAD.class) {
+                        localHtml += "<span>Method: " + a.annotationType().getName()
+                                + "</span><br/>";
+                    }
+                }
+                
                 localHtml += "<span>Description: "
                         + m.getAnnotation(ApiPart.class).desc() + "</span><br/>";
                 localHtml += "<span style=\"font-size:14px;\">Parameters: </span><br/>";
@@ -80,6 +94,22 @@ public class ApiResource {
     @Path("/server/{id}")
     public String server_view(@PathParam("id") final String serverName) {
         return "{\"name\":\"" + serverName + "\"}";
+    }
+    
+    @ApiPart(desc = "Installs specified plugin on specified slave server.")
+    @GET
+    @Path("/server/{id}/install/plugin/{pluginName}")
+    public String server_plugin_install(@PathParam("id") final String serverName,
+            @PathParam("pluginName") final String pluginName) {
+        // Check if is server name and plugin name valid,
+        if (PexelMaster.getInstance().getStorage().hasPlugin(pluginName)
+                && PexelMaster.getInstance().getServer().hasSlave(serverName)) {
+            // TODO: Build and send packet to slave server.
+            return "{\"error\": \"0\"}";
+        }
+        else {
+            return "{\"error\": \"1\"}";
+        }
     }
     
     @ApiPart(desc = "Retrns array of all avaiable maps present in master storage.")
