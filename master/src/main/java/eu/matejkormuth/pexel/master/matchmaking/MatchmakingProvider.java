@@ -16,7 +16,7 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.master;
+package eu.matejkormuth.pexel.master.matchmaking;
 
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingRequest;
 
@@ -30,12 +30,12 @@ public abstract class MatchmakingProvider {
         this.matchmaking = matchking;
     }
     
-    /**
-     * Should process request and connect players to server.
-     * 
-     * @param request
-     *            request to process
-     */
-    abstract void process(MatchmakingRequest request);
+    abstract void matchmake(MatchmakingRequest request);
+    
+    abstract void cancelRequest(MatchmakingRequest request);
+    
+    abstract void addRequest(MatchmakingRequest request);
+    
+    abstract void doMatchmaking();
     
 }

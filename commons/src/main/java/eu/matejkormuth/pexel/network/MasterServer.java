@@ -178,7 +178,7 @@ public class MasterServer extends ServerInfo implements Requestable {
      *            name of the server
      * @return slave server or null
      */
-    public ServerInfo getServer(final String name) {
+    public ServerInfo getSlave(final String name) {
         return this.slaves.get(name);
     }
     

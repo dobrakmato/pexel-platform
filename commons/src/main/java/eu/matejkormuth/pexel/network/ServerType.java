@@ -18,7 +18,16 @@
 // @formatter:on
 package eu.matejkormuth.pexel.network;
 
+/**
+ * Enum that specifies
+ */
 public enum ServerType {
+    /**
+     * Master server.
+     */
     MASTER,
+    /**
+     * Slave server.
+     */
     SLAVE;
 }

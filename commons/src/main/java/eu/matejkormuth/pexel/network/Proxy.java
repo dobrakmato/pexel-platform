@@ -18,6 +18,8 @@
 // @formatter:on
 package eu.matejkormuth.pexel.network;
 
+import java.util.UUID;
+
 /**
  * Interface that represents proxy.
  */
@@ -30,6 +32,15 @@ public interface Proxy {
     public ProxyBrand getBrand();
     
     /**
+     * Returns {@link ProxiedPlayer} instance by specified UUID, null if not found.
+     * 
+     * @param uuid
+     *            UUID of player
+     * @return ProxiedPlayer or null, if not found.
+     */
+    public ProxiedPlayer getPlayer(UUID uuid);
+    
+    /**
      * Transfers specified player to spcified server.
      * 
      * @param player
@@ -37,5 +48,5 @@ public interface Proxy {
      * @param target
      *            target server
      */
-    public void connect(PlayerInfo player, ServerInfo target);
+    public void connect(ProxiedPlayer player, ServerInfo target);
 }

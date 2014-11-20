@@ -16,12 +16,16 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.master;
+package eu.matejkormuth.pexel.master.matchmaking;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import com.google.common.base.Preconditions;
+
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingRequest;
+import eu.matejkormuth.pexel.master.MasterComponent;
+import eu.matejkormuth.pexel.master.PexelMaster;
 
 /**
  * Master component class that is used for matchamking.
@@ -33,13 +37,24 @@ public class Matchmaking extends MasterComponent {
     public Matchmaking() {
     }
     
-    public void registerProvider(final MatchmakingProvider provider) {
+    public void setProvider(final MatchmakingProvider provider) {
         // TODO: Only one provider now.
         this.provider = provider;
     }
     
+    public void registerRequest(final MatchmakingRequest request) {
+        this.provider.addRequest(request);
+    }
+    
+    public void cancelRequest(final MatchmakingRequest request) {
+        this.provider.cancelRequest(request);
+    }
+    
     @Override
     public void onEnable() {
+        Preconditions.checkNotNull(this.provider,
+                "Set matchmaking provider before enabling matchmaking.");
+        
         this.future = PexelMaster.getInstance()
                 .getScheduler()
                 .scheduleAtFixedRate(new Runnable() {
@@ -56,8 +71,6 @@ public class Matchmaking extends MasterComponent {
     }
     
     protected void doMatchmaking() {
-        // TODO: Find request to process.
-        MatchmakingRequest request = null;
-        this.provider.process(request);
+        this.provider.doMatchmaking();
     }
 }

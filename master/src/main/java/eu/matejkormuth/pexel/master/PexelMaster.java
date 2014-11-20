@@ -30,10 +30,13 @@ import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.commons.LoggerHolder;
 import eu.matejkormuth.pexel.commons.Storage;
+import eu.matejkormuth.pexel.master.matchmaking.Matchmaking;
 import eu.matejkormuth.pexel.master.responders.ServerStatusResponder;
+import eu.matejkormuth.pexel.master.responders.TeleportationResponder;
 import eu.matejkormuth.pexel.master.restapi.ApiServer;
 import eu.matejkormuth.pexel.network.Callback;
 import eu.matejkormuth.pexel.network.MasterServer;
+import eu.matejkormuth.pexel.network.Proxy;
 import eu.matejkormuth.pexel.network.SlaveServer;
 import eu.matejkormuth.pexel.protocol.PexelProtocol;
 import eu.matejkormuth.pexel.protocol.requests.ServerStatusRequest;
@@ -106,6 +109,7 @@ public final class PexelMaster implements LoggerHolder {
         
         // Set up responders. TODO
         this.master.getMessenger().addResponder(new ServerStatusResponder());
+        this.master.getMessenger().addResponder(new TeleportationResponder());
         
         // Set up API server.
         this.addComponent(new ApiServer());
@@ -199,19 +203,11 @@ public final class PexelMaster implements LoggerHolder {
     protected void disableComponent(final Component e) {
         this.log.info("Disabling [" + e.getClass().getSimpleName() + "] ...");
         e.onDisable();
-        Matchmaking m = this.getComponent(Matchmaking.class);
     }
     
-    public <T extends Component> T getComponent(final Class<? extends Component> type) {
+    public <T extends Component> T getComponent(final Class<T> type) {
         for (Component c : this.components) {
-            if (c.getClass().isAssignableFrom(type)) { return (T) c; }
-        }
-        return null;
-    }
-    
-    public Object getComponent2(final Class<? extends Component> type) {
-        for (Component c : this.components) {
-            if (c.getClass().isAssignableFrom(type)) { return c; }
+            if (type.isInstance(c.getClass())) { return type.cast(c); }
         }
         return null;
     }
@@ -220,7 +216,7 @@ public final class PexelMaster implements LoggerHolder {
         return this.config;
     }
     
-    public MasterServer getServer() {
+    public MasterServer getMasterServer() {
         return this.master;
     }
     
@@ -239,5 +235,9 @@ public final class PexelMaster implements LoggerHolder {
     
     public Scheduler getScheduler() {
         return this.scheduler;
+    }
+    
+    public Proxy getProxy() {
+        return this.master.getProxy();
     }
 }

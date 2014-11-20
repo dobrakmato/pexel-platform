@@ -103,7 +103,7 @@ public class ApiResource {
             @PathParam("pluginName") final String pluginName) {
         // Check if is server name and plugin name valid,
         if (PexelMaster.getInstance().getStorage().hasPlugin(pluginName)
-                && PexelMaster.getInstance().getServer().hasSlave(serverName)) {
+                && PexelMaster.getInstance().getMasterServer().hasSlave(serverName)) {
             // TODO: Build and send packet to slave server.
             return "{\"error\": \"0\"}";
         }

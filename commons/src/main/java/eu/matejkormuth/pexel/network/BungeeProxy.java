@@ -18,6 +18,8 @@
 // @formatter:on
 package eu.matejkormuth.pexel.network;
 
+import java.util.UUID;
+
 import net.md_5.bungee.api.ProxyServer;
 
 /**
@@ -30,9 +32,14 @@ public class BungeeProxy implements Proxy {
     }
     
     @Override
-    public void connect(final PlayerInfo player, final ServerInfo target) {
+    public void connect(final ProxiedPlayer player, final ServerInfo target) {
         ProxyServer.getInstance()
-                .getPlayer(player.uuid)
+                .getPlayer(player.getUniqueId())
                 .connect(ProxyServer.getInstance().getServerInfo(target.getName()));
+    }
+    
+    @Override
+    public ProxiedPlayer getPlayer(final UUID uuid) {
+        return new BungeeProxiedPlayer(ProxyServer.getInstance().getPlayer(uuid));
     }
 }
