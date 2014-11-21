@@ -21,9 +21,8 @@ package eu.matejkormuth.pexel.commons.matchmaking;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.entity.Player;
-
 import eu.matejkormuth.pexel.commons.minigame.Minigame;
+import eu.matejkormuth.pexel.network.ProxiedPlayer;
 
 /**
  * Request for matchmaking.
@@ -35,22 +34,22 @@ public class MatchmakingRequest {
     /**
      * List of player in request.
      */
-    private final List<Player>    players;
+    private final List<ProxiedPlayer> players;
     /**
      * The minigame that the players want to play.
      */
-    private final Minigame        minigame;
+    private final Minigame            minigame;
     /**
      * Arena that players want to play.
      */
-    private final MatchmakingGame game;
+    private final MatchmakingGame     game;
     /**
      * Number of tries to find match.
      */
-    public int                    tries = 0;
+    public int                        tries = 0;
     
-    public MatchmakingRequest(final List<Player> players, final Minigame minigame,
-            final MatchmakingGame game) {
+    public MatchmakingRequest(final List<ProxiedPlayer> players,
+            final Minigame minigame, final MatchmakingGame game) {
         this.players = players;
         this.minigame = minigame;
         this.game = game;
@@ -62,7 +61,7 @@ public class MatchmakingRequest {
      * @param player
      *            player
      */
-    public static MatchmakingRequest create(final Player player) {
+    public static MatchmakingRequest create(final ProxiedPlayer player) {
         return new MatchmakingRequest(Arrays.asList(player), null, null);
     }
     
@@ -72,7 +71,7 @@ public class MatchmakingRequest {
      * @param player
      *            players
      */
-    public static MatchmakingRequest create(final Player... player) {
+    public static MatchmakingRequest create(final ProxiedPlayer... player) {
         return new MatchmakingRequest(Arrays.asList(player), null, null);
     }
     
@@ -82,7 +81,8 @@ public class MatchmakingRequest {
      * @param player
      *            player
      */
-    public static MatchmakingRequest create(final Player player, final Minigame minigame) {
+    public static MatchmakingRequest create(final ProxiedPlayer player,
+            final Minigame minigame) {
         return new MatchmakingRequest(Arrays.asList(player), minigame, null);
     }
     
@@ -93,14 +93,14 @@ public class MatchmakingRequest {
      *            players
      */
     public static MatchmakingRequest create(final Minigame minigame,
-            final Player... player) {
+            final ProxiedPlayer... player) {
         return new MatchmakingRequest(Arrays.asList(player), minigame, null);
     }
     
     /**
      * Returns list of players in this request.
      */
-    public List<Player> getPlayers() {
+    public List<ProxiedPlayer> getPlayers() {
         return this.players;
     }
     

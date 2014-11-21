@@ -20,9 +20,7 @@ package eu.matejkormuth.pexel.commons.matchmaking;
 
 import java.util.List;
 
-import org.bukkit.entity.Player;
-
-import eu.matejkormuth.pexel.commons.arenas.DisconnectReason;
+import eu.matejkormuth.pexel.network.ProxiedPlayer;
 
 /**
  * Specifies that the object is game participating in matchmaking.
@@ -37,6 +35,13 @@ public interface MatchmakingGame {
      * @return free slots count
      */
     public int getFreeSlots();
+    
+    /**
+     * Returns whether this game is empty.
+     * 
+     * @return true if the game is empty, else otherwise
+     */
+    public boolean empty();
     
     /**
      * Returns number of all slots in game.
@@ -57,7 +62,7 @@ public interface MatchmakingGame {
      * 
      * @return
      */
-    public List<Player> getPlayers();
+    public List<ProxiedPlayer> getPlayers();
     
     /**
      * Returns number of player in game.
@@ -82,19 +87,7 @@ public interface MatchmakingGame {
      */
     public boolean canJoin(int count);
     
-    /**
-     * Called when player joins the game.
-     * 
-     * @param player
-     *            player who joined arena
-     */
-    public void onPlayerJoin(Player player);
-    
-    /**
-     * Called when player lefts the game.
-     * 
-     * @param player
-     *            player who left arena
-     */
-    public void onPlayerLeft(Player player, DisconnectReason reason);
+    // Note: Removed these methods since they are slave only methods, so they will be in slave's MatchmakingGame implementation.
+    // public void onPlayerJoin(Player player);
+    // public void onPlayerLeft(Player player, DisconnectReason reason);
 }

@@ -25,9 +25,11 @@ import com.google.common.base.Charsets;
 import eu.matejkormuth.pexel.network.Protocol;
 import eu.matejkormuth.pexel.protocol.requests.DebugMessageRequest;
 import eu.matejkormuth.pexel.protocol.requests.FileTransferRequest;
+import eu.matejkormuth.pexel.protocol.requests.OutMatchmakingGameStatusRequest;
 import eu.matejkormuth.pexel.protocol.requests.ServerConfigurationRequest;
 import eu.matejkormuth.pexel.protocol.requests.ServerStatusRequest;
 import eu.matejkormuth.pexel.protocol.requests.SlaveServerSetModeRequest;
+import eu.matejkormuth.pexel.protocol.responses.InMatchmakingStatusResponse;
 import eu.matejkormuth.pexel.protocol.responses.ServerStatusResponse;
 
 /**
@@ -43,7 +45,9 @@ public class PexelProtocol extends Protocol {
         this.registerRequest(3, FileTransferRequest.class);
         this.registerRequest(4, ServerConfigurationRequest.class);
         this.registerRequest(5, SlaveServerSetModeRequest.class);
+        this.registerRequest(10, OutMatchmakingGameStatusRequest.class);
         
         this.registerResponse(1, ServerStatusResponse.class);
+        this.registerResponse(10, InMatchmakingStatusResponse.class);
     }
 }

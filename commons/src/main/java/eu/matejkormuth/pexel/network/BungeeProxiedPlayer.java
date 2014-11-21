@@ -13,4 +13,9 @@ public class BungeeProxiedPlayer extends ProxiedPlayer {
         this.uuid = this.internal.getUniqueId();
     }
     
+    @Override
+    public String getDisplayName() {
+        return this.internal.getDisplayName();
+    }
+    
 }

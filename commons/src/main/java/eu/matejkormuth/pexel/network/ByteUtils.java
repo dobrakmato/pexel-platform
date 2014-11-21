@@ -20,6 +20,9 @@ package eu.matejkormuth.pexel.network;
 
 import java.nio.charset.Charset;
 
+/**
+ * Byte utilities.
+ */
 public class ByteUtils {
     public static void writeInt(final int i, final byte[] array, final int index) {
         array[index + 0] = (byte) (i >> 24);

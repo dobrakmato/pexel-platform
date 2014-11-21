@@ -21,6 +21,7 @@ package eu.matejkormuth.pexel.network;
 import java.util.UUID;
 
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 
 /**
  * Class that executes {@link Proxy} functions on BungeeCord server.
@@ -41,5 +42,12 @@ public class BungeeProxy implements Proxy {
     @Override
     public ProxiedPlayer getPlayer(final UUID uuid) {
         return new BungeeProxiedPlayer(ProxyServer.getInstance().getPlayer(uuid));
+    }
+    
+    @Override
+    public void sendMessage(final ProxiedPlayer player, final String message) {
+        ProxyServer.getInstance()
+                .getPlayer(player.getUniqueId())
+                .sendMessage(new TextComponent(message));
     }
 }

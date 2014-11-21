@@ -82,10 +82,24 @@ public class ApiResource {
         return "{\"test\":55}";
     }
     
-    @ApiPart(desc = "Returns array of all servers.")
+    @ApiPart(desc = "Returns array of all slave servers.")
     @GET
     @Path("/servers")
     public String servers() {
+        return "";
+    }
+    
+    @ApiPart(desc = "Returns array of all games participaing in matchmaking.")
+    @GET
+    @Path("/games")
+    public String games() {
+        return ""; //TODO: JSonzine
+    }
+    
+    @ApiPart(desc = "Returns array of all games participaing in matchmaking.")
+    @GET
+    @Path("/games/{id}")
+    public String game(@PathParam("id") final int id) {
         return "";
     }
     

@@ -11,4 +11,6 @@ public abstract class ProxiedPlayer {
     public UUID getUniqueId() {
         return this.uuid;
     }
+    
+    public abstract String getDisplayName();
 }

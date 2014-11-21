@@ -18,6 +18,9 @@
 // @formatter:on
 package eu.matejkormuth.pexel.master.matchmaking;
 
+import java.util.Collection;
+
+import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingRequest;
 
 /**
@@ -25,12 +28,12 @@ import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingRequest;
  */
 public abstract class MatchmakingProvider {
     protected Matchmaking matchmaking;
+    protected Logger      log;
     
-    protected void setMatchmaking(final Matchmaking matchking) {
-        this.matchmaking = matchking;
+    protected void setMatchmaking(final Matchmaking matchmaking) {
+        this.matchmaking = matchmaking;
+        this.log = matchmaking.getLogger();
     }
-    
-    abstract void matchmake(MatchmakingRequest request);
     
     abstract void cancelRequest(MatchmakingRequest request);
     
@@ -38,4 +41,5 @@ public abstract class MatchmakingProvider {
     
     abstract void doMatchmaking();
     
+    abstract Collection<MatchmakingGameImpl> getGames();
 }

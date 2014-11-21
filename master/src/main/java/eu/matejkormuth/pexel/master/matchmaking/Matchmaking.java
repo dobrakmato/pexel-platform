@@ -18,6 +18,7 @@
 // @formatter:on
 package eu.matejkormuth.pexel.master.matchmaking;
 
+import java.util.Collection;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -48,6 +49,10 @@ public class Matchmaking extends MasterComponent {
     
     public void cancelRequest(final MatchmakingRequest request) {
         this.provider.cancelRequest(request);
+    }
+    
+    public Collection<MatchmakingGameImpl> getGames() {
+        return this.provider.getGames();
     }
     
     @Override

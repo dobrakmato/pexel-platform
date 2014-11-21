@@ -117,6 +117,9 @@ public final class PexelMaster implements LoggerHolder {
         // Set up matchmaking.
         this.addComponent(new Matchmaking());
         
+        // Set up chat provider.
+        this.addComponent(new ChatProvider());
+        
         // Enable components.
         this.log.info("Enabling all components now!");
         this.enableComponents();
@@ -239,5 +242,9 @@ public final class PexelMaster implements LoggerHolder {
     
     public Proxy getProxy() {
         return this.master.getProxy();
+    }
+    
+    public ChatProvider getChatProvider() {
+        return this.getComponent(ChatProvider.class);
     }
 }

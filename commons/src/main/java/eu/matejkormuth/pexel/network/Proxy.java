@@ -49,4 +49,14 @@ public interface Proxy {
      *            target server
      */
     public void connect(ProxiedPlayer player, ServerInfo target);
+    
+    /**
+     * Sends chat message to specified player.
+     * 
+     * @param player
+     *            player
+     * @param message
+     *            message to be send
+     */
+    public void sendMessage(ProxiedPlayer player, String message);
 }
