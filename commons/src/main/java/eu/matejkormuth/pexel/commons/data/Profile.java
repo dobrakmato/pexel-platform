@@ -16,7 +16,7 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons.structures;
+package eu.matejkormuth.pexel.commons.data;
 
 import java.util.UUID;
 

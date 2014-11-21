@@ -23,7 +23,7 @@ import java.util.UUID;
 import eu.matejkormuth.pexel.commons.Commitable;
 import eu.matejkormuth.pexel.commons.MetadataStore;
 import eu.matejkormuth.pexel.commons.Metadatable;
-import eu.matejkormuth.pexel.commons.structures.Profile;
+import eu.matejkormuth.pexel.commons.data.Profile;
 
 /**
  * Class that represents profile of player and implementes {@link Profile} and {@link Commitable}.
