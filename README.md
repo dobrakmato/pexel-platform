@@ -3,6 +3,8 @@ Pexel Platform [![Build Status](https://travis-ci.org/dobrakmato/pexel-platform.
 Platform for sweet deployment & managment of minecraft minigame networks.
 ----------------------------
 
+![http://i.imgur.com/NQ3lwbB.png](http://i.imgur.com/NQ3lwbB.png)
+
 Pexel Platform is architecture for developing minigames and software for easy and sweet managment of servers in minigame network. 
 
 **NOTE: Project is currently in active development phase.**
