@@ -21,6 +21,7 @@ package eu.matejkormuth.pexel.master.matchmaking;
 import java.util.List;
 import java.util.UUID;
 
+import eu.matejkormuth.pexel.commons.JsonType;
 import eu.matejkormuth.pexel.commons.matchmaking.GameState;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
 import eu.matejkormuth.pexel.master.PexelMaster;
@@ -34,6 +35,7 @@ import eu.matejkormuth.pexel.protocol.responses.InMatchmakingStatusResponse;
 /**
  * Master side implementation of MatchmakingGame.
  */
+@JsonType
 public class MatchmakingGameImpl extends
         MessageExtender<OutMatchmakingGameStatusRequest, InMatchmakingStatusResponse>
         implements MatchmakingGame {
@@ -47,16 +49,16 @@ public class MatchmakingGameImpl extends
         this.minigameName = minigameName;
     }
     
-    protected ServerInfo host;
-    protected UUID       gameId;
+    protected transient ServerInfo host;
+    protected UUID                 gameId;
     
-    protected int        cached_freeSlots;
-    protected int        cached_maximumSlots;
-    protected GameState  cached_state;
-    protected int        cached_playerCount; // Could be replaced with player list.
-                                              
+    protected int                  cached_freeSlots;
+    protected int                  cached_maximumSlots;
+    protected GameState            cached_state;
+    protected int                  cached_playerCount; // Could be replaced with player list.
+                                                        
     // Name of minigame.                                          
-    protected String     minigameName;
+    protected String               minigameName;
     
     @Override
     public int getFreeSlots() {

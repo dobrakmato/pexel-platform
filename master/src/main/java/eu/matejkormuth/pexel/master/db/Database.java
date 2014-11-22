@@ -18,6 +18,8 @@
 // @formatter:on
 package eu.matejkormuth.pexel.master.db;
 
+import java.sql.Connection;
+
 import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.master.MasterComponent;
 
@@ -25,10 +27,12 @@ import eu.matejkormuth.pexel.master.MasterComponent;
  * Databse component on master.
  */
 public class Database extends MasterComponent {
-    protected String host;
-    protected String username;
-    protected String password;
-    protected String database;
+    protected String     host;
+    protected String     username;
+    protected String     password;
+    protected String     database;
+    
+    protected Connection connection;
     
     public Database() {
         this.host = this.getConfiguration()
@@ -52,6 +56,6 @@ public class Database extends MasterComponent {
     @Override
     public void onEnable() {
         this.getLogger().info("Connecting to database server...");
-        //TODO: Connect to sql server...
+        
     }
 }

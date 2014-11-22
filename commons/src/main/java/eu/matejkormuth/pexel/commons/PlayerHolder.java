@@ -18,27 +18,32 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons;
 
-import java.util.Random;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.util.Collection;
 
 /**
- * Class that conitains JSON provider.
+ * Specifies class that hold collection of players.
  */
-public abstract class Providers {
+public interface PlayerHolder {
     /**
-     * Global network JSON provider.
+     * Returns collection of players in this object.
+     * 
+     * @return list of players.
      */
-    public static final Gson               JSON        = new GsonBuilder().setPrettyPrinting()
-                                                               .create();
-    /**
-     * Global random provider.
-     */
-    public static final Random             RANDOM      = new Random();
+    public Collection<Player> getPlayers();
     
     /**
-     * Global random name provider.
+     * Returns number of players in this object.
+     * 
+     * @return player count
      */
-    public static final RandomNameProvider RANDOM_NAME = new RandomNameProvider();
+    public int getPlayerCount();
+    
+    /**
+     * Returns whether object contains specified player.
+     * 
+     * @param player
+     *            specified player to check
+     * @return whether the object contains player or not
+     */
+    public boolean contains(Player player);
 }

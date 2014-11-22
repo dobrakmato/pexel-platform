@@ -22,15 +22,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import eu.matejkormuth.pexel.commons.JsonType;
+
 /**
  * Class that represents server on network.
  */
+@JsonType
 public class ServerInfo {
-    private static ServerInfo     local;
+    private transient static ServerInfo local;
     
-    protected final String        name;
-    protected ServerSide          side;
-    protected Map<String, Object> custom;
+    protected final String              name;
+    protected ServerSide                side;
+    protected Map<String, Object>       custom;
     
     public ServerInfo(final String name) {
         this.name = name;

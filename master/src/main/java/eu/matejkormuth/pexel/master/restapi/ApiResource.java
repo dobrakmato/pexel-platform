@@ -33,6 +33,7 @@ import javax.ws.rs.core.MediaType;
 
 import eu.matejkormuth.pexel.commons.Providers;
 import eu.matejkormuth.pexel.master.PexelMaster;
+import eu.matejkormuth.pexel.master.matchmaking.Matchmaking;
 
 @Path(value = "api")
 @Produces({ MediaType.APPLICATION_JSON })
@@ -82,18 +83,36 @@ public class ApiResource {
         return "{\"test\":55}";
     }
     
+    @ApiPart(desc = "Returns array of all bans.")
+    @GET
+    @Path("/bans")
+    public String bans() {
+        return "";
+    }
+    
+    @ApiPart(desc = "Returns ban object by id.")
+    @GET
+    @Path("/bans/{id}")
+    public String ban_view(@PathParam("id") final int id) {
+        return "";
+    }
+    
     @ApiPart(desc = "Returns array of all slave servers.")
     @GET
     @Path("/servers")
     public String servers() {
-        return "";
+        return Providers.JSON.toJson(PexelMaster.getInstance()
+                .getMasterServer()
+                .getSlaveServers());
     }
     
     @ApiPart(desc = "Returns array of all games participaing in matchmaking.")
     @GET
     @Path("/games")
     public String games() {
-        return ""; //TODO: JSonzine
+        return Providers.JSON.toJson(PexelMaster.getInstance()
+                .getComponent(Matchmaking.class)
+                .getGames());
     }
     
     @ApiPart(desc = "Returns array of all games participaing in matchmaking.")

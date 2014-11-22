@@ -24,20 +24,23 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.ConfigurationSection;
+import eu.matejkormuth.pexel.commons.JsonType;
 import eu.matejkormuth.pexel.commons.Logger;
 
+@JsonType
 public class SlaveServer extends ServerInfo implements Requestable {
     
     // Requestable interface
-    protected AtomicLong             lastRequestID = new AtomicLong();
-    protected Map<Long, Callback<?>> callbacks     = new HashMap<Long, Callback<?>>(255);
+    protected transient AtomicLong             lastRequestID = new AtomicLong();
+    protected transient Map<Long, Callback<?>> callbacks     = new HashMap<Long, Callback<?>>(
+                                                                     255);
     
-    protected Messenger              messenger;
-    protected MessageComunicator     comunicator;
-    protected ServerInfo             masterServerInfo;
-    protected Protocol               protocol;
-    protected ConfigurationSection   config;
-    protected Logger                 log;
+    protected transient Messenger              messenger;
+    protected transient MessageComunicator     comunicator;
+    protected transient ServerInfo             masterServerInfo;
+    protected transient Protocol               protocol;
+    protected transient ConfigurationSection   config;
+    protected transient Logger                 log;
     
     public SlaveServer(final String name, final ConfigurationSection config,
             final Logger logger, final Protocol protocol) {

@@ -18,27 +18,21 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons;
 
-import java.util.Random;
+import org.bukkit.Location;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import eu.matejkormuth.pexel.commons.data.Profile;
 
 /**
- * Class that conitains JSON provider.
+ * Player interface for different slave implementations.
  */
-public abstract class Providers {
+public interface Player {
     /**
-     * Global network JSON provider.
+     * Returns player's profile.
      */
-    public static final Gson               JSON        = new GsonBuilder().setPrettyPrinting()
-                                                               .create();
-    /**
-     * Global random provider.
-     */
-    public static final Random             RANDOM      = new Random();
+    public Profile getProfile();
     
     /**
-     * Global random name provider.
+     * @param loc
      */
-    public static final RandomNameProvider RANDOM_NAME = new RandomNameProvider();
+    public void teleport(Location loc);
 }

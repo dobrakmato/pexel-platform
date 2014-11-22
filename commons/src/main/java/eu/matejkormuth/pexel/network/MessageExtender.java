@@ -20,15 +20,17 @@ package eu.matejkormuth.pexel.network;
 
 import eu.matejkormuth.pexel.commons.Asynchronous;
 import eu.matejkormuth.pexel.commons.Commitable;
+import eu.matejkormuth.pexel.commons.JsonType;
 
 /**
  * Class that maintains sending and receveing packets on updated objects.
  */
+@JsonType
 public abstract class MessageExtender<Rq extends Request, Rs extends Response>
         implements Commitable {
-    private ServerInfo         destination;
-    private ServerType         side;
-    private final Callback<Rs> callback;
+    private transient ServerInfo         destination;
+    private transient ServerType         side;
+    private transient final Callback<Rs> callback;
     
     public MessageExtender(final ServerType side) {
         if (side == ServerType.MASTER) {

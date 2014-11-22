@@ -16,29 +16,32 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons;
+package eu.matejkormuth.pexel.slave;
 
-import java.util.Random;
+import org.bukkit.Location;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.data.Profile;
 
 /**
- * Class that conitains JSON provider.
+ * Bukkit compactibile implementation of player.
  */
-public abstract class Providers {
-    /**
-     * Global network JSON provider.
-     */
-    public static final Gson               JSON        = new GsonBuilder().setPrettyPrinting()
-                                                               .create();
-    /**
-     * Global random provider.
-     */
-    public static final Random             RANDOM      = new Random();
+public class BukkitPlayer implements Player {
+    org.bukkit.entity.Player internal;
     
-    /**
-     * Global random name provider.
-     */
-    public static final RandomNameProvider RANDOM_NAME = new RandomNameProvider();
+    public BukkitPlayer(final org.bukkit.entity.Player player) {
+        this.internal = player;
+    }
+    
+    @Override
+    public Profile getProfile() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public void teleport(final Location loc) {
+        this.internal.teleport(loc);
+    }
+    
 }
