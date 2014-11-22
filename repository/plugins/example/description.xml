@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<minigameDescriptor>
+  <author>dobrakmato</author>
+  <name>example</name>
+  <revision>1.0</revision>
+  <tags>tag1</tags>
+  <tags>funny</tags>
+  <tags>adventure</tags>
+  <sourceUrl>http://example.com/repo/plugins/testminigame</sourceUrl>
+</minigameDescriptor>
