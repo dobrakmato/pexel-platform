@@ -28,9 +28,13 @@ import eu.matejkormuth.pexel.protocol.requests.PlayerTeleportRequest;
  */
 public class TeleportationResponder {
     // Proxy server instance;
-    Proxy proxy = PexelMaster.getInstance().getProxy();
+    Proxy proxy;
     
     public void onPlayerTeleport(final PlayerTeleportRequest request) {
+        if (this.proxy == null) {
+            this.proxy = PexelMaster.getInstance().getProxy();
+        }
+        
         // Get player.
         ProxiedPlayer player = this.proxy.getPlayer(request.uuid);
         // Redirect him.

@@ -35,7 +35,8 @@ public class Matchmaking extends MasterComponent {
     private MatchmakingProvider provider;
     private ScheduledFuture<?>  future;
     
-    public Matchmaking() {
+    public Matchmaking(final MatchmakingProvider provider) {
+        this.provider = provider;
     }
     
     public void setProvider(final MatchmakingProvider provider) {

@@ -31,6 +31,7 @@ import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.commons.LoggerHolder;
 import eu.matejkormuth.pexel.commons.Storage;
 import eu.matejkormuth.pexel.master.matchmaking.Matchmaking;
+import eu.matejkormuth.pexel.master.matchmaking.MatchmakingProviderImpl;
 import eu.matejkormuth.pexel.master.responders.ServerStatusResponder;
 import eu.matejkormuth.pexel.master.responders.TeleportationResponder;
 import eu.matejkormuth.pexel.master.restapi.ApiServer;
@@ -115,11 +116,13 @@ public final class PexelMaster implements LoggerHolder {
         this.addComponent(new ApiServer());
         
         // Set up matchmaking.
-        this.addComponent(new Matchmaking());
+        this.addComponent(new Matchmaking(new MatchmakingProviderImpl()));
         
         // Set up chat provider.
         this.addComponent(new ChatProvider());
-        
+    }
+    
+    public void start() {
         // Enable components.
         this.log.info("Enabling all components now!");
         this.enableComponents();

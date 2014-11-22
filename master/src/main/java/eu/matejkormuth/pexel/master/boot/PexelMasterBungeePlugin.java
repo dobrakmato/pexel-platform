@@ -93,7 +93,8 @@ public class PexelMasterBungeePlugin extends Plugin {
     public void createMaster() {
         // Get instance for first time - create PexelMaster.
         PexelMaster.init(this.getDataFolder());
-        PexelMaster.getInstance();
+        // Enable all components.
+        PexelMaster.getInstance().start();
     }
     
     public static Plugin getInstance() {
