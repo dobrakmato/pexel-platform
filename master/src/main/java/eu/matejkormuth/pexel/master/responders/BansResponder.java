@@ -18,17 +18,15 @@
 // @formatter:on
 package eu.matejkormuth.pexel.master.responders;
 
-import eu.matejkormuth.pexel.protocol.requests.InServerMetaDataMessage;
+import eu.matejkormuth.pexel.protocol.requests.InIsBannedFromRequest;
+import eu.matejkormuth.pexel.protocol.responses.OutIsBannedFromResponse;
 
 /**
- * Responder for server status packets.
+ * Bans responder.
  */
-public class ServerStatusResponder {
-    public void onInServerMetaDataMessage(final InServerMetaDataMessage msg) {
-        msg.getSender().setCustom("softwareVersion", msg.softwareVersion);
-        msg.getSender().setCustom("software", msg.software.toString());
-        msg.getSender().setCustom("slots", msg.slots);
-        msg.getSender().setCustom("maps", msg.maps);
-        msg.getSender().setCustom("minigames", msg.minigames);
+public class BansResponder {
+    public OutIsBannedFromResponse onInIsBannedFromRequest(
+            final InIsBannedFromRequest request) {
+        return null;
     }
 }

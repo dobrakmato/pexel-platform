@@ -35,11 +35,15 @@ public abstract class MatchmakingProvider {
         this.log = matchmaking.getLogger();
     }
     
-    abstract void cancelRequest(MatchmakingRequest request);
+    public abstract void cancelRequest(MatchmakingRequest request);
     
-    abstract void addRequest(MatchmakingRequest request);
+    public abstract void addRequest(MatchmakingRequest request);
     
-    abstract void doMatchmaking();
+    public abstract void doMatchmaking();
     
-    abstract Collection<MatchmakingGameImpl> getGames();
+    public abstract Collection<MatchmakingGameImpl> getGames();
+    
+    public abstract void registerMinigame(String name);
+    
+    public abstract void registerArena(MatchmakingGameImpl game);
 }

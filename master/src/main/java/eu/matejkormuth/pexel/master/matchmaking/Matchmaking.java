@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Preconditions;
 
+import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingRequest;
 import eu.matejkormuth.pexel.master.MasterComponent;
 import eu.matejkormuth.pexel.master.PexelMaster;
@@ -35,17 +36,29 @@ public class Matchmaking extends MasterComponent {
     private MatchmakingProvider provider;
     private ScheduledFuture<?>  future;
     
+    protected long              interval;
+    protected long              maxIterations;
+    
     public Matchmaking(final MatchmakingProvider provider) {
         this.provider = provider;
     }
     
     public void setProvider(final MatchmakingProvider provider) {
-        // TODO: Only one provider now.
         this.provider = provider;
     }
     
     public void registerRequest(final MatchmakingRequest request) {
         this.provider.addRequest(request);
+    }
+    
+    public void registerMinigame(final String name) {
+        this.logger.info("Registering minigame " + name);
+        this.provider.registerMinigame(name);
+    }
+    
+    public void registerArena(final MatchmakingGameImpl game) {
+        this.logger.info("Registering arena " + game.getUUID().toString());
+        this.provider.registerArena(game);
     }
     
     public void cancelRequest(final MatchmakingRequest request) {
@@ -61,6 +74,11 @@ public class Matchmaking extends MasterComponent {
         Preconditions.checkNotNull(this.provider,
                 "Set matchmaking provider before enabling matchmaking.");
         
+        // Init config.
+        this.interval = this.getConfiguration()
+                .get(Configuration.Keys.KEY_MATCHMAKING_INTERVAL, 2000)
+                .asLong();
+        
         this.future = PexelMaster.getInstance()
                 .getScheduler()
                 .scheduleAtFixedRate(new Runnable() {
@@ -68,7 +86,7 @@ public class Matchmaking extends MasterComponent {
                     public void run() {
                         Matchmaking.this.doMatchmaking();
                     }
-                }, 0L, 2L, TimeUnit.SECONDS);
+                }, 0L, this.interval, TimeUnit.MILLISECONDS);
     }
     
     @Override

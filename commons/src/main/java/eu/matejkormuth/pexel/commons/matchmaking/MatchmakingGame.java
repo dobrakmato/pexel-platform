@@ -24,9 +24,6 @@ import eu.matejkormuth.pexel.network.ProxiedPlayer;
 
 /**
  * Specifies that the object is game participating in matchmaking.
- * 
- * @author Mato Kormuth
- * 
  */
 public interface MatchmakingGame {
     /**

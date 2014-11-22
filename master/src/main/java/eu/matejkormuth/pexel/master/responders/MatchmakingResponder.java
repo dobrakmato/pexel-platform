@@ -18,17 +18,19 @@
 // @formatter:on
 package eu.matejkormuth.pexel.master.responders;
 
-import eu.matejkormuth.pexel.protocol.requests.InServerMetaDataMessage;
+import eu.matejkormuth.pexel.master.PexelMaster;
+import eu.matejkormuth.pexel.master.matchmaking.Matchmaking;
+import eu.matejkormuth.pexel.master.matchmaking.MatchmakingGameImpl;
+import eu.matejkormuth.pexel.protocol.requests.InMatchmakingRegisterGameMessage;
 
 /**
- * Responder for server status packets.
+ * Matchmaking requests responder.
  */
-public class ServerStatusResponder {
-    public void onInServerMetaDataMessage(final InServerMetaDataMessage msg) {
-        msg.getSender().setCustom("softwareVersion", msg.softwareVersion);
-        msg.getSender().setCustom("software", msg.software.toString());
-        msg.getSender().setCustom("slots", msg.slots);
-        msg.getSender().setCustom("maps", msg.maps);
-        msg.getSender().setCustom("minigames", msg.minigames);
+public class MatchmakingResponder {
+    public void onInMatchmakingRegisterGameMessage(
+            final InMatchmakingRegisterGameMessage msg) {
+        MatchmakingGameImpl game = new MatchmakingGameImpl(msg.getSender(), msg.gameId,
+                msg.minigame);
+        PexelMaster.getInstance().getComponent(Matchmaking.class).registerArena(game);
     }
 }

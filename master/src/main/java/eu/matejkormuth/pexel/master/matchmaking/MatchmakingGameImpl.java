@@ -38,11 +38,13 @@ public class MatchmakingGameImpl extends
         MessageExtender<OutMatchmakingGameStatusRequest, InMatchmakingStatusResponse>
         implements MatchmakingGame {
     
-    public MatchmakingGameImpl(final ServerInfo slave, final UUID gameId) {
+    public MatchmakingGameImpl(final ServerInfo slave, final UUID gameId,
+            final String minigameName) {
         // This is master only implementation.
         super(ServerType.MASTER);
         this.host = slave;
         this.gameId = gameId;
+        this.minigameName = minigameName;
     }
     
     protected ServerInfo host;
@@ -53,6 +55,9 @@ public class MatchmakingGameImpl extends
     protected GameState  cached_state;
     protected int        cached_playerCount; // Could be replaced with player list.
                                               
+    // Name of minigame.                                          
+    protected String     minigameName;
+    
     @Override
     public int getFreeSlots() {
         return this.cached_freeSlots;
@@ -88,8 +93,12 @@ public class MatchmakingGameImpl extends
         return this.getFreeSlots() >= count;
     }
     
+    public UUID getUUID() {
+        return this.gameId;
+    }
+    
     public void connectPlayer(final ProxiedPlayer player) {
-        // Start onPlayerJoin on slave server.
+        // TODO: Start onPlayerJoin on slave server.
         
         // Cross server teleport.
         PexelMaster.getInstance().getProxy().connect(player, this.host);
@@ -112,5 +121,9 @@ public class MatchmakingGameImpl extends
     public List<ProxiedPlayer> getPlayers() {
         // TODO Implement MatchmakingGame#getPlayers()
         return null;
+    }
+    
+    public String getMinigameName() {
+        return this.minigameName;
     }
 }

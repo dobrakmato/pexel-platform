@@ -19,14 +19,16 @@
 package eu.matejkormuth.pexel.master.matchmaking;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.md_5.bungee.api.ChatColor;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingRequest;
-import eu.matejkormuth.pexel.commons.minigame.Minigame;
 import eu.matejkormuth.pexel.master.PexelMaster;
 import eu.matejkormuth.pexel.network.ProxiedPlayer;
 
@@ -37,27 +39,27 @@ public class MatchmakingProviderImpl extends MatchmakingProvider {
     /**
      * List of registered minigames.
      */
-    protected final Map<String, Minigame>                    minigames = new HashMap<String, Minigame>();
+    protected final Set<String>                            minigames = new HashSet<String>();                           // Might be removed
     /**
      * List of registered arenas.
      */
-    protected final Map<Minigame, List<MatchmakingGameImpl>> arenas    = new HashMap<Minigame, List<MatchmakingGameImpl>>();
+    protected final Map<String, List<MatchmakingGameImpl>> arenas    = new HashMap<String, List<MatchmakingGameImpl>>();
     /**
      * List of players in matchmaking.
      */
-    protected final List<ProxiedPlayer>                      players   = new ArrayList<ProxiedPlayer>();
+    protected final List<ProxiedPlayer>                    players   = new ArrayList<ProxiedPlayer>();
     
     /**
      * Pending matchmaking request.
      */
-    protected final List<MatchmakingRequest>                 requests  = new ArrayList<MatchmakingRequest>();
+    protected final List<MatchmakingRequest>               requests  = new ArrayList<MatchmakingRequest>();
     /**
      * List of request being removed in this iteration.
      */
-    protected final List<MatchmakingRequest>                 removing  = new ArrayList<MatchmakingRequest>();
+    protected final List<MatchmakingRequest>               removing  = new ArrayList<MatchmakingRequest>();
     
     @Override
-    void cancelRequest(final MatchmakingRequest request) {
+    public void cancelRequest(final MatchmakingRequest request) {
         // TODO Auto-generated method stub
         
     }
@@ -67,7 +69,23 @@ public class MatchmakingProviderImpl extends MatchmakingProvider {
     }
     
     @Override
-    void addRequest(final MatchmakingRequest request) {
+    public void registerMinigame(final String name) {
+        this.minigames.add(name);
+    }
+    
+    @Override
+    public void registerArena(final MatchmakingGameImpl game) {
+        if (this.arenas.containsKey(game.getMinigameName())) {
+            this.arenas.get(game.getMinigameName()).add(game);
+        }
+        else {
+            this.arenas.put(game.getMinigameName(), new ArrayList<MatchmakingGameImpl>(
+                    Arrays.asList(game)));
+        }
+    }
+    
+    @Override
+    public void addRequest(final MatchmakingRequest request) {
         boolean safe = true;
         String playername = null;
         if (request.getMinigame() != null) {
@@ -113,7 +131,7 @@ public class MatchmakingProviderImpl extends MatchmakingProvider {
     }
     
     @Override
-    void doMatchmaking() {
+    public void doMatchmaking() {
         synchronized (this.requests) {
             this.removing.clear();
             

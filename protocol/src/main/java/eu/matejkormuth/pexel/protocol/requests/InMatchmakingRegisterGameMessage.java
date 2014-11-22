@@ -16,36 +16,32 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network;
+package eu.matejkormuth.pexel.protocol.requests;
+
+import java.nio.ByteBuffer;
+import java.util.UUID;
+
+import eu.matejkormuth.pexel.network.ByteUtils;
+import eu.matejkormuth.pexel.network.Request;
+import eu.matejkormuth.pexel.protocol.PexelProtocol;
 
 /**
- * Class that specifies request.
+ * Request for registering in matchmaking.
  */
-public abstract class Request extends Message {
-    protected long       requestID;
-    // Null when sending, hold sender object when processing.
-    protected ServerInfo sender;
+public class InMatchmakingRegisterGameMessage extends Request {
+    public UUID   gameId;
+    public String minigame;
     
-    public Request() {
-        this.requestID = 0;
+    @Override
+    public ByteBuffer toByteBuffer() {
+        return ByteUtils.writeUUID(ByteBuffer.allocate(8 + this.minigame.length()),
+                this.gameId).put(this.minigame.getBytes(PexelProtocol.CHARSET));
     }
     
-    /**
-     * Retrurns message sender. Valid only if this request has come on this server.
-     * 
-     * @return sender server.
-     */
-    public ServerInfo getSender() {
-        return this.sender;
+    @Override
+    public void fromByteBuffer(final ByteBuffer buffer) {
+        this.gameId = ByteUtils.readUUID(buffer);
+        this.minigame = new String(buffer.slice().array(), PexelProtocol.CHARSET);
     }
     
-    /**
-     * Sends this request to specified server.
-     * 
-     * @param target
-     *            target server.
-     */
-    public void send(final ServerInfo target) {
-        target.sendRequest(this);
-    }
 }

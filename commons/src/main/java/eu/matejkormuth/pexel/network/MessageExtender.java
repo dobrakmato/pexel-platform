@@ -24,8 +24,8 @@ import eu.matejkormuth.pexel.commons.Commitable;
 /**
  * Class that maintains sending and receveing packets on updated objects.
  */
-public abstract class MessageExtender<Rq extends Request, Rs extends Response> implements
-        Commitable {
+public abstract class MessageExtender<Rq extends Request, Rs extends Response>
+        implements Commitable {
     private ServerInfo         destination;
     private ServerType         side;
     private final Callback<Rs> callback;
@@ -49,7 +49,7 @@ public abstract class MessageExtender<Rq extends Request, Rs extends Response> i
     @Override
     public void commit() {
         if (this.side != ServerType.MASTER) { throw new RuntimeException(
-                "You must specify target when using send() method."); }
+                "You must specify target and use send(ServerInfo) method."); }
         
         Rq request = this.onRequest();
         this.destination.sendRequest(request);

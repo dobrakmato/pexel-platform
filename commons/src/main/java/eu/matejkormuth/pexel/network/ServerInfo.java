@@ -18,6 +18,7 @@
 // @formatter:on
 package eu.matejkormuth.pexel.network;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class ServerInfo {
     
     protected final String        name;
     protected ServerSide          side;
-    protected Map<String, String> custom;
+    protected Map<String, Object> custom;
     
     public ServerInfo(final String name) {
         this.name = name;
@@ -63,18 +64,38 @@ public class ServerInfo {
     
     public void setCustom(final String key, final String value) {
         if (this.custom == null) {
-            this.custom = new HashMap<String, String>();
+            this.custom = new HashMap<String, Object>();
         }
         this.custom.put(key, value);
     }
     
-    public String getCustom(final String key) {
+    public void setCustom(final String key, final Object value) {
+        if (this.custom == null) {
+            this.custom = new HashMap<String, Object>();
+        }
+        this.custom.put(key, value);
+    }
+    
+    public String getCustomAsString(final String key) {
+        if (this.custom == null) {
+            return null;
+        }
+        else {
+            return (String) this.custom.get(key);
+        }
+    }
+    
+    public Object getCustomAsObject(final String key) {
         if (this.custom == null) {
             return null;
         }
         else {
             return this.custom.get(key);
         }
+    }
+    
+    public Map<String, Object> getCustom() {
+        return Collections.unmodifiableMap(this.custom);
     }
     
     protected static void setLocalServer(final ServerInfo server) {

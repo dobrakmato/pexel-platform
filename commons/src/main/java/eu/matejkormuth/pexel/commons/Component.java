@@ -22,7 +22,8 @@ package eu.matejkormuth.pexel.commons;
  * Interface that represents component that can be enabled, disabled and have own {@link Logger}.
  */
 public abstract class Component {
-    protected Logger logger;
+    protected Logger               logger;
+    protected ConfigurationSection config;
     
     /**
      * Called when internal logic of component (not buisness logic) should be initialized.
@@ -34,6 +35,10 @@ public abstract class Component {
         this.logger = parentLogger.getLogger().getChild(this.getClass().getSimpleName());
     }
     
+    public void _initConfig(final Configuration parentConfiguration) {
+        this.config = parentConfiguration.getSection(this.getClass().getCanonicalName());
+    }
+    
     /**
      * Returns child logger for this component derived from master logger.
      * 
@@ -41,6 +46,10 @@ public abstract class Component {
      */
     public Logger getLogger() {
         return this.logger;
+    }
+    
+    public ConfigurationSection getConfiguration() {
+        return this.config;
     }
     
     public void onEnable() {

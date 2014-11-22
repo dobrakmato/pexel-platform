@@ -20,8 +20,6 @@ package eu.matejkormuth.pexel.commons.minigame;
 
 import java.util.List;
 
-import org.bukkit.Location;
-
 import eu.matejkormuth.pexel.commons.bans.Bannable;
 
 /**
@@ -62,5 +60,5 @@ public interface Minigame extends Bannable {
      * 
      * @return location of minigame's lobby
      */
-    public Location getLobbyLocation();
+    // public Location getLobbyLocation();
 }

@@ -24,6 +24,7 @@ import eu.matejkormuth.pexel.commons.matchmaking.GameState;
 import eu.matejkormuth.pexel.network.Response;
 import eu.matejkormuth.pexel.protocol.PexelProtocol;
 
+//Sent by slave
 public class InMatchmakingStatusResponse extends Response {
     public int       freeSlots;
     public int       maximumSlots;
