@@ -51,6 +51,18 @@ public abstract class MessageComunicator {
     public abstract void send(ServerInfo target, byte[] payload);
     
     /**
+     * Sends raw data (payload) to target server.
+     * 
+     * @param target
+     *            target server
+     * @param payload
+     *            data
+     * @param priority
+     *            priority
+     */
+    public abstract void send(ServerInfo target, byte[] payload, int priority);
+    
+    /**
      * Stops all connections.
      */
     public abstract void stop();

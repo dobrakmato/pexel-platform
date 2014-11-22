@@ -24,7 +24,7 @@ import java.util.UUID;
 import eu.matejkormuth.pexel.commons.matchmaking.GameState;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
 import eu.matejkormuth.pexel.master.PexelMaster;
-import eu.matejkormuth.pexel.network.PacketExtendor;
+import eu.matejkormuth.pexel.network.MessageExtender;
 import eu.matejkormuth.pexel.network.ProxiedPlayer;
 import eu.matejkormuth.pexel.network.ServerInfo;
 import eu.matejkormuth.pexel.network.ServerType;
@@ -35,7 +35,7 @@ import eu.matejkormuth.pexel.protocol.responses.InMatchmakingStatusResponse;
  * Master side implementation of MatchmakingGame.
  */
 public class MatchmakingGameImpl extends
-        PacketExtendor<OutMatchmakingGameStatusRequest, InMatchmakingStatusResponse>
+        MessageExtender<OutMatchmakingGameStatusRequest, InMatchmakingStatusResponse>
         implements MatchmakingGame {
     
     public MatchmakingGameImpl(final ServerInfo slave, final UUID gameId) {

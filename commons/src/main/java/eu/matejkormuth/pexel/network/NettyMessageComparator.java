@@ -18,19 +18,14 @@
 // @formatter:on
 package eu.matejkormuth.pexel.network;
 
+import java.util.Comparator;
+
 /**
- * Class that holds message paylod.
+ * Comparator for priority of two NettyMessages.
  */
-public class NettyMessage {
-    public NettyMessage(final byte[] array, final int priority) {
-        this.payload = array;
-        this.priority = priority;
+public class NettyMessageComparator implements Comparator<NettyMessage> {
+    @Override
+    public int compare(final NettyMessage o1, final NettyMessage o2) {
+        return o1.priority - o2.priority;
     }
-    
-    public NettyMessage(final byte[] array) {
-        this.payload = array;
-    }
-    
-    public byte[] payload;
-    public int    priority = 0;
 }

@@ -21,7 +21,7 @@ package eu.matejkormuth.pexel.network;
 /**
  * Annotation that specifies request target.
  */
-public @interface PacketTarget {
+public @interface MessageTarget {
     /**
      * Type of server, that message is send to.
      */

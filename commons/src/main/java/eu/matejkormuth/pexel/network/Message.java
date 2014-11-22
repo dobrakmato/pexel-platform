@@ -24,10 +24,13 @@ import java.nio.ByteBuffer;
  * Class that represents message over network.
  */
 public abstract class Message {
+    // Is this message a message with high priority?
+    protected boolean highPriority = false;
+    
     /**
      * ID of request that involved creation of this message.
      */
-    protected long requestID;
+    protected long    requestID;
     
     /**
      * Returns byte array representation of this message.
@@ -43,4 +46,8 @@ public abstract class Message {
      *            array containing data
      */
     public abstract void fromByteBuffer(ByteBuffer buffer);
+    
+    public void setPriority(final boolean highPriority) {
+        this.highPriority = highPriority;
+    }
 }

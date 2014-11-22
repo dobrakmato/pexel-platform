@@ -42,24 +42,28 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLException;
 
 import eu.matejkormuth.pexel.commons.Logger;
 
 public class NettyServerComunicator extends MessageComunicator {
-    protected final ChannelGroup                     channels        = new DefaultChannelGroup(
-                                                                             GlobalEventExecutor.INSTANCE);
-    protected Map<String, ChannelHandlerContext>     ctxByName       = new HashMap<String, ChannelHandlerContext>();
-    protected Map<ChannelHandlerContext, ServerInfo> serverInfoByCTX = new HashMap<ChannelHandlerContext, ServerInfo>();
-    protected MasterServer                           server;
-    protected String                                 authKey;
+    protected final ChannelGroup                                              channels        = new DefaultChannelGroup(
+                                                                                                      GlobalEventExecutor.INSTANCE);
+    protected Map<String, ChannelHandlerContext>                              ctxByName       = new HashMap<String, ChannelHandlerContext>();
+    protected Map<ChannelHandlerContext, ServerInfo>                          serverInfoByCTX = new HashMap<ChannelHandlerContext, ServerInfo>();
+    protected MasterServer                                                    server;
+    protected String                                                          authKey;
     
-    protected Logger                                 log;
-    protected ServerBootstrap                        b;
-    protected int                                    port;
+    protected Map<ChannelHandlerContext, PriorityBlockingQueue<NettyMessage>> queues          = new HashMap<ChannelHandlerContext, PriorityBlockingQueue<NettyMessage>>();
     
-    static final boolean                             SSL             = System.getProperty("ssl") != null;
+    protected Logger                                                          log;
+    protected ServerBootstrap                                                 b;
+    protected int                                                             port;
+    
+    static final boolean                                                      SSL             = System.getProperty("ssl") != null;
     
     public NettyServerComunicator(final PayloadHandler handler, final int port,
             final String authKey, final MasterServer server) {
@@ -108,6 +112,13 @@ public class NettyServerComunicator extends MessageComunicator {
                     .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new NettyServerComunicatorInitializer(sslCtx));
             
+            workerGroup.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    NettyServerComunicator.this.sendQueues();
+                }
+            }, 0L, 10L, TimeUnit.MILLISECONDS);
+            
             this.b.bind(port).sync().channel().closeFuture().sync();
         }
         finally {
@@ -117,9 +128,29 @@ public class NettyServerComunicator extends MessageComunicator {
         }
     }
     
+    protected void sendQueues() {
+        for (ChannelHandlerContext ctx : this.queues.keySet()) {
+            while (!this.queues.get(ctx).isEmpty()) {
+                ctx.writeAndFlush(this.queues.get(ctx).poll());
+            }
+        }
+    }
+    
+    @Override
+    public void send(final ServerInfo target, final byte[] payload, final int priority) {
+        ChannelHandlerContext ctx = this.getCTX(target);
+        if (this.queues.containsKey(ctx)) {
+            this.queues.get(ctx).add(new NettyMessage(payload, priority));
+        }
+        else {
+            this.queues.put(ctx, new PriorityBlockingQueue<NettyMessage>());
+            this.queues.get(ctx).add(new NettyMessage(payload, priority));
+        }
+    }
+    
     @Override
     public void send(final ServerInfo target, final byte[] payload) {
-        this.getCTX(target).writeAndFlush(new NettyMessage(payload));
+        this.send(target, payload, 0);
     }
     
     public ServerInfo getServerInfo(final ChannelHandlerContext ctx) {

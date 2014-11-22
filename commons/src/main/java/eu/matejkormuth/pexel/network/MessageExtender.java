@@ -24,13 +24,13 @@ import eu.matejkormuth.pexel.commons.Commitable;
 /**
  * Class that maintains sending and receveing packets on updated objects.
  */
-public abstract class PacketExtendor<Rq extends Request, Rs extends Response> implements
+public abstract class MessageExtender<Rq extends Request, Rs extends Response> implements
         Commitable {
     private ServerInfo         destination;
     private ServerType         side;
     private final Callback<Rs> callback;
     
-    public PacketExtendor(final ServerType side) {
+    public MessageExtender(final ServerType side) {
         if (side == ServerType.MASTER) {
             this.destination = null;
         }
@@ -41,7 +41,7 @@ public abstract class PacketExtendor<Rq extends Request, Rs extends Response> im
         this.callback = new Callback<Rs>() {
             @Override
             public void onResponse(final Rs response) {
-                PacketExtendor.this.onResponse(response);
+                MessageExtender.this.onResponse(response);
             }
         };
     }

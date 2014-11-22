@@ -31,15 +31,24 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.TimeUnit;
+
 import javax.net.ssl.SSLException;
 
 import eu.matejkormuth.pexel.commons.Logger;
 
 public class NettyClientComunicator extends MessageComunicator {
-    private Bootstrap        b;
-    private Channel          channelToMaster;
-    private final ServerInfo master;
-    private final Logger     log;
+    private Bootstrap                     b;
+    private Channel                       channelToMaster;
+    private final ServerInfo              master;
+    private final Logger                  log;
+    
+    // Queue.
+    protected BlockingQueue<NettyMessage> payloads = new PriorityBlockingQueue<NettyMessage>(
+                                                           100,
+                                                           new NettyMessageComparator());
     
     public NettyClientComunicator(final PayloadHandler handler, final int port,
             final String host, final String authKey, final SlaveServer server) {
@@ -68,6 +77,13 @@ public class NettyClientComunicator extends MessageComunicator {
                     .channel(NioSocketChannel.class)
                     .handler(new NettyClientComunicatorInitializer(sslCtx, port, host));
             
+            group.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    NettyClientComunicator.this.sendQueue();
+                }
+            }, 0L, 10L, TimeUnit.MILLISECONDS);
+            
             this.log.info("Connecting to master...");
             // Start the connection attempt.
             this.channelToMaster = this.b.connect(host, port).sync().channel();
@@ -84,14 +100,26 @@ public class NettyClientComunicator extends MessageComunicator {
         }
     }
     
+    protected void sendQueue() {
+        while (!this.payloads.isEmpty()) {
+            this.channelToMaster.writeAndFlush(this.payloads.poll());
+        }
+    }
+    
     @Override
-    public void send(final ServerInfo target, final byte[] payload) {
+    public void send(final ServerInfo target, final byte[] payload, final int priority) {
         if (target != this.master) {
             throw new RuntimeException("Sorry, slave can only send payloads to master.");
         }
         else {
-            this.channelToMaster.writeAndFlush(new NettyMessage(payload));
+            
+            this.payloads.offer(new NettyMessage(payload, priority));
         }
+    }
+    
+    @Override
+    public void send(final ServerInfo target, final byte[] payload) {
+        this.send(target, payload, 0);
     }
     
     @Override

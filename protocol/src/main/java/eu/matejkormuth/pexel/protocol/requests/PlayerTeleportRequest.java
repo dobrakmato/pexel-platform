@@ -3,7 +3,7 @@ package eu.matejkormuth.pexel.protocol.requests;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
-import eu.matejkormuth.pexel.network.PacketTarget;
+import eu.matejkormuth.pexel.network.MessageTarget;
 import eu.matejkormuth.pexel.network.Request;
 import eu.matejkormuth.pexel.network.ServerType;
 import eu.matejkormuth.pexel.protocol.PexelProtocol;
@@ -11,7 +11,7 @@ import eu.matejkormuth.pexel.protocol.PexelProtocol;
 /**
  * Cross server teleportation request.
  */
-@PacketTarget(ServerType.MASTER)
+@MessageTarget(ServerType.MASTER)
 public class PlayerTeleportRequest extends Request {
     public String targetServer;
     public UUID   uuid;
