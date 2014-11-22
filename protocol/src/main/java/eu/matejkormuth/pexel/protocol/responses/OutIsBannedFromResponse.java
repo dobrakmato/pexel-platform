@@ -16,40 +16,25 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.protocol.requests;
+package eu.matejkormuth.pexel.protocol.responses;
 
 import java.nio.ByteBuffer;
 
-import eu.matejkormuth.pexel.commons.TransferPurpose;
-import eu.matejkormuth.pexel.network.Request;
-import eu.matejkormuth.pexel.protocol.PexelProtocol;
+import eu.matejkormuth.pexel.network.Response;
 
 /**
- * Request that carries file.
+ *
  */
-public class FileTransferRequest extends Request {
-    public TransferPurpose tranfserPurpose;
-    public String          name;
-    public byte[]          data;
-    
-    public FileTransferRequest(final TransferPurpose tranfserPurpose, final String name,
-            final byte[] data) {
-        this.tranfserPurpose = tranfserPurpose;
-        this.name = name;
-        this.data = data;
-    }
+public class OutIsBannedFromResponse extends Response {
+    public boolean banned;
     
     @Override
     public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(1 + this.name.length() + this.data.length)
-                .put(this.tranfserPurpose.getByte())
-                .put(this.name.getBytes(PexelProtocol.CHARSET))
-                .put(this.data);
+        return ByteBuffer.allocate(1).put((byte) (this.banned ? 1 : 0));
     }
     
     @Override
     public void fromByteBuffer(final ByteBuffer buffer) {
-        // TODO Auto-generated method stub
-        
+        this.banned = buffer.get() == 0 ? false : true;
     }
 }

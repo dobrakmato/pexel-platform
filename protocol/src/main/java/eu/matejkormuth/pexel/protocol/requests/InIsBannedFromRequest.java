@@ -19,37 +19,35 @@
 package eu.matejkormuth.pexel.protocol.requests;
 
 import java.nio.ByteBuffer;
+import java.util.UUID;
 
-import eu.matejkormuth.pexel.commons.TransferPurpose;
-import eu.matejkormuth.pexel.network.Request;
+import eu.matejkormuth.pexel.network.AsyncRequest;
+import eu.matejkormuth.pexel.network.ByteUtils;
+import eu.matejkormuth.pexel.network.Callback;
 import eu.matejkormuth.pexel.protocol.PexelProtocol;
+import eu.matejkormuth.pexel.protocol.responses.OutIsBannedFromResponse;
 
 /**
- * Request that carries file.
+ * 
  */
-public class FileTransferRequest extends Request {
-    public TransferPurpose tranfserPurpose;
-    public String          name;
-    public byte[]          data;
-    
-    public FileTransferRequest(final TransferPurpose tranfserPurpose, final String name,
-            final byte[] data) {
-        this.tranfserPurpose = tranfserPurpose;
-        this.name = name;
-        this.data = data;
+public class InIsBannedFromRequest extends AsyncRequest {
+    public InIsBannedFromRequest(final Callback<OutIsBannedFromResponse> callback) {
+        super(callback);
     }
+    
+    public UUID   player;
+    public String part;
     
     @Override
     public ByteBuffer toByteBuffer() {
-        return ByteBuffer.allocate(1 + this.name.length() + this.data.length)
-                .put(this.tranfserPurpose.getByte())
-                .put(this.name.getBytes(PexelProtocol.CHARSET))
-                .put(this.data);
+        return ByteUtils.writeUUID(ByteBuffer.allocate(8 + this.part.length()),
+                this.player).put(this.part.getBytes(PexelProtocol.CHARSET));
     }
     
     @Override
     public void fromByteBuffer(final ByteBuffer buffer) {
-        // TODO Auto-generated method stub
-        
+        this.player = ByteUtils.readUUID(buffer);
+        this.part = new String(buffer.slice().array(), PexelProtocol.CHARSET);
     }
+    
 }

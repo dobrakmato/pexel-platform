@@ -18,69 +18,17 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave;
 
-import java.util.List;
 import java.util.UUID;
 
-import eu.matejkormuth.pexel.commons.matchmaking.GameState;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
-import eu.matejkormuth.pexel.network.ProxiedPlayer;
 
 /**
  * Slave side implementation of {@link MatchmakingGame}.
  */
-public class MatchmakingGameImpl implements MatchmakingGame {
+public abstract class MatchmakingGameImpl implements MatchmakingGame {
     protected UUID gameId;
     
     public MatchmakingGameImpl() {
         this.gameId = UUID.randomUUID();
     }
-    
-    @Override
-    public int getFreeSlots() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-    
-    @Override
-    public boolean empty() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-    
-    @Override
-    public int getMaximumSlots() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-    
-    @Override
-    public GameState getState() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    
-    @Override
-    public List<ProxiedPlayer> getPlayers() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    
-    @Override
-    public int getPlayerCount() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-    
-    @Override
-    public boolean canJoin() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-    
-    @Override
-    public boolean canJoin(final int count) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-    
 }

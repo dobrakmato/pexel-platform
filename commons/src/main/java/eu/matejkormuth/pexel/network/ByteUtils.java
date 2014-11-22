@@ -18,7 +18,9 @@
 // @formatter:on
 package eu.matejkormuth.pexel.network;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.UUID;
 
 /**
  * Byte utilities.
@@ -40,6 +42,16 @@ public class ByteUtils {
         array[index + 5] = (byte) (i >> 16);
         array[index + 6] = (byte) (i >> 8);
         array[index + 7] = (byte) (i >> 0);
+    }
+    
+    public static ByteBuffer writeUUID(final ByteBuffer buffer, final UUID uuid) {
+        buffer.putLong(uuid.getMostSignificantBits()).putLong(
+                uuid.getLeastSignificantBits());
+        return buffer;
+    }
+    
+    public static UUID readUUID(final ByteBuffer buffer) {
+        return new UUID(buffer.getLong(), buffer.getLong());
     }
     
     public static byte[] merge(final byte[] array1, final byte[] array2) {
