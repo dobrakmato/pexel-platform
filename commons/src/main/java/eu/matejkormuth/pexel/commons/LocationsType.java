@@ -16,30 +16,21 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons.actions;
+package eu.matejkormuth.pexel.commons;
 
-import org.bukkit.entity.Player;
-
-import eu.matejkormuth.pexel.commons.menu.InventoryMenu;
+import javax.xml.bind.annotation.XmlType;
 
 /**
- * Inventory menu action that opens another inventory menu.
+ * Type of locations in {@link MapData}. Specifies if are location in MapData relative to anchor or absolute.
  */
-public class OpenInventoryMenuAction implements Action {
-    private final InventoryMenu inventoryMenu;
-    
+@XmlType(name = "locationtype")
+public enum LocationsType {
     /**
-     * Creates new action that opens specified inventory menu when player clicks icon.
-     * 
-     * @param im
-     *            another InventoryMenu
+     * Co-ordinates are in absolute values.
      */
-    public OpenInventoryMenuAction(final InventoryMenu im) {
-        this.inventoryMenu = im;
-    }
-    
-    @Override
-    public void execute(final Player player) {
-        this.inventoryMenu.showTo(player);
-    }
+    ABSOLUTE,
+    /**
+     * Co-ordinates are in relative values. Absolute values are evaulated using {@link MapData#anchor}.
+     */
+    RELATIVE;
 }

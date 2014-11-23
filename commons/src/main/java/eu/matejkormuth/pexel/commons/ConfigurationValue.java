@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ConfigurationEntry {
+public class ConfigurationValue {
     /**
      * Key in configuration.
      */
@@ -39,47 +39,47 @@ public class ConfigurationEntry {
      */
     protected Object value;
     
-    public ConfigurationEntry() {
+    public ConfigurationValue() {
     }
     
-    private ConfigurationEntry(final Object value, final String key) {
+    private ConfigurationValue(final Object value, final String key) {
         this.key = key;
         this.value = value;
     }
     
-    public ConfigurationEntry(final String key, final Object value) {
+    public ConfigurationValue(final String key, final Object value) {
         this(value, key);
     }
     
-    public ConfigurationEntry(final String key, final byte value) {
+    public ConfigurationValue(final String key, final byte value) {
         this(value, key);
     }
     
-    public ConfigurationEntry(final String key, final short value) {
+    public ConfigurationValue(final String key, final short value) {
         this(value, key);
     }
     
-    public ConfigurationEntry(final String key, final int value) {
+    public ConfigurationValue(final String key, final int value) {
         this(value, key);
     }
     
-    public ConfigurationEntry(final String key, final long value) {
+    public ConfigurationValue(final String key, final long value) {
         this(value, key);
     }
     
-    public ConfigurationEntry(final String key, final float value) {
+    public ConfigurationValue(final String key, final float value) {
         this(value, key);
     }
     
-    public ConfigurationEntry(final String key, final double value) {
+    public ConfigurationValue(final String key, final double value) {
         this(value, key);
     }
     
-    public ConfigurationEntry(final String key, final String value) {
+    public ConfigurationValue(final String key, final String value) {
         this((Object) value, key);
     }
     
-    public ConfigurationEntry(final String key, final ConfigurationSection value) {
+    public ConfigurationValue(final String key, final ConfigurationSection value) {
         this(value, key);
     }
     

@@ -26,9 +26,6 @@ import eu.matejkormuth.pexel.network.ProxiedPlayer;
 
 /**
  * Request for matchmaking.
- * 
- * @author Mato Kormuth
- * 
  */
 public class MatchmakingRequest {
     /**

@@ -16,20 +16,14 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons.minigame;
-
-import java.util.Arrays;
-import java.util.List;
+package eu.matejkormuth.pexel.commons;
 
 /**
- * All minigame types / tags.
+ * Interface that specifies that this object is fetchable (can be downloaded from remote server).
  */
-public enum MinigameType {
-    TNT,
-    CREEPER,
-    PVP;
-    
-    public static final List<MinigameType> makeTypes(final MinigameType... types) {
-        return Arrays.asList(types);
-    }
+public interface Fetchable {
+    /**
+     * Downloads object data from remote server.
+     */
+    public void fetch();
 }

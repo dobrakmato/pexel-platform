@@ -37,9 +37,6 @@ import javax.xml.bind.annotation.XmlType;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import eu.matejkormuth.pexel.commons.arenas.InvalidMapDataException;
-import eu.matejkormuth.pexel.commons.arenas.LocationsType;
-
 /**
  * Class that represents data of playable map (not block data).
  */
@@ -75,7 +72,7 @@ public class MapData {
     @XmlElementWrapper(name = "locations")
     protected final Map<String, SerializableLocation> locations            = new HashMap<String, SerializableLocation>();
     @XmlElementWrapper(name = "regions")
-    protected final Map<String, Region>               regions              = new HashMap<String, Region>();
+    protected final Map<String, CuboidRegion>               regions              = new HashMap<String, CuboidRegion>();
     
     @XmlAttribute(name = "locationsType")
     protected LocationsType                           locationsType        = LocationsType.ABSOLUTE;
@@ -84,7 +81,7 @@ public class MapData {
     protected int                                     maxPlayers           = 16;                                         // Default value of 16.
                                                                                                                           
     @XmlAttribute(name = "protectedRegion")
-    protected Region                                  protectedRegion;
+    protected CuboidRegion                                  protectedRegion;
     
     @XmlElement(name = "anchor")
     // Used only if locationsType is RELATIVE.
@@ -108,7 +105,7 @@ public class MapData {
      */
     public void init(final int maxPlayers, final int minPlayers,
             final int countdownLength, final Location spawnLocation,
-            final Region protectedRegion) {
+            final CuboidRegion protectedRegion) {
         this.maxPlayers = maxPlayers;
         this.options_int.put(MapData.KEY_COUNTDOWN_LENGHT, countdownLength);
         this.options_int.put(MapData.KEY_MINIMAL_PLAYERS, minPlayers);
@@ -170,7 +167,7 @@ public class MapData {
         }
     }
     
-    public Region getRegion(final String key) {
+    public CuboidRegion getRegion(final String key) {
         if (this.locationsType == LocationsType.ABSOLUTE) {
             return this.regions.get(key);
         }
@@ -192,11 +189,11 @@ public class MapData {
         return this.locations;
     }
     
-    public Map<String, Region> getRegions() {
+    public Map<String, CuboidRegion> getRegions() {
         return this.regions;
     }
     
-    public Region getProtectedRegion() {
+    public CuboidRegion getProtectedRegion() {
         return this.protectedRegion;
     }
     

@@ -18,10 +18,23 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons.bans;
 
+import eu.matejkormuth.pexel.commons.minigame.Minigame;
+import eu.matejkormuth.pexel.network.ServerInfo;
+
 /**
  * Represents part of network, from which can be player banned.
  */
 public interface Bannable {
+    // Bannable ID prefixes.
+    /**
+     * Prefix for {@link ServerInfo}.
+     */
+    public static final String PREFIX_SERVER   = "server_";
+    /**
+     * Prefix for {@link Minigame}.
+     */
+    public static final String PREFIX_MINIGAME = "minigame_";
+    
     /**
      * Name of the bannable part.
      * 

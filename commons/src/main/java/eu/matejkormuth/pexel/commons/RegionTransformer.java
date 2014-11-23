@@ -31,8 +31,8 @@ public class RegionTransformer {
      *            absolute anchor
      * @return absoluted region
      */
-    public static Region toAbsolute(final Region relative, final Location anchor) {
-        return new Region(anchor.toVector().add(relative.v1), anchor.toVector().add(
+    public static CuboidRegion toAbsolute(final CuboidRegion relative, final Location anchor) {
+        return new CuboidRegion(anchor.toVector().add(relative.v1), anchor.toVector().add(
                 relative.v2), anchor.getWorld());
     }
     

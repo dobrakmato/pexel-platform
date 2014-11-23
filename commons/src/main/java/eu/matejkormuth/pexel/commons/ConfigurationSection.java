@@ -38,9 +38,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ConfigurationSection extends Unmarshaller.Listener {
     @XmlAttribute
     protected String                                    key;
-    protected List<ConfigurationEntry>                  entry;
+    protected List<ConfigurationValue>                  entry;
     // Internal map.
-    protected transient Map<String, ConfigurationEntry> map;
+    protected transient Map<String, ConfigurationValue> map;
     
     public ConfigurationSection() {
         
@@ -48,8 +48,8 @@ public class ConfigurationSection extends Unmarshaller.Listener {
     
     public ConfigurationSection(final String key) {
         this.key = key;
-        this.entry = new ArrayList<ConfigurationEntry>();
-        this.map = new HashMap<String, ConfigurationEntry>();
+        this.entry = new ArrayList<ConfigurationValue>();
+        this.map = new HashMap<String, ConfigurationValue>();
     }
     
     public String getKey() {
@@ -67,7 +67,7 @@ public class ConfigurationSection extends Unmarshaller.Listener {
      *            key
      * @return value
      */
-    public ConfigurationEntry get(final String key) {
+    public ConfigurationValue get(final String key) {
         if (this.map == null) {
             this.afterUnmarshal(null, null);
         }
@@ -83,12 +83,12 @@ public class ConfigurationSection extends Unmarshaller.Listener {
      *            default values that will be used, when no value is found
      * @return value
      */
-    public ConfigurationEntry get(final String key, final Object defaultValue) {
+    public ConfigurationValue get(final String key, final Object defaultValue) {
         if (this.map == null) {
             this.afterUnmarshal(null, null);
         }
         if (this.map.containsKey(key)) { return this.get(key); }
-        return this.add(new ConfigurationEntry(key, defaultValue));
+        return this.add(new ConfigurationValue(key, defaultValue));
     }
     
     /**
@@ -102,15 +102,15 @@ public class ConfigurationSection extends Unmarshaller.Listener {
         return this.get(key).asSection();
     }
     
-    public ConfigurationEntry add(final ConfigurationEntry entry) {
+    public ConfigurationValue add(final ConfigurationValue entry) {
         this.entry.add(entry);
         this.map.put(entry.key, entry);
         return entry;
     }
     
     public void remove(final String key) {
-        for (Iterator<ConfigurationEntry> iterator = this.entry.iterator(); iterator.hasNext();) {
-            ConfigurationEntry ce = iterator.next();
+        for (Iterator<ConfigurationValue> iterator = this.entry.iterator(); iterator.hasNext();) {
+            ConfigurationValue ce = iterator.next();
             if (ce.key.equals(key)) {
                 iterator.remove();
                 this.map.remove(key);
@@ -121,8 +121,8 @@ public class ConfigurationSection extends Unmarshaller.Listener {
     @Override
     public void afterUnmarshal(final Object target, final Object parent) {
         // Create map.
-        this.map = new HashMap<String, ConfigurationEntry>(this.entry.size());
-        for (ConfigurationEntry entry : this.entry) {
+        this.map = new HashMap<String, ConfigurationValue>(this.entry.size());
+        for (ConfigurationValue entry : this.entry) {
             this.map.put(entry.key, entry);
         }
     }

@@ -23,12 +23,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import eu.matejkormuth.pexel.commons.JsonType;
+import eu.matejkormuth.pexel.commons.bans.Bannable;
 
 /**
  * Class that represents server on network.
  */
 @JsonType
-public class ServerInfo {
+public class ServerInfo implements Bannable {
     private transient static ServerInfo local;
     
     protected final String              name;
@@ -108,5 +109,15 @@ public class ServerInfo {
         else {
             throw new RuntimeException("Field local has been initialized before!");
         }
+    }
+    
+    @Override
+    public String getBannableName() {
+        return "Server: " + this.name;
+    }
+    
+    @Override
+    public String getBannableID() {
+        return Bannable.PREFIX_SERVER + this.name;
     }
 }

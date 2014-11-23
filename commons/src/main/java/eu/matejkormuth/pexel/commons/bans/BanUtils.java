@@ -21,7 +21,10 @@ package eu.matejkormuth.pexel.commons.bans;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class BanUtils {
+/**
+ * Class that contains basic ban utils for text formating.
+ */
+public abstract class BanUtils {
     private static final SimpleDateFormat format = new SimpleDateFormat(
                                                          "yyyy 'years', MM 'moths', dd 'days' 'and' HH 'hours', mm 'minutes', ss 'seconds'");
     

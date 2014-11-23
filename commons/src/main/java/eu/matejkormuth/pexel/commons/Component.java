@@ -22,7 +22,13 @@ package eu.matejkormuth.pexel.commons;
  * Interface that represents component that can be enabled, disabled and have own {@link Logger}.
  */
 public abstract class Component {
+    /**
+     * Logger object of this componenet.
+     */
     protected Logger               logger;
+    /**
+     * Configuration section of this component.
+     */
     protected ConfigurationSection config;
     
     /**
@@ -35,12 +41,18 @@ public abstract class Component {
         this.logger = parentLogger.getLogger().getChild(this.getClass().getSimpleName());
     }
     
+    /**
+     * Called when internal logic of component (not buisness logic) should be initialized.
+     * 
+     * @param parentConfiguration
+     *            configuration of parent, who contains this component.
+     */
     public void _initConfig(final Configuration parentConfiguration) {
         this.config = parentConfiguration.getSection(this.getClass().getCanonicalName());
     }
     
     /**
-     * Returns child logger for this component derived from master logger.
+     * Returns child {@link Logger} for this component derived from master logger.
      * 
      * @return child logger
      */
@@ -48,13 +60,24 @@ public abstract class Component {
         return this.logger;
     }
     
+    /**
+     * Returns {@link ConfigurationSection} of this component.
+     * 
+     * @return configuration section of this component.
+     */
     public ConfigurationSection getConfiguration() {
         return this.config;
     }
     
+    /**
+     * Called when componenet is enabled.
+     */
     public void onEnable() {
     };
     
+    /**
+     * Called when componenet is disabled.
+     */
     public void onDisable() {
     };
 }

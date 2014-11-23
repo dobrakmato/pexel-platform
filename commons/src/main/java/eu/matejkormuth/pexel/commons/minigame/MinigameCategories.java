@@ -16,21 +16,23 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network;
-
-import java.util.UUID;
+package eu.matejkormuth.pexel.commons.minigame;
 
 /**
- * Class that represents network player.
+ * Class that contains minigames categories.
  */
-public class PlayerInfo {
-    public final UUID   uuid;
-    public final String lastName;
-    public final String email;
-    
-    public PlayerInfo(final UUID uuid, final String lastName, final String email) {
-        this.uuid = uuid;
-        this.lastName = lastName;
-        this.email = email;
-    }
+public abstract class MinigameCategories {
+    /**
+     * Aracade minigame (ex. Tnt Tag).
+     */
+    public static final MinigameCategory ARCADE     = null;
+    /**
+     * Minigame that is about to survive (ex. Survival Games).
+     */
+    public static final MinigameCategory SURVIVAL   = null;
+    /**
+     * Mingiame that is ready for tournaments (ex. Kingdom Wars, Annihilation). Minigames in this category have enabled
+     * negative points for leaving match before match ends.
+     */
+    public static final MinigameCategory TOURNAMENT = null;
 }

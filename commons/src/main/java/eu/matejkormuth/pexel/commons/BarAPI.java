@@ -19,15 +19,45 @@
 package eu.matejkormuth.pexel.commons;
 
 /**
- * Enum that specifies all supported savegame types.
+ * Custom implemenation of dragon bar api.
  */
-public enum SaveType {
+public class BarAPI {
+    
     /**
-     * Minecraft world save.
+     * @param player
+     * @return
      */
-    MINECRAFT_WORLD,
+    public static boolean hasBar(final Player player) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+    
     /**
-     * Schematic file.
+     * @param player
      */
-    SCHEMATIC;
+    public static void removeBar(final Player player) {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    /**
+     * @param p
+     * @param message
+     */
+    public static void setMessage(final Player p, final String message) {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    /**
+     * @param p
+     * @param message
+     * @param percent
+     */
+    public static void setMessage(final Player p, final String message,
+            final float percent) {
+        // TODO Auto-generated method stub
+        
+    }
+    
 }

@@ -20,7 +20,7 @@ package eu.matejkormuth.pexel.commons.matchmaking;
 
 import java.util.List;
 
-import eu.matejkormuth.pexel.network.ProxiedPlayer;
+import eu.matejkormuth.pexel.commons.Player;
 
 /**
  * Specifies that the object is game participating in matchmaking.
@@ -59,7 +59,7 @@ public interface MatchmakingGame {
      * 
      * @return
      */
-    public List<ProxiedPlayer> getPlayers();
+    public List<Player> getPlayers();
     
     /**
      * Returns number of player in game.
@@ -86,5 +86,5 @@ public interface MatchmakingGame {
     
     // Note: Removed these methods since they are slave only methods, so they will be in slave's MatchmakingGame implementation.
     // public void onPlayerJoin(Player player);
-    // public void onPlayerLeft(Player player, DisconnectReason reason);
+    // public void onPlayerLeft(Player player, ArenaDisconnectReason reason);
 }

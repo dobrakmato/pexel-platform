@@ -19,20 +19,13 @@
 package eu.matejkormuth.pexel.commons.minigame;
 
 /**
- * All categories of minigames.
+ * Category of minigame.
  */
-public enum MinigameCategory {
+public interface MinigameCategory {
     /**
-     * Aracade minigame (ex. Tnt Tag).
+     * Returns name of this minigame category.
+     * 
+     * @return name of this minigame category.
      */
-    ARCADE,
-    /**
-     * Minigame that is about to survive (ex. Survival Games).
-     */
-    SURVIVAL,
-    /**
-     * Mingiame that is ready for tournaments (ex. Kingdom Wars, Annihilation). Minigames in this category have enabled
-     * negative points for leaving match before match ends.
-     */
-    TOURNAMENT;
+    public String getName();
 }

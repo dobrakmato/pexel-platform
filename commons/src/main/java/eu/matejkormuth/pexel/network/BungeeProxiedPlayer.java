@@ -18,10 +18,18 @@
 // @formatter:on
 package eu.matejkormuth.pexel.network;
 
+import java.util.UUID;
+
+import org.bukkit.Location;
+
+import eu.matejkormuth.pexel.commons.MetadataStore;
+import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.data.Profile;
+
 /**
  * Bungee implementation of proxied player.
  */
-public class BungeeProxiedPlayer extends ProxiedPlayer {
+public class BungeeProxiedPlayer extends Player {
     // Internal
     net.md_5.bungee.api.connection.ProxiedPlayer internal;
     
@@ -36,4 +44,28 @@ public class BungeeProxiedPlayer extends ProxiedPlayer {
         return this.internal.getDisplayName();
     }
     
+    @Override
+    public Profile getProfile() {
+        return null;
+    }
+    
+    @Override
+    public MetadataStore getMetadata() {
+        return null;
+    }
+    
+    @Override
+    public UUID getUUID() {
+        return null;
+    }
+    
+    @Override
+    public void kick(final String reason) {
+        
+    }
+    
+    @Override
+    public void teleport(final Location loc) {
+        
+    }
 }

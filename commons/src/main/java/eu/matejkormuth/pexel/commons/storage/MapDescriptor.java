@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.matejkormuth.pexel.commons.JsonType;
-import eu.matejkormuth.pexel.commons.SaveType;
+import eu.matejkormuth.pexel.commons.MapSaveType;
 
 /**
  * Description of map.
@@ -32,7 +32,7 @@ import eu.matejkormuth.pexel.commons.SaveType;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MapDescriptor extends Description {
-    private SaveType saveType;
+    private MapSaveType saveType;
     private String   minigame;
     
     /**
@@ -41,11 +41,11 @@ public class MapDescriptor extends Description {
     public MapDescriptor() {
     }
     
-    public SaveType getSaveType() {
+    public MapSaveType getSaveType() {
         return this.saveType;
     }
     
-    public void setSaveType(final SaveType saveType) {
+    public void setSaveType(final MapSaveType saveType) {
         this.saveType = saveType;
     }
     

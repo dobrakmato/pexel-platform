@@ -18,12 +18,10 @@
 // @formatter:on-
 package eu.matejkormuth.pexel.commons.minigame;
 
-import java.util.List;
-
 import eu.matejkormuth.pexel.commons.bans.Bannable;
 
 /**
- * Interface for minigame.
+ * Interface that represents minigame.
  */
 public interface Minigame extends Bannable {
     /**
@@ -47,13 +45,6 @@ public interface Minigame extends Bannable {
      * @return minigame categorry
      */
     public MinigameCategory getCategory();
-    
-    /**
-     * Returns minigame types.
-     * 
-     * @return all minigame types.
-     */
-    public List<MinigameType> getTypes();
     
     /**
      * Returns the minigame lobby location.

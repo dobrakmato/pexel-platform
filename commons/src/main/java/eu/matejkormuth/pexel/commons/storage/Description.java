@@ -31,7 +31,7 @@ import eu.matejkormuth.pexel.commons.JsonType;
 import eu.matejkormuth.pexel.commons.Revision;
 
 /**
- * Global description.
+ * Class that specifies default fields for every description.
  */
 @JsonType
 @XmlRootElement

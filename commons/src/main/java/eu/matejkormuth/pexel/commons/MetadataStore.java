@@ -30,6 +30,7 @@ import com.google.gson.reflect.TypeToken;
 public class MetadataStore implements Metadatable {
     private static Type               MAP_TYPE = new TypeToken<Map<String, String>>() {
                                                }.getType();
+    // Internal map containing metadata.                                           
     private final Map<String, String> internal;
     
     private MetadataStore() {

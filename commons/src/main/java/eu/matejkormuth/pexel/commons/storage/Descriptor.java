@@ -25,7 +25,7 @@ public interface Descriptor {
     /**
      * Returns byte array containing all data used for reconstruction of part.
      * 
-     * @return
+     * @return byte array containing all data of this object
      */
     public byte[] getData();
 }

@@ -16,29 +16,34 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons.actions;
-
-import org.bukkit.entity.Player;
+package eu.matejkormuth.pexel.commons;
 
 /**
- * Basic sudo command player action.
+ * Reasons for disconnecting from arena.
  */
-public class CommandAction implements Action {
-    private String command = "";
-    
+public enum ArenaDisconnectReason {
     /**
-     * Creates a new command action. Command should <b> not contain</b> slash. <code>%player%</code> in command will be
-     * replaced with name of player, that is this command executing for.
-     * 
-     * @param command
-     *            command of this action
+     * Player has invoked disconnect from server.
      */
-    public CommandAction(final String command) {
-        this.command = command;
-    }
-    
-    @Override
-    public void execute(final Player player) {
-        player.performCommand(this.command.replace("%player%", player.getName()));
-    }
+    PLAYER_DISCONNECT,
+    /**
+     * Player has lost connection to server.
+     */
+    PLAYER_CONNECTION_LOST,
+    /**
+     * Player has used /leave command or left by his decision.
+     */
+    PLAYER_LEAVE,
+    /**
+     * Invoked by game (eg. player has lost match).
+     */
+    LEAVE_BY_GAME,
+    /**
+     * Invoked by admin (eg. kicked for violating rules).
+     */
+    KICK_BY_SERVER,
+    /**
+     * Unknown or other reason. (Avoid using this one)
+     */
+    UNKNOWN,
 }

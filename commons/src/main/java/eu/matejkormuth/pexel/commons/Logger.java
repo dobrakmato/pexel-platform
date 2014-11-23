@@ -47,6 +47,12 @@ public class Logger {
         this.writer = writter;
     }
     
+    /**
+     * Writes INFO message.
+     * 
+     * @param msg
+     *            message to be written
+     */
     public void info(final String msg) {
         if (this.parent == null) {
             this.log("[INFO] " + msg);
@@ -56,6 +62,12 @@ public class Logger {
         }
     }
     
+    /**
+     * Writes ERROR message.
+     * 
+     * @param msg
+     *            message to be written
+     */
     public void error(final String msg) {
         if (this.parent == null) {
             this.log("[ERROR] " + msg);
@@ -65,6 +77,12 @@ public class Logger {
         }
     }
     
+    /**
+     * Writes WARNING message.
+     * 
+     * @param msg
+     *            message to be written
+     */
     public void warn(final String msg) {
         if (this.parent == null) {
             this.log("[WARN] " + msg);
@@ -74,6 +92,12 @@ public class Logger {
         }
     }
     
+    /**
+     * Writes DEBUG message.
+     * 
+     * @param msg
+     *            message to be written
+     */
     public void debug(final String msg) {
         if (this.parent == null) {
             this.log("[DEBUG] " + msg);

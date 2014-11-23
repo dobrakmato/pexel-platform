@@ -40,23 +40,53 @@ public class Revision {
     public Revision() {
     }
     
+    /**
+     * Creates new Revision with specified numeric revision and name.
+     * 
+     * @param revision
+     *            numeric representaton of this revision
+     * @param name
+     *            human compactibile name of this revision
+     */
     public Revision(final int revision, final String name) {
         this.revision = revision;
         this.name = name;
     }
     
+    /**
+     * Returns numeric representation of this revision.
+     * 
+     * @return numeric representation
+     */
     public int getNumeric() {
         return this.revision;
     }
     
-    public void setRevision(final int revision) {
+    /**
+     * Set's numeric representation of this revision.
+     * 
+     * @param revision
+     *            numeric representation
+     */
+    public void setNumeric(final int revision) {
         this.revision = revision;
     }
     
+    /**
+     * Returns human readable name of this revision / version.
+     * 
+     * @return human readable string
+     */
     public String getName() {
         return this.name;
     }
     
+    /**
+     * Set's human readable name of this revision / version.
+     * 
+     * @param name
+     *            new human readable name
+     */
     public void setName(final String name) {
         this.name = name;
     }

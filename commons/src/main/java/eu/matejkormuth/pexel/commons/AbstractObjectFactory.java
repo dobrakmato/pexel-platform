@@ -16,23 +16,13 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons.arenas;
+package eu.matejkormuth.pexel.commons;
 
-import javax.xml.bind.annotation.XmlType;
-
-import eu.matejkormuth.pexel.commons.MapData;
+import java.util.UUID;
 
 /**
- * Type of locations in {@link MapData}.
+ * Factory for creating objects their creation depends on platform.
  */
-@XmlType(name = "locationtype")
-public enum LocationsType {
-    /**
-     * Co-ordinates are in absolute values.
-     */
-    ABSOLUTE,
-    /**
-     * Co-ordinates are in relative values. Absolute values are evaulated using {@link MapData#anchor}.
-     */
-    RELATIVE;
+public abstract class AbstractObjectFactory {
+    public abstract Player getPlayer(final UUID uuid);
 }
