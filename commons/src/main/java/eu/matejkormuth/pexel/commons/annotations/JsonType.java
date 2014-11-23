@@ -16,11 +16,16 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons;
+package eu.matejkormuth.pexel.commons.annotations;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
 
 /**
- * Interface that specifies that calls on annotated method or type may be come different threads.
+ * Annotation that specifies the class could be converted to JSON, so it should not have circular references and
+ * non-json serializable vaules that are not transient.
  */
-public @interface Asynchronous {
+@Target({ ElementType.TYPE })
+public @interface JsonType {
     
 }

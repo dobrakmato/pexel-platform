@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.matejkormuth.pexel.commons.JsonType;
+import eu.matejkormuth.pexel.commons.annotations.JsonType;
 
 /**
  * Description of minigame.

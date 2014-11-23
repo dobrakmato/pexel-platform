@@ -24,8 +24,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.ConfigurationSection;
-import eu.matejkormuth.pexel.commons.JsonType;
 import eu.matejkormuth.pexel.commons.Logger;
+import eu.matejkormuth.pexel.commons.annotations.JsonType;
 
 @JsonType
 public class SlaveServer extends ServerInfo implements Requestable {

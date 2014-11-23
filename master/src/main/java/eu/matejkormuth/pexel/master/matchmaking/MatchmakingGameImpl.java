@@ -21,8 +21,8 @@ package eu.matejkormuth.pexel.master.matchmaking;
 import java.util.List;
 import java.util.UUID;
 
-import eu.matejkormuth.pexel.commons.JsonType;
 import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.annotations.JsonType;
 import eu.matejkormuth.pexel.commons.matchmaking.GameState;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
 import eu.matejkormuth.pexel.master.PexelMaster;

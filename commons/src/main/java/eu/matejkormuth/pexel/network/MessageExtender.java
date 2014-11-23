@@ -18,9 +18,9 @@
 // @formatter:on
 package eu.matejkormuth.pexel.network;
 
-import eu.matejkormuth.pexel.commons.Asynchronous;
 import eu.matejkormuth.pexel.commons.Commitable;
-import eu.matejkormuth.pexel.commons.JsonType;
+import eu.matejkormuth.pexel.commons.annotations.Asynchronous;
+import eu.matejkormuth.pexel.commons.annotations.JsonType;
 
 /**
  * Class that maintains sending and receveing packets on updated objects.

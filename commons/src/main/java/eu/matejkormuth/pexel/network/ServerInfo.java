@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import eu.matejkormuth.pexel.commons.JsonType;
+import eu.matejkormuth.pexel.commons.annotations.JsonType;
 import eu.matejkormuth.pexel.commons.bans.Bannable;
 
 /**

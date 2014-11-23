@@ -16,33 +16,52 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.slave.bukkit;
+package eu.matejkormuth.pexel.master.db;
 
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
-
-import eu.matejkormuth.pexel.commons.AbstractObjectFactory;
 import eu.matejkormuth.pexel.commons.Player;
-import eu.matejkormuth.pexel.slave.BukkitPlayer;
+import eu.matejkormuth.pexel.commons.data.Profile;
 
 /**
- * Bukkit implementation of {@link AbstractObjectFactory}.
+ * Entity that represnts {@link Player}'s {@link Profile} in {@link Database}.
  */
-public class BukkitObjectFactory extends AbstractObjectFactory {
+public class ProfileEntity implements Profile {
+    
     @Override
-    public Player getPlayer(final UUID uuid) {
-        return new BukkitPlayer(Bukkit.getPlayer(uuid));
+    public long getId() {
+        // TODO Auto-generated method stub
+        return 0;
     }
     
     @Override
-    public Player getPlayer(final Object platformType) {
-        if (platformType instanceof org.bukkit.entity.Player) {
-            return new BukkitPlayer((org.bukkit.entity.Player) platformType);
-        }
-        else {
-            throw new IllegalArgumentException(
-                    "platformType must be type of org.bukkit.entity.Player");
-        }
+    public UUID getUUID() {
+        // TODO Auto-generated method stub
+        return null;
     }
+    
+    @Override
+    public String getLastKnownName() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public int getXP() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+    
+    @Override
+    public int getCoins() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+    
+    @Override
+    public int getPremiumCoins() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+    
 }

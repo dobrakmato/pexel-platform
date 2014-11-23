@@ -26,5 +26,12 @@ import java.util.UUID;
 public abstract class AbstractObjectFactory {
     public abstract Player getPlayer(final Object platformType);
     
+    /**
+     * Returns {@link Player} object by {@link UUID}.
+     * 
+     * @param uuid
+     *            uuid of player
+     * @return player object
+     */
     public abstract Player getPlayer(final UUID uuid);
 }
