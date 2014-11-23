@@ -28,6 +28,12 @@ import eu.matejkormuth.pexel.slave.PexelSlave;
  * Bukkit (spigot compactibile) bootloader.
  */
 public class PexelSlaveBukkitPlugin extends JavaPlugin {
+    private static PexelSlaveBukkitPlugin instance;
+    
+    public static PexelSlaveBukkitPlugin getInstance() {
+        return PexelSlaveBukkitPlugin.instance;
+    }
+    
     @Override
     public void onEnable() {
         this.getLogger().info(
@@ -36,6 +42,7 @@ public class PexelSlaveBukkitPlugin extends JavaPlugin {
         // Start sync.
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this,
                 PexelSlave.getInstance().getSync().getOnTick(), 0L, 1L);
+        PexelSlaveBukkitPlugin.instance = this;
     }
     
     @Override
@@ -43,5 +50,6 @@ public class PexelSlaveBukkitPlugin extends JavaPlugin {
         this.getLogger().info(
                 "[BOOT] Disabling PexelSlave throught PexelSlaveBukkitPlugin...");
         // TODO: Maybe implement some safe-shutdown, so tasks in Sync wont be lost.
+        PexelSlave.getInstance().shutdown();
     }
 }

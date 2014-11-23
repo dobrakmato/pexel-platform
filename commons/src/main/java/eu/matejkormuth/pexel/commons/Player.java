@@ -23,6 +23,7 @@ import java.util.UUID;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -31,7 +32,7 @@ import eu.matejkormuth.pexel.commons.data.Profile;
 import eu.matejkormuth.pexel.network.ProxiedPlayer;
 
 /**
- * Player interface for different slave implementations.
+ * Player wrapper interface for different slave implementations.
  */
 public abstract class Player extends ProxiedPlayer {
     /**
@@ -171,6 +172,38 @@ public abstract class Player extends ProxiedPlayer {
      * @param i
      */
     public void setFoodLevel(final int i) {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    /**
+     * @return
+     */
+    public boolean isOnline() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+    
+    /**
+     * @return
+     */
+    public World getWorld() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    /**
+     * @param inventory
+     */
+    public void openInventory(final Inventory inventory) {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    /**
+     * @param replace
+     */
+    public void performCommand(final String replace) {
         // TODO Auto-generated method stub
         
     }

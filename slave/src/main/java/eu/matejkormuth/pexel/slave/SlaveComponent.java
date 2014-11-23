@@ -24,7 +24,7 @@ import eu.matejkormuth.pexel.commons.Component;
  * Interface that represents component in MasterServer.
  */
 public abstract class SlaveComponent extends Component {
-    private PexelSlave slave;
+    PexelSlave slave;
     
     /**
      * Returns current {@link PexelMaster} instance.

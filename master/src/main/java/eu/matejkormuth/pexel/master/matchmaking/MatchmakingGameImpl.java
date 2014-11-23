@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.JsonType;
+import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.matchmaking.GameState;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
 import eu.matejkormuth.pexel.master.PexelMaster;
@@ -120,7 +121,7 @@ public class MatchmakingGameImpl extends
     }
     
     @Override
-    public List<ProxiedPlayer> getPlayers() {
+    public List<Player> getPlayers() {
         // TODO Implement MatchmakingGame#getPlayers()
         return null;
     }

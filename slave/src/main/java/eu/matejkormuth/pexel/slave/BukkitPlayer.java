@@ -18,15 +18,18 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave;
 
+import java.util.UUID;
+
 import org.bukkit.Location;
 
+import eu.matejkormuth.pexel.commons.MetadataStore;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.data.Profile;
 
 /**
  * Bukkit compactibile implementation of player.
  */
-public class BukkitPlayer implements Player {
+public class BukkitPlayer extends Player {
     org.bukkit.entity.Player internal;
     
     public BukkitPlayer(final org.bukkit.entity.Player player) {
@@ -44,4 +47,24 @@ public class BukkitPlayer implements Player {
         this.internal.teleport(loc);
     }
     
+    @Override
+    public MetadataStore getMetadata() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public UUID getUUID() {
+        return this.internal.getUniqueId();
+    }
+    
+    @Override
+    public void kick(final String reason) {
+        this.internal.kickPlayer(reason);
+    }
+    
+    @Override
+    public String getDisplayName() {
+        return this.internal.getDisplayName();
+    }
 }

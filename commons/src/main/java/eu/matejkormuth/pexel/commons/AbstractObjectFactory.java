@@ -24,5 +24,7 @@ import java.util.UUID;
  * Factory for creating objects their creation depends on platform.
  */
 public abstract class AbstractObjectFactory {
+    public abstract Player getPlayer(final Object platformType);
+    
     public abstract Player getPlayer(final UUID uuid);
 }

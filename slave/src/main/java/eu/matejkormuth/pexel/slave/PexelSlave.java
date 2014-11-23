@@ -18,13 +18,15 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave;
 
-import java.awt.Component;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.matejkormuth.pexel.commons.AbstractObjectFactory;
+import eu.matejkormuth.pexel.commons.Component;
 import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.Logger;
+import eu.matejkormuth.pexel.commons.LoggerHolder;
 import eu.matejkormuth.pexel.commons.PluginLoader;
 import eu.matejkormuth.pexel.commons.Providers;
 import eu.matejkormuth.pexel.commons.ServerMode;
@@ -32,25 +34,27 @@ import eu.matejkormuth.pexel.commons.SlaveServerSoftware;
 import eu.matejkormuth.pexel.commons.Storage;
 import eu.matejkormuth.pexel.network.SlaveServer;
 import eu.matejkormuth.pexel.protocol.PexelProtocol;
+import eu.matejkormuth.pexel.slave.bukkit.BukkitObjectFactory;
 import eu.matejkormuth.pexel.slave.pluginloaders.BukkitPluginLoader;
 
 /**
  * PexelSlave server singleton object.
  */
-public class PexelSlave {
-    private static PexelSlave instance;
+public class PexelSlave implements LoggerHolder {
+    private static PexelSlave       instance;
     
-    protected SlaveServer     server;
-    protected Logger          log;
-    protected Configuration   config;
-    protected Sync            sync;
-    protected PluginLoader    pluginLoader;
-    protected Storage         storage;
+    protected SlaveServer           server;
+    protected Logger                log;
+    protected Configuration         config;
+    protected Sync                  sync;
+    protected PluginLoader          pluginLoader;
+    protected Storage               storage;
+    protected AbstractObjectFactory objectFactory;
     
-    protected ServerMode      mode;
+    protected ServerMode            mode;
     
-    protected List<Component> components        = new ArrayList<Component>();
-    protected boolean         componentsEnabled = false;
+    protected List<Component>       components        = new ArrayList<Component>();
+    protected boolean               componentsEnabled = false;
     
     public PexelSlave(final File dataFolder, final SlaveServerSoftware software) {
         this.log = new Logger("PexelSlave");
@@ -73,12 +77,14 @@ public class PexelSlave {
         switch (software) {
             case CRAFTBUKKIT:
                 this.pluginLoader = new BukkitPluginLoader();
+                this.objectFactory = new BukkitObjectFactory();
                 break;
             case FORGE:
                 throw new RuntimeException(
                         "What the hell? You are running unsupported server software!");
             case SPIGOT:
                 this.pluginLoader = new BukkitPluginLoader();
+                this.objectFactory = new BukkitObjectFactory();
                 break;
             case SPONGE:
                 throw new RuntimeException(
@@ -97,6 +103,9 @@ public class PexelSlave {
         
         // Initialize whole shit from PexelCore.
         
+        // Legacy PexelCore <https://github.com/dobrakmato/PexelCore> code.
+        this.addComponent(new LegacyCoreComponent());
+        
         // Create sync object.
         this.sync = new Sync();
         
@@ -108,7 +117,72 @@ public class PexelSlave {
     }
     
     public void shutdown() {
+        //TODO: Wait before are all other things done.
+        this.log.info("Shutting down server...");
+        this.server.shutdown();
         
+        this.log.info("Disabling scheduler...");
+        //this.scheduler.shutdownNow(); // TODO: Too
+        
+        this.log.info("Disabling all components...");
+        this.disableComponents();
+        
+        this.log.info("Saving configuration...");
+        this.config.save();
+        
+        this.log.info("Shutting down!");
+        this.log.info("Thanks for using and bye!");
+        
+        // Close logger.
+        this.log.close();
+    }
+    
+    /**
+     * Adds component to master server.
+     * 
+     * @param component
+     *            component to add
+     */
+    public void addComponent(final Component component) {
+        this.components.add(component);
+        
+        if (this.componentsEnabled) {
+            component.onEnable();
+        }
+    }
+    
+    protected void enableComponents() {
+        for (Component c : this.components) {
+            this.enableComponent(c);
+        }
+    }
+    
+    protected void disableComponents() {
+        for (Component c : this.components) {
+            this.disableComponent(c);
+        }
+    }
+    
+    protected void enableComponent(final Component e) {
+        this.log.info("Enabling [" + e.getClass().getSimpleName() + "] ...");
+        if (e instanceof SlaveComponent) {
+            ((SlaveComponent) e).slave = this;
+        }
+        e._initLogger(this);
+        e._initConfig(this.getConfiguration());
+        e.onEnable();
+    }
+    
+    protected void disableComponent(final Component e) {
+        this.log.info("Disabling [" + e.getClass().getSimpleName() + "] ...");
+        e.onDisable();
+    }
+    
+    public <T extends Component> T getComponent(final Class<T> type) {
+        for (Component c : this.components) {
+            if (type.isInstance(c.getClass())) { return type.cast(c); }
+        }
+        return null;
     }
     
     public static void init(final File dataFolder, final SlaveServerSoftware software) {
@@ -131,11 +205,16 @@ public class PexelSlave {
         return this.sync;
     }
     
+    @Override
     public Logger getLogger() {
         return this.log;
     }
     
     public Storage getStorage() {
         return this.storage;
+    }
+    
+    public AbstractObjectFactory getObjectFactory() {
+        return this.objectFactory;
     }
 }
