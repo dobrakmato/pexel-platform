@@ -16,25 +16,15 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons;
-
-import eu.matejkormuth.pexel.network.MasterServer;
-import eu.matejkormuth.pexel.network.SlaveServer;
+package eu.matejkormuth.pexel.commons.permissions;
 
 /**
- * Abstract class that represents component. First use is on {@link MasterServer} and {@link SlaveServer} as
- * MasterComponenet and SlaveComponent. Also theres a use in many arena attachable componenets.
+ * All basic roles in Pexel.
  */
-public abstract class Component {
-    /**
-     * Called when componenet is enabled.
-     */
-    public void onEnable() {
-    };
-    
-    /**
-     * Called when componenet is disabled.
-     */
-    public void onDisable() {
-    };
+public abstract class Roles {
+    public static final Role OWNER     = null;
+    public static final Role ADMIN     = null;
+    public static final Role MODERATOR = null;
+    public static final Role VIP       = null;
+    public static final Role DEFAULT   = null;
 }

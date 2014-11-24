@@ -19,7 +19,7 @@
 package eu.matejkormuth.pexel.slave;
 
 /**
- * Component that does initialize legacy PexelCore code.
+ * ServerComponent that does initialize legacy PexelCore code.
  */
 public class LegacyCoreComponent extends SlaveComponent {
     @Override

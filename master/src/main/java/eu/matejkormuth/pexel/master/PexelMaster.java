@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import eu.matejkormuth.pexel.commons.Component;
+import eu.matejkormuth.pexel.commons.ServerComponent;
 import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.commons.LoggerHolder;
@@ -61,7 +61,7 @@ public final class PexelMaster implements LoggerHolder {
     protected final Scheduler scheduler;
     protected Storage         storage;
     
-    protected List<Component> components        = new ArrayList<Component>();
+    protected List<ServerComponent> components        = new ArrayList<ServerComponent>();
     protected boolean         componentsEnabled = false;
     
     private PexelMaster(final File dataFolder) {
@@ -181,7 +181,7 @@ public final class PexelMaster implements LoggerHolder {
      * @param component
      *            component to add
      */
-    public void addComponent(final Component component) {
+    public void addComponent(final ServerComponent component) {
         this.components.add(component);
         
         if (this.componentsEnabled) {
@@ -190,18 +190,18 @@ public final class PexelMaster implements LoggerHolder {
     }
     
     protected void enableComponents() {
-        for (Component c : this.components) {
+        for (ServerComponent c : this.components) {
             this.enableComponent(c);
         }
     }
     
     protected void disableComponents() {
-        for (Component c : this.components) {
+        for (ServerComponent c : this.components) {
             this.disableComponent(c);
         }
     }
     
-    protected void enableComponent(final Component e) {
+    protected void enableComponent(final ServerComponent e) {
         this.log.info("Enabling [" + e.getClass().getSimpleName() + "] ...");
         if (e instanceof MasterComponent) {
             ((MasterComponent) e).master = this;
@@ -211,13 +211,13 @@ public final class PexelMaster implements LoggerHolder {
         e.onEnable();
     }
     
-    protected void disableComponent(final Component e) {
+    protected void disableComponent(final ServerComponent e) {
         this.log.info("Disabling [" + e.getClass().getSimpleName() + "] ...");
         e.onDisable();
     }
     
-    public <T extends Component> T getComponent(final Class<T> type) {
-        for (Component c : this.components) {
+    public <T extends ServerComponent> T getComponent(final Class<T> type) {
+        for (ServerComponent c : this.components) {
             if (type.isInstance(c.getClass())) { return type.cast(c); }
         }
         return null;

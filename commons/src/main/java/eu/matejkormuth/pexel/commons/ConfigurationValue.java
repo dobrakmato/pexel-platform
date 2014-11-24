@@ -51,6 +51,10 @@ public class ConfigurationValue {
         this(value, key);
     }
     
+    public ConfigurationValue(final String key, final MultiValueMap<?, ?> value) {
+        this(value, key);
+    }
+    
     public ConfigurationValue(final String key, final byte value) {
         this(value, key);
     }
@@ -117,6 +121,10 @@ public class ConfigurationValue {
     }
     
     public String asString() {
+        return this.get();
+    }
+    
+    public MultiValueMap<?, ?> asMultiValueMap() {
         return this.get();
     }
     

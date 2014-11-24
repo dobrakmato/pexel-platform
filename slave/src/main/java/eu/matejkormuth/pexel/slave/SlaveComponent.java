@@ -18,12 +18,12 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave;
 
-import eu.matejkormuth.pexel.commons.Component;
+import eu.matejkormuth.pexel.commons.ServerComponent;
 
 /**
  * Interface that represents component in MasterServer.
  */
-public abstract class SlaveComponent extends Component {
+public abstract class SlaveComponent extends ServerComponent {
     PexelSlave slave;
     
     /**

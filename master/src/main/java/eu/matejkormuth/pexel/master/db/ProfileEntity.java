@@ -18,10 +18,13 @@
 // @formatter:on
 package eu.matejkormuth.pexel.master.db;
 
+import java.util.Collection;
 import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.data.Profile;
+import eu.matejkormuth.pexel.commons.permissions.Permission;
+import eu.matejkormuth.pexel.commons.permissions.Role;
 
 /**
  * Entity that represnts {@link Player}'s {@link Profile} in {@link Database}.
@@ -62,6 +65,24 @@ public class ProfileEntity implements Profile {
     public int getPremiumCoins() {
         // TODO Auto-generated method stub
         return 0;
+    }
+    
+    @Override
+    public boolean hasPermission(final Permission permission) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+    
+    @Override
+    public Collection<Permission> getPermissions() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public Role getRole() {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }

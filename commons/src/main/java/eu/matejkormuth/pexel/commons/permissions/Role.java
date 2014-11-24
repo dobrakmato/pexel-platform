@@ -16,25 +16,29 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons;
+package eu.matejkormuth.pexel.commons.permissions;
 
-import eu.matejkormuth.pexel.network.MasterServer;
-import eu.matejkormuth.pexel.network.SlaveServer;
+import java.util.Collection;
+
+import eu.matejkormuth.pexel.commons.Player;
 
 /**
- * Abstract class that represents component. First use is on {@link MasterServer} and {@link SlaveServer} as
- * MasterComponenet and SlaveComponent. Also theres a use in many arena attachable componenets.
+ * Represetns user role in Pexel.
+ * 
+ * @see Roles
  */
-public abstract class Component {
+public interface Role extends Permissiable {
     /**
-     * Called when componenet is enabled.
+     * Returns display name of this {@link Role}.
+     * 
+     * @return display name
      */
-    public void onEnable() {
-    };
+    public String getDisplayName();
     
     /**
-     * Called when componenet is disabled.
+     * Returns collection of all players that have this role.
+     * 
+     * @return collection of this role players
      */
-    public void onDisable() {
-    };
+    public Collection<Player> getAllPlayers();
 }

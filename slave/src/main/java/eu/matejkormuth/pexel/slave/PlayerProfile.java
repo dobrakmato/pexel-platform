@@ -18,12 +18,15 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave;
 
+import java.util.Collection;
 import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.Commitable;
 import eu.matejkormuth.pexel.commons.MetadataStore;
 import eu.matejkormuth.pexel.commons.Metadatable;
 import eu.matejkormuth.pexel.commons.data.Profile;
+import eu.matejkormuth.pexel.commons.permissions.Permission;
+import eu.matejkormuth.pexel.commons.permissions.Role;
 
 /**
  * Class that represents profile of player and implementes {@link Profile} and {@link Commitable}.
@@ -85,5 +88,23 @@ public class PlayerProfile implements Profile, Commitable, Metadatable {
             //TODO: this.requestMetadata();
         }
         return this.metadata.getMetadata(key);
+    }
+    
+    @Override
+    public boolean hasPermission(final Permission permission) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+    
+    @Override
+    public Collection<Permission> getPermissions() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public Role getRole() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

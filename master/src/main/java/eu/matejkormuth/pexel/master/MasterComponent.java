@@ -18,12 +18,12 @@
 // @formatter:on
 package eu.matejkormuth.pexel.master;
 
-import eu.matejkormuth.pexel.commons.Component;
+import eu.matejkormuth.pexel.commons.ServerComponent;
 
 /**
  * Interface that represents component in MasterServer.
  */
-public abstract class MasterComponent extends Component {
+public abstract class MasterComponent extends ServerComponent {
     protected PexelMaster master;
     
     /**

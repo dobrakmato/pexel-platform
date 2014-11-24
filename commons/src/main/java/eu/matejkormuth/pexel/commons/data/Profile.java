@@ -20,10 +20,13 @@ package eu.matejkormuth.pexel.commons.data;
 
 import java.util.UUID;
 
+import eu.matejkormuth.pexel.commons.permissions.Permissiable;
+import eu.matejkormuth.pexel.commons.permissions.Role;
+
 /**
  * Interface that specifies player's profile.
  */
-public interface Profile {
+public interface Profile extends Permissiable {
     /**
      * Returns id of profile in database.
      */
@@ -53,4 +56,11 @@ public interface Profile {
      * Returns amount of premium (paid) coins on the network.
      */
     public int getPremiumCoins();
+    
+    /**
+     * Returns player's {@link Role}.
+     * 
+     * @return player's role
+     */
+    public Role getRole();
 }

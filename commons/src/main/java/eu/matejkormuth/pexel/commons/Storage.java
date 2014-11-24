@@ -47,7 +47,7 @@ import eu.matejkormuth.pexel.network.ServerSide;
 /**
  * Class that represents storage.
  */
-public class Storage extends Component {
+public class Storage extends ServerComponent {
     protected ServerSide              side;
     protected File                    rootFolder;
     

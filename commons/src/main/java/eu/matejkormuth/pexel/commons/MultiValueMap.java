@@ -31,11 +31,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang.math.RandomUtils;
 
+/**
+ * Special map that can have multiple values on one key.
+ * 
+ * @param <K>
+ *            key type
+ * @param <V>
+ *            value type
+ */
 @XmlRootElement
-public class MultiValueMap<K, V> implements Serializable {
+public class MultiValueMap<K, V> implements Map<K, V>, Serializable {
     private static final long     serialVersionUID = -2507916622202922554L;
     private final Map<K, List<V>> internalMap;
     
+    /**
+     * Constructs a new {@link MultiValueMap}.
+     */
     public MultiValueMap() {
         this.internalMap = new HashMap<K, List<V>>();
     }
@@ -78,6 +89,7 @@ public class MultiValueMap<K, V> implements Serializable {
         this.internalMap.get(key).clear();
     }
     
+    @Override
     public void clear() {
         this.internalMap.clear();
     }
@@ -97,10 +109,12 @@ public class MultiValueMap<K, V> implements Serializable {
         return 0;
     }
     
+    @Override
     public int size() {
         return this.size();
     }
     
+    @Override
     public boolean isEmpty() {
         return this.internalMap.size() == 0;
     }
@@ -110,7 +124,8 @@ public class MultiValueMap<K, V> implements Serializable {
         return true;
     }
     
-    public boolean containsKey(final K key) {
+    @Override
+    public boolean containsKey(final Object key) {
         return this.internalMap.containsKey(key);
     }
     
@@ -120,7 +135,64 @@ public class MultiValueMap<K, V> implements Serializable {
         return false;
     }
     
+    @Override
     public Set<K> keySet() {
-        return this.keySet();
+        return this.internalMap.keySet();
+    }
+    
+    /**
+     * <b>This throws {@link UnsupportedOperationException}! Use {@link MultiValueMap#getAll(Object)}</b>
+     */
+    @Override
+    public V get(final Object key) {
+        throw new UnsupportedOperationException();
+    }
+    
+    /**
+     * <b>This throws {@link UnsupportedOperationException}! Use {@link MultiValueMap#add(Object, Object)}</b>
+     */
+    @Override
+    public V put(final K key, final V value) {
+        throw new UnsupportedOperationException();
+    }
+    
+    /**
+     * <b>This throws {@link UnsupportedOperationException}! Use {@link MultiValueMap#removeAll(Object)}</b>
+     */
+    @Override
+    public V remove(final Object key) {
+        throw new UnsupportedOperationException();
+    }
+    
+    /**
+     * <b>This throws {@link UnsupportedOperationException}!</b>
+     */
+    @Override
+    public void putAll(final Map<? extends K, ? extends V> m) {
+        throw new UnsupportedOperationException();
+    }
+    
+    /**
+     * <b>This throws {@link UnsupportedOperationException}!</b>
+     */
+    @Override
+    public Collection<V> values() {
+        throw new UnsupportedOperationException();
+    }
+    
+    /**
+     * <b>This throws {@link UnsupportedOperationException}!</b>
+     */
+    @Override
+    public Set<java.util.Map.Entry<K, V>> entrySet() {
+        throw new UnsupportedOperationException();
+    }
+    
+    /**
+     * <b>This throws {@link UnsupportedOperationException}!</b>
+     */
+    @Override
+    public boolean containsValue(final Object value) {
+        throw new UnsupportedOperationException();
     }
 }

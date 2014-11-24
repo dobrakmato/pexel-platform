@@ -69,44 +69,41 @@ public abstract class Player extends ProxiedPlayer {
     public abstract void teleport(Location loc);
     
     /**
-     * @return
+     * Returns player's name.
+     * 
+     * @return player's name
      */
-    public String getName() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public abstract String getName();
     
     /**
-     * @return
+     * Returns player's entity id on local server.
+     * 
+     * @return players entity id
      */
-    public int getEntityId() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+    public abstract int getEntityId();
     
     /**
-     * @return
+     * Returns player health. Default maximum is 20.
+     * 
+     * @return current player health
      */
-    public double getHealth() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+    public abstract double getHealth();
     
     /**
-     * @return
+     * Returns current player location.
+     * 
+     * @return location of player
      */
-    public Location getLocation() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    //DEBUKKITIZE:
+    public abstract Location getLocation();
     
     /**
+     * Sends text message to this player.
+     * 
      * @param msg
+     *            contents of message
      */
-    public void sendMessage(final String msg) {
-        // TODO Auto-generated method stub
-        
-    }
+    public abstract void sendMessage(final String msg);
     
     /**
      * @param location
@@ -114,97 +111,94 @@ public abstract class Player extends ProxiedPlayer {
      * @param volume
      * @param pitch
      */
-    public void playSound(final Location location, final Sound sound,
-            final float volume, final float pitch) {
-        // TODO Auto-generated method stub
-        
-    }
+    //DEBUKKITIZE:
+    public abstract void playSound(final Location location, final Sound sound,
+            final float volume, final float pitch);
     
     /**
      * @return
      */
-    public Inventory getInventory() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    //DEBUKKITIZE:
+    public abstract Inventory getInventory();
     
     /**
      * @param adventure
      */
-    public void setGameMode(final GameMode adventure) {
-        // TODO Auto-generated method stub
-        
-    }
+    //DEBUKKITIZE:
+    public abstract void setGameMode(final GameMode gameMode);
     
     /**
      * @param potionEffect
      */
-    public void addPotionEffect(final PotionEffect potionEffect) {
-        // TODO Auto-generated method stub
-        
-    }
+    //DEBUKKITIZE:
+    public abstract void addPotionEffect(final PotionEffect potionEffect);
     
     /**
+     * Set's whether the player is allowed to flight.
+     * 
      * @param b
+     *            true if player should be allowed to flight, else otherwise
      */
-    public void setAllowFlight(final boolean b) {
-        // TODO Auto-generated method stub
-        
-    }
+    public abstract void setAllowFlight(final boolean allowFlight);
     
     /**
+     * Set's whether the player is currently flying.
+     * 
      * @param b
+     *            true if player should be flying, else otherwise
      */
-    public void setFlying(final boolean b) {
-        // TODO Auto-generated method stub
-        
-    }
+    public abstract void setFlying(final boolean flying);
     
     /**
      * @param nightVision
      */
-    public void removePotionEffect(final PotionEffectType nightVision) {
-        // TODO Auto-generated method stub
-        
-    }
+    //DEBUKKITIZE:
+    public abstract void removePotionEffect(final PotionEffectType potionEffectType);
     
     /**
+     * Set's player's food level. Default maximum is 20.
+     * 
      * @param i
+     *            new food level
      */
-    public void setFoodLevel(final int i) {
-        // TODO Auto-generated method stub
-        
-    }
+    public abstract void setFoodLevel(final int foodLevel);
     
     /**
-     * @return
+     * Returns whether the player is online.
+     * 
+     * @return true if player is online, else otherwise
      */
-    public boolean isOnline() {
-        // TODO Auto-generated method stub
-        return false;
-    }
+    public abstract boolean isOnline();
     
     /**
+     * Returns whether this player is OP.
+     * 
+     * @return true if player is OP, else otherwise
+     */
+    public abstract boolean isOp();
+    
+    /**
+     * Returns player's current world.
+     * 
      * @return
      */
+    //TODO: Extract from location.
+    //DEBUKKITIZE:
     public World getWorld() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.getLocation().getWorld();
     }
     
     /**
      * @param inventory
      */
-    public void openInventory(final Inventory inventory) {
-        // TODO Auto-generated method stub
-        
-    }
+    //DEBUKKITIZE:
+    public abstract void openInventory(final Inventory inventory);
     
     /**
-     * @param replace
+     * Performs specified command as player.
+     * 
+     * @param command
+     *            command to be executed
      */
-    public void performCommand(final String replace) {
-        // TODO Auto-generated method stub
-        
-    }
+    public abstract void performCommand(final String command);
 }

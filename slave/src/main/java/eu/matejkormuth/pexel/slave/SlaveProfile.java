@@ -18,9 +18,12 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave;
 
+import java.util.Collection;
 import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.data.Profile;
+import eu.matejkormuth.pexel.commons.permissions.Permission;
+import eu.matejkormuth.pexel.commons.permissions.Role;
 
 /**
  *
@@ -61,6 +64,24 @@ public class SlaveProfile implements Profile {
     @Override
     public int getPremiumCoins() {
         return this.cached_premiumConins;
+    }
+    
+    @Override
+    public boolean hasPermission(final Permission permission) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+    
+    @Override
+    public Collection<Permission> getPermissions() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public Role getRole() {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }

@@ -16,25 +16,29 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons;
-
-import eu.matejkormuth.pexel.network.MasterServer;
-import eu.matejkormuth.pexel.network.SlaveServer;
+package eu.matejkormuth.pexel.commons.permissions;
 
 /**
- * Abstract class that represents component. First use is on {@link MasterServer} and {@link SlaveServer} as
- * MasterComponenet and SlaveComponent. Also theres a use in many arena attachable componenets.
+ * Class that represents permission in Pexel.
+ * 
+ * @see Permissions
  */
-public abstract class Component {
-    /**
-     * Called when componenet is enabled.
-     */
-    public void onEnable() {
-    };
+public class Permission {
+    private final String node;
     
     /**
-     * Called when componenet is disabled.
+     * Creates new {@link Permission} with specified permission node.
      */
-    public void onDisable() {
-    };
+    public Permission(final String node) {
+        this.node = node;
+    }
+    
+    /**
+     * Returns this permission node.
+     * 
+     * @return permission node
+     */
+    public String getNode() {
+        return this.node;
+    }
 }

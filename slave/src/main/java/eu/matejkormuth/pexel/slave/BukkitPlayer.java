@@ -20,7 +20,12 @@ package eu.matejkormuth.pexel.slave;
 
 import java.util.UUID;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import eu.matejkormuth.pexel.commons.MetadataStore;
 import eu.matejkormuth.pexel.commons.Player;
@@ -66,5 +71,91 @@ public class BukkitPlayer extends Player {
     @Override
     public String getDisplayName() {
         return this.internal.getDisplayName();
+    }
+    
+    @Override
+    public String getName() {
+        return this.internal.getName();
+    }
+    
+    @Override
+    public int getEntityId() {
+        return this.internal.getEntityId();
+    }
+    
+    @Override
+    public double getHealth() {
+        return this.internal.getHealth();
+    }
+    
+    @Override
+    public Location getLocation() {
+        return this.internal.getLocation();
+    }
+    
+    @Override
+    public void sendMessage(final String msg) {
+        this.internal.sendMessage(msg);
+    }
+    
+    @Override
+    public void playSound(final Location location, final Sound sound,
+            final float volume, final float pitch) {
+        this.internal.playSound(location, sound, volume, pitch);
+    }
+    
+    @Override
+    public Inventory getInventory() {
+        return this.internal.getInventory();
+    }
+    
+    @Override
+    public void setGameMode(final GameMode mode) {
+        this.internal.setGameMode(mode);
+    }
+    
+    @Override
+    public void addPotionEffect(final PotionEffect potionEffect) {
+        this.internal.addPotionEffect(potionEffect);
+    }
+    
+    @Override
+    public void setAllowFlight(final boolean b) {
+        this.internal.setAllowFlight(b);
+    }
+    
+    @Override
+    public void setFlying(final boolean b) {
+        this.internal.setFlying(b);
+    }
+    
+    @Override
+    public void removePotionEffect(final PotionEffectType nightVision) {
+        this.internal.removePotionEffect(nightVision);
+    }
+    
+    @Override
+    public void setFoodLevel(final int i) {
+        this.internal.setFoodLevel(i);
+    }
+    
+    @Override
+    public boolean isOnline() {
+        return this.internal.isOnline();
+    }
+    
+    @Override
+    public void openInventory(final Inventory inventory) {
+        this.internal.openInventory(inventory);
+    }
+    
+    @Override
+    public void performCommand(final String command) {
+        this.internal.performCommand(command);
+    }
+    
+    @Override
+    public boolean isOp() {
+        return this.internal.isOp();
     }
 }
