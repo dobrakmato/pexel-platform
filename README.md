@@ -1,5 +1,6 @@
 Pexel Platform [![Build Status](https://travis-ci.org/dobrakmato/pexel-platform.svg?branch=master)](https://travis-ci.org/dobrakmato/pexel-platform)
 ==============
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/dobrakmato/pexel-platform?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Platform for sweet deployment & managment of minecraft minigame networks.
 ----------------------------
 
