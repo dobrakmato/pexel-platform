@@ -43,4 +43,5 @@ Useful links
 Pexel Project is developed by Matej Kormuth and It is open to contributions, just open pull request!
 
 - Utilities: <http://pexel.eu/platform>
+- Default web-admin design proposals: <https://github.com/dobrakmato/pexel-webadmin>
 - Cloud structure: <https://docs.google.com/drawings/d/1jlMk-iWtGW1szIe3lzYmohyaQfKAAk-zryIe8zczvP4>
