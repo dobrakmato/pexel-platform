@@ -159,17 +159,15 @@ public class Configuration extends Unmarshaller.Listener {
         // Matchmaking keys.
         public static final String KEY_MATCHMAKING_INTERVAL = "interval";
         // Database keys.
-        public static final String KEY_DATABASE_HOST        = "host";
-        public static final String KEY_DATABASE_USERNAME    = "username";
+        public static final String KEY_DATABASE_URL         = "url";
+        public static final String KEY_DATABASE_USERNAME    = "user";
         public static final String KEY_DATABASE_PASSWORD    = "password";
-        public static final String KEY_DATABASE_DB          = "database";
     }
     
     public static final class Defaults {
         public static final String AUTH_KEY          = "_DSbXyV9($3t&vjA&)6pTGo*#(*W^m%8PM/o/G)8y1cu)lV^kDj39xQ1uMypZs)q58EQqDAPfC9eOG)Z9iDUG^x0HV#i__yUY3m_hMFm@prEWpeGyIc4DzG**x^/ntG*";
-        public static final String DATABASE_HOST     = "127.0.0.1:3306";
+        public static final String DATABASE_URL      = "jdbc:mysql://127.0.0.1/pexel";
         public static final String DATABASE_USERNAME = "root";
         public static final String DATABASE_PASSWORD = "root";
-        public static final String DATABASE_DB       = "pexel";
     }
 }

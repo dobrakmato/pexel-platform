@@ -25,11 +25,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import eu.matejkormuth.pexel.commons.ServerComponent;
 import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.commons.LoggerHolder;
+import eu.matejkormuth.pexel.commons.ServerComponent;
 import eu.matejkormuth.pexel.commons.Storage;
+import eu.matejkormuth.pexel.master.db.Database;
 import eu.matejkormuth.pexel.master.matchmaking.Matchmaking;
 import eu.matejkormuth.pexel.master.matchmaking.MatchmakingProviderImpl;
 import eu.matejkormuth.pexel.master.responders.BansResponder;
@@ -55,14 +56,15 @@ public final class PexelMaster implements LoggerHolder {
         return PexelMaster.instance;
     }
     
-    protected MasterServer    master;
-    protected Logger          log;
-    protected Configuration   config;
-    protected final Scheduler scheduler;
-    protected Storage         storage;
+    protected MasterServer          master;
+    protected Logger                log;
+    protected Configuration         config;
+    protected final Scheduler       scheduler;
+    protected Storage               storage;
+    protected Database              database;
     
     protected List<ServerComponent> components        = new ArrayList<ServerComponent>();
-    protected boolean         componentsEnabled = false;
+    protected boolean               componentsEnabled = false;
     
     private PexelMaster(final File dataFolder) {
         this.log = new Logger("PexelMaster");
@@ -115,6 +117,9 @@ public final class PexelMaster implements LoggerHolder {
         this.master.getMessenger().addResponder(new TeleportationResponder());
         this.master.getMessenger().addResponder(new BansResponder());
         this.master.getMessenger().addResponder(new MatchmakingResponder());
+        
+        // Set up Database.
+        this.addComponent(new Database());
         
         // Set up API server.
         this.addComponent(new ApiServer());
@@ -254,5 +259,9 @@ public final class PexelMaster implements LoggerHolder {
     
     public ChatProvider getChatProvider() {
         return this.getComponent(ChatProvider.class);
+    }
+    
+    public Database getDatabase() {
+        return this.database;
     }
 }

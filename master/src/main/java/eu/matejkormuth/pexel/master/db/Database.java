@@ -19,6 +19,9 @@
 package eu.matejkormuth.pexel.master.db;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.master.MasterComponent;
@@ -27,17 +30,16 @@ import eu.matejkormuth.pexel.master.MasterComponent;
  * Databse component on master.
  */
 public class Database extends MasterComponent {
-    protected String     host;
+    protected String     url;
     protected String     username;
     protected String     password;
-    protected String     database;
     
     protected Connection connection;
     
     public Database() {
-        this.host = this.getConfiguration()
-                .get(Configuration.Keys.KEY_DATABASE_HOST,
-                        Configuration.Defaults.DATABASE_HOST)
+        this.url = this.getConfiguration()
+                .get(Configuration.Keys.KEY_DATABASE_URL,
+                        Configuration.Defaults.DATABASE_URL)
                 .asString();
         this.username = this.getConfiguration()
                 .get(Configuration.Keys.KEY_DATABASE_USERNAME,
@@ -47,15 +49,27 @@ public class Database extends MasterComponent {
                 .get(Configuration.Keys.KEY_DATABASE_PASSWORD,
                         Configuration.Defaults.DATABASE_PASSWORD)
                 .asString();
-        this.database = this.getConfiguration()
-                .get(Configuration.Keys.KEY_DATABASE_DB,
-                        Configuration.Defaults.DATABASE_DB)
-                .asString();
     }
     
     @Override
     public void onEnable() {
         this.getLogger().info("Connecting to database server...");
+        try {
+            this.connection = DriverManager.getConnection(this.url, this.username,
+                    this.password);
+            this.prepeareStatements();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void prepeareStatements() {
+        // TODO Auto-generated method stub
         
+    }
+    
+    public ProfileEntity getProfile(final UUID key) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

@@ -16,11 +16,15 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.master;
+package eu.matejkormuth.pexel.master.cache;
 
 /**
- * Object representating master-side cache.
+ * Class that represents access to object cache.
  */
-public class Cache {
+public interface CacheAccess<K, V> {
+    public boolean has(K key);
     
+    public V get(K key);
+    
+    public void remove(K key);
 }
