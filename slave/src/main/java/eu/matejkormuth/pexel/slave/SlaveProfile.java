@@ -84,4 +84,16 @@ public class SlaveProfile implements Profile {
         return null;
     }
     
+    @Override
+    public void addPermission(final Permission permission) {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    @Override
+    public void removePermission(final Permission permission) {
+        // TODO Auto-generated method stub
+        
+    }
+    
 }

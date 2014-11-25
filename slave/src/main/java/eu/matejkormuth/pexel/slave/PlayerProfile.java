@@ -107,4 +107,16 @@ public class PlayerProfile implements Profile, Commitable, Metadatable {
         // TODO Auto-generated method stub
         return null;
     }
+    
+    @Override
+    public void addPermission(final Permission permission) {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    @Override
+    public void removePermission(final Permission permission) {
+        // TODO Auto-generated method stub
+        
+    }
 }

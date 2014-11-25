@@ -18,27 +18,74 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons.permissions;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import eu.matejkormuth.pexel.commons.Player;
 
 /**
- * Represetns user role in Pexel.
+ * Represents user role in Pexel.
  * 
  * @see Roles
  */
-public interface Role extends Permissiable {
+public class Role implements Permissiable {
+    private final String          roleName;
+    private final Set<Permission> permissions;
+    
+    public Role(final String name) {
+        this.roleName = name;
+        this.permissions = new HashSet<Permission>();
+    }
+    
+    public Role(final String name, final Permission... permission) {
+        this.roleName = name;
+        this.permissions = new HashSet<Permission>(Arrays.asList(permission));
+    }
+    
+    public Role(final String name, final Role parent, final Permission... permission) {
+        this.roleName = name;
+        this.permissions = new HashSet<Permission>(Arrays.asList(permission));
+        this.permissions.addAll(parent.getPermissions());
+    }
+    
     /**
      * Returns display name of this {@link Role}.
      * 
      * @return display name
      */
-    public String getDisplayName();
+    public String getDisplayName() {
+        return this.roleName;
+    }
     
     /**
      * Returns collection of all players that have this role.
      * 
      * @return collection of this role players
      */
-    public Collection<Player> getAllPlayers();
+    public Collection<Player> getAllPlayers() {
+        return null;
+    }
+    
+    @Override
+    public boolean hasPermission(final Permission permission) {
+        return this.permissions.contains(permission);
+    }
+    
+    @Override
+    public Collection<Permission> getPermissions() {
+        return Collections.unmodifiableSet(this.permissions);
+    }
+    
+    @Override
+    public void addPermission(final Permission permission) {
+        this.permissions.add(permission);
+    }
+    
+    @Override
+    public void removePermission(final Permission permission) {
+        this.permissions.remove(permission);
+    }
 }

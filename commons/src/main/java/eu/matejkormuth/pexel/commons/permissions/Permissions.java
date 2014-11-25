@@ -45,5 +45,13 @@ public abstract class Permissions {
     /**
      * Permission to broadcast global message.
      */
+    public static final Permission CHAT          = new Permission("pexel.chat");
+    /**
+     * Permission to broadcast global message.
+     */
     public static final Permission BROADCAST     = new Permission("pexel.broadcast");
+    /**
+     * Special permission that gives all permissions.
+     */
+    public static final Permission SPECIAL_ALL   = new Permission("pexel.all");
 }
