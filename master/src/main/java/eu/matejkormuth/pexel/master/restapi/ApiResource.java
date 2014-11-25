@@ -106,6 +106,13 @@ public class ApiResource {
                 .getSlaveServers());
     }
     
+    @ApiPart(desc = "Returns information about cache on master server.")
+    @GET
+    @Path("/cache")
+    public String cache() {
+        return Providers.JSON.toJson(PexelMaster.getInstance().getCaches().toJson());
+    }
+    
     @ApiPart(desc = "Returns array of all games participaing in matchmaking.")
     @GET
     @Path("/games")

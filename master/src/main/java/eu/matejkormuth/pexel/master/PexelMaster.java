@@ -30,6 +30,7 @@ import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.commons.LoggerHolder;
 import eu.matejkormuth.pexel.commons.ServerComponent;
 import eu.matejkormuth.pexel.commons.Storage;
+import eu.matejkormuth.pexel.master.cache.Caches;
 import eu.matejkormuth.pexel.master.db.Database;
 import eu.matejkormuth.pexel.master.matchmaking.Matchmaking;
 import eu.matejkormuth.pexel.master.matchmaking.MatchmakingProviderImpl;
@@ -62,6 +63,7 @@ public final class PexelMaster implements LoggerHolder {
     protected final Scheduler       scheduler;
     protected Storage               storage;
     protected Database              database;
+    protected Caches                caches;
     
     protected List<ServerComponent> components        = new ArrayList<ServerComponent>();
     protected boolean               componentsEnabled = false;
@@ -263,5 +265,9 @@ public final class PexelMaster implements LoggerHolder {
     
     public Database getDatabase() {
         return this.database;
+    }
+    
+    public Caches getCaches() {
+        return this.caches;
     }
 }

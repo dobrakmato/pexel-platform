@@ -26,11 +26,11 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class Cache<K, V> implements CacheAccess<K, V>, CacheLoader<K, V> {
     private final Map<K, CacheEntry<V>> cache;
-    protected long                      OBJECT_LIFETIME = 1000 * 60 * 30; //should be changed by testing. (current 30 minutes) 
-    protected int                       OBJECT_MAXCOUNT = 1024;
+    protected long                      objectLifetime = 1000 * 60 * 30; //should be changed by testing. (current 30 minutes) 
+    protected int                       objectMaxCount = 1024;
     
     public Cache() {
-        this.cache = new ConcurrentHashMap<K, CacheEntry<V>>(this.OBJECT_MAXCOUNT);
+        this.cache = new ConcurrentHashMap<K, CacheEntry<V>>(this.objectMaxCount);
     }
     
     @Override
@@ -46,7 +46,7 @@ public abstract class Cache<K, V> implements CacheAccess<K, V>, CacheLoader<K, V
     }
     
     public void put(final K key, final V value) {
-        long expireBy = System.currentTimeMillis() + this.OBJECT_LIFETIME;
+        long expireBy = System.currentTimeMillis() + this.objectLifetime;
         this.cache.put(key, new CacheEntry<V>(expireBy, value));
     }
     
