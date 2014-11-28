@@ -51,6 +51,10 @@ public class Database extends MasterComponent {
                 .asString();
     }
     
+    public Connection getConnection() {
+        return this.connection;
+    }
+    
     @Override
     public void onEnable() {
         this.getLogger().info("Connecting to database server...");

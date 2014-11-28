@@ -111,7 +111,7 @@ public class MultiValueMap<K, V> implements Map<K, V>, Serializable {
     
     @Override
     public int size() {
-        return this.size();
+        return this.internalMap.size();
     }
     
     @Override

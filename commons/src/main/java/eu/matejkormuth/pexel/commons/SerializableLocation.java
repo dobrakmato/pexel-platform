@@ -49,6 +49,7 @@ public class SerializableLocation implements Serializable {
     protected float            pitch;
     @XmlAttribute(name = "world")
     protected String           worldName;
+    // Initialized on first getLocation() call.
     private transient Location location;
     
     public SerializableLocation(final double x, final double y, final double z,

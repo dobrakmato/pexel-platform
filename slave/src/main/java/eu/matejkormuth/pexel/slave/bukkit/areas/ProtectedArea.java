@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import com.google.common.base.Optional;
+
 import eu.matejkormuth.pexel.commons.CuboidRegion;
 
 /**
@@ -176,7 +178,7 @@ public class ProtectedArea {
      * 
      * @return owner of area
      */
-    public AreaOwner getOwner() {
-        return this.owner;
+    public Optional<AreaOwner> getOwner() {
+        return Optional.of(this.owner);
     }
 }

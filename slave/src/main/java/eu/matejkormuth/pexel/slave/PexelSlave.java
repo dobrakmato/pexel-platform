@@ -23,12 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.matejkormuth.pexel.commons.AbstractObjectFactory;
-import eu.matejkormuth.pexel.commons.ServerComponent;
 import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.commons.LoggerHolder;
 import eu.matejkormuth.pexel.commons.PluginLoader;
 import eu.matejkormuth.pexel.commons.Providers;
+import eu.matejkormuth.pexel.commons.ServerComponent;
 import eu.matejkormuth.pexel.commons.ServerMode;
 import eu.matejkormuth.pexel.commons.SlaveServerSoftware;
 import eu.matejkormuth.pexel.commons.Storage;
@@ -53,7 +53,7 @@ public class PexelSlave implements LoggerHolder {
     
     protected ServerMode            mode;
     
-    protected List<ServerComponent>       components        = new ArrayList<ServerComponent>();
+    protected List<ServerComponent> components        = new ArrayList<ServerComponent>();
     protected boolean               componentsEnabled = false;
     
     public PexelSlave(final File dataFolder, final SlaveServerSoftware software) {
@@ -96,6 +96,8 @@ public class PexelSlave implements LoggerHolder {
                 throw new RuntimeException(
                         "What the hell? You are running unsupported server software!");
         }
+        
+        // TODO: Load all plugins.
         
         // Initialize protects.
         

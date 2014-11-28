@@ -226,11 +226,12 @@ public abstract class AdvancedArena extends AbstractArena implements Listener {
         }
         
         //If we are using boss bar.
-        if (this.useBossBar)
+        if (this.useBossBar) {
             this.setBossBarAll(
                     this.countdownFormat.replace("%timeleft%",
                             Integer.toString(this.countdownTimeLeft)),
                     this.countdownTimeLeft / this.countdownLenght * 100F);
+        }
         
         //If we reached zero.
         if (this.countdownTimeLeft <= 0) {
@@ -472,7 +473,9 @@ public abstract class AdvancedArena extends AbstractArena implements Listener {
     @EventHandler
     public void onPlayerInventoryClick(final InventoryClickEvent event) {
         if (event.getWhoClicked() instanceof Player) {
-            if (this.activePlayers.contains(event.getWhoClicked())) {
+            if (this.activePlayers.contains(PexelSlave.getInstance()
+                    .getObjectFactory()
+                    .getPlayer(event.getWhoClicked()))) {
                 if (this.inventoryDisabled) {
                     event.setCancelled(true);
                 }

@@ -26,7 +26,7 @@ import eu.matejkormuth.pexel.commons.Providers;
  * Object that holds all caches on master.
  */
 public class Caches {
-    private ProfileCache profileCache;
+    private final ProfileCache profileCache = new ProfileCache();
     
     public ProfileCache getProfileCache() {
         return this.profileCache;

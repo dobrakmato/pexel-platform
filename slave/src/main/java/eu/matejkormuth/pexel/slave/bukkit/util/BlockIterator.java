@@ -19,6 +19,7 @@
 package eu.matejkormuth.pexel.slave.bukkit.util;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -63,7 +64,15 @@ public class BlockIterator implements Iterator<Block> {
     
     @Override
     public Block next() {
-        return this.location.add(this.directionX, this.directionY, this.directionZ).getBlock();
+        if (this.location.getBlockX() >= Integer.MAX_VALUE
+                || this.location.getBlockY() >= Integer.MAX_VALUE
+                || this.location.getBlockZ() >= Integer.MAX_VALUE
+                || this.location.getBlockX() <= Integer.MIN_VALUE
+                || this.location.getBlockY() <= Integer.MIN_VALUE
+                || this.location.getBlockZ() <= Integer.MIN_VALUE) { throw new NoSuchElementException(
+                "No block exists at position " + this.location.toVector().toString()); }
+        return this.location.add(this.directionX, this.directionY, this.directionZ)
+                .getBlock();
     }
     
     /**

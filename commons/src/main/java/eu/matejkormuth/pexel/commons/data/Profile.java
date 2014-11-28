@@ -18,6 +18,7 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons.data;
 
+import java.util.Locale;
 import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.permissions.Permissiable;
@@ -63,4 +64,11 @@ public interface Profile extends Permissiable {
      * @return player's role
      */
     public Role getRole();
+    
+    /**
+     * Returns player specified {@link Locale}.
+     * 
+     * @return locale for this player
+     */
+    public Locale getLocale();
 }

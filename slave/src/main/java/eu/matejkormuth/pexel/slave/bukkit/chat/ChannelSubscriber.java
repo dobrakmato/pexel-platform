@@ -21,8 +21,6 @@ package eu.matejkormuth.pexel.slave.bukkit.chat;
 /**
  * Interface definating the chat channel subscriber.
  * 
- * @author Mato Kormuth
- * 
  */
 public interface ChannelSubscriber {
     /**

@@ -25,7 +25,10 @@ import java.util.UUID;
 /**
  * Byte utilities.
  */
-public abstract class ByteUtils {
+public class ByteUtils {
+    private ByteUtils() {
+    }
+    
     public static void writeInt(final int i, final byte[] array, final int index) {
         array[index + 0] = (byte) (i >> 24);
         array[index + 1] = (byte) (i >> 16);

@@ -47,27 +47,28 @@ public class ApiResource {
         // Build help.
         for (Method m : this.getClass().getDeclaredMethods()) {
             if (m.isAnnotationPresent(ApiPart.class)) {
-                String localHtml = "<div style=\"border:1px solid black;margin:1em;\">";
-                localHtml += "<span style=color:black;background:lime;font-size:18px;display:block;>Path: "
-                        + m.getAnnotation(Path.class).value() + "</span>";
+                StringBuilder localHtml = new StringBuilder(
+                        "<div style=\"border:1px solid black;margin:1em;\">");
+                localHtml.append("<span style=color:black;background:lime;font-size:18px;display:block;>Path: "
+                        + m.getAnnotation(Path.class).value() + "</span>");
                 
                 for (Annotation a : m.getAnnotations()) {
                     if (a.getClass() == GET.class || a.getClass() == POST.class
                             || a.getClass() == DELETE.class || a.getClass() == PUT.class
                             || a.getClass() == HEAD.class) {
-                        localHtml += "<span>Method: " + a.annotationType().getName()
-                                + "</span><br/>";
+                        localHtml.append("<span>Method: " + a.annotationType().getName()
+                                + "</span><br/>");
                     }
                 }
                 
-                localHtml += "<span>Description: "
-                        + m.getAnnotation(ApiPart.class).desc() + "</span><br/>";
-                localHtml += "<span style=\"font-size:14px;\">Parameters: </span><br/>";
+                localHtml.append("<span>Description: "
+                        + m.getAnnotation(ApiPart.class).desc() + "</span><br/>");
+                localHtml.append("<span style=\"font-size:14px;\">Parameters: </span><br/>");
                 for (Annotation[] a : m.getParameterAnnotations()) {
                     for (Annotation aa : a) {
                         if (aa instanceof PathParam) {
-                            localHtml += "- prameter <b>" + ((PathParam) aa).value()
-                                    + "</b><br/>";
+                            localHtml.append("- prameter <b>" + ((PathParam) aa).value()
+                                    + "</b><br/>");
                         }
                     }
                 }

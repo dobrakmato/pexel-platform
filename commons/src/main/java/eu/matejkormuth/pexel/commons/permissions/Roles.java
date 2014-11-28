@@ -21,7 +21,10 @@ package eu.matejkormuth.pexel.commons.permissions;
 /**
  * All basic roles in Pexel.
  */
-public abstract class Roles {
+public class Roles {
+    private Roles() {
+    }
+    
     /**
      * Default player role that have permission to chat.
      */

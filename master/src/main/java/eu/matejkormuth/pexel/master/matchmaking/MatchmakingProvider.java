@@ -30,20 +30,58 @@ public abstract class MatchmakingProvider {
     protected Matchmaking matchmaking;
     protected Logger      log;
     
+    /**
+     * Set's instance of {@link Matchmaking} in this {@link MatchmakingProvider}.
+     * 
+     * @param matchmaking
+     *            instance of matchmaking
+     */
     protected void setMatchmaking(final Matchmaking matchmaking) {
         this.matchmaking = matchmaking;
         this.log = matchmaking.getLogger();
     }
     
+    /**
+     * Cancels pending matchmaking request.
+     * 
+     * @param request
+     *            request to cancel
+     */
     public abstract void cancelRequest(MatchmakingRequest request);
     
+    /**
+     * Adds {@link MatchmakingRequest} to implementation queue.
+     * 
+     * @param request
+     *            request to add to queue
+     */
     public abstract void addRequest(MatchmakingRequest request);
     
+    /**
+     * Method that make matches from requests.
+     */
     public abstract void doMatchmaking();
     
+    /**
+     * Returns {@link Collection} of {@link MatchmakingGameImpl} arenas registered in this {@link MatchmakingProvider}.
+     * 
+     * @return collection of registered arenas
+     */
     public abstract Collection<MatchmakingGameImpl> getGames();
     
+    /**
+     * Registers new minigame to this provider. (Will be used only for statistical purposes.)
+     * 
+     * @param name
+     *            name of minigame
+     */
     public abstract void registerMinigame(String name);
     
+    /**
+     * Registers {@link MatchmakingGameImpl} arena to this {@link MatchmakingProvider}.
+     * 
+     * @param game
+     *            arena to register
+     */
     public abstract void registerArena(MatchmakingGameImpl game);
 }

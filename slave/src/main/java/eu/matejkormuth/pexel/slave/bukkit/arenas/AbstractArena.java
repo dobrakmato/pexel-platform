@@ -62,6 +62,7 @@ import eu.matejkormuth.pexel.slave.bukkit.util.ItemUtils;
  * Abstract minigame arena - {@link ProtectedArea} that implements {@link MatchmakingGame}, {@link PlayerHolder},
  * {@link Bannable}. Contains some useful functions and basic strucutre of minigame.
  */
+// TODO: Rewrite.
 public abstract class AbstractArena extends ProtectedArea implements MatchmakingGame,
         PlayerHolder, Bannable {
     /**

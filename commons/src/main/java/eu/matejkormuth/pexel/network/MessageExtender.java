@@ -39,6 +39,7 @@ public abstract class MessageExtender<Rq extends Request, Rs extends Response>
         else {
             this.destination = ((SlaveServer) ServerInfo.localServer()).getMasterServerInfo();
         }
+        this.side = side;
         
         this.callback = new Callback<Rs>() {
             @Override

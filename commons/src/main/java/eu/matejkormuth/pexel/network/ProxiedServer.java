@@ -21,8 +21,8 @@ package eu.matejkormuth.pexel.network;
 /**
  * Represents server that is proxied.
  */
-public class ProxiedServer {
-    String name;
+public abstract class ProxiedServer {
+    protected String name;
     
     public String getName() {
         return this.name;

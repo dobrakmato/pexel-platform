@@ -19,6 +19,7 @@
 package eu.matejkormuth.pexel.slave;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.Commitable;
@@ -104,6 +105,12 @@ public class PlayerProfile implements Profile, Commitable, Metadatable {
     
     @Override
     public Role getRole() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public Locale getLocale() {
         // TODO Auto-generated method stub
         return null;
     }

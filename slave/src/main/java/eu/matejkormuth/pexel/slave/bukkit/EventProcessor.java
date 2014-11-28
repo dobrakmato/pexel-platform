@@ -63,7 +63,6 @@ import eu.matejkormuth.pexel.slave.bukkit.chat.SubscribeMode;
 import eu.matejkormuth.pexel.slave.bukkit.core.Log;
 import eu.matejkormuth.pexel.slave.bukkit.core.StorageEngine;
 import eu.matejkormuth.pexel.slave.bukkit.menu.InventoryMenu;
-import eu.matejkormuth.pexel.slave.bukkit.util.Lang;
 import eu.matejkormuth.pexel.slave.bukkit.util.ParticleEffect;
 import eu.matejkormuth.pexel.slave.bukkit.util.ParticleEffect2;
 
@@ -185,10 +184,10 @@ public class EventProcessor implements Listener {
                         }
                         else if (command.equalsIgnoreCase("[World]")) {
                             World w = Bukkit.getWorld(lines[1]);
-                            if (w == null)
-                                event.getPlayer()
-                                        .sendMessage(
-                                                ChatManager.error(Lang.getTranslation("worldnotfound")));
+                            if (w == null) {
+                                event.getPlayer().sendMessage(
+                                        ChatManager.error("e/worldnotfound"));
+                            }
                             else
                                 event.getPlayer().teleport(w.getSpawnLocation());
                         }

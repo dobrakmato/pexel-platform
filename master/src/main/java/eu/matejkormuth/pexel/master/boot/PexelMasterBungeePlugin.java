@@ -27,7 +27,12 @@ public class PexelMasterBungeePlugin extends Plugin {
     private static PexelMasterBungeePlugin instance;
     
     public PexelMasterBungeePlugin() {
-        PexelMasterBungeePlugin.instance = this;
+        if (PexelMasterBungeePlugin.instance == null) {
+            PexelMasterBungeePlugin.instance = this;
+        }
+        else {
+            throw new RuntimeException("Singleton alredy initialized!");
+        }
     }
     
     @Override
@@ -53,7 +58,7 @@ public class PexelMasterBungeePlugin extends Plugin {
         if (bsm != null) {
             boolean patched = false;
             for (Field f : bsm.getDeclaredFields()) {
-                if (f.getName() == "PATCHED") {
+                if (f.getName().equals("PATCHED")) {
                     try {
                         if (f.getInt(null) == 12) {
                             patched = true;

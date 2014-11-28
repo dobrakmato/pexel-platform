@@ -57,16 +57,16 @@ public final class PexelMaster implements LoggerHolder {
         return PexelMaster.instance;
     }
     
-    protected MasterServer          master;
-    protected Logger                log;
-    protected Configuration         config;
-    protected final Scheduler       scheduler;
-    protected Storage               storage;
-    protected Database              database;
-    protected Caches                caches;
+    private final MasterServer          master;
+    private final Logger                log;
+    private Configuration               config;
+    private final Scheduler             scheduler;
+    private final Storage               storage;
+    private Database                    database;
+    private final Caches                caches;
     
-    protected List<ServerComponent> components        = new ArrayList<ServerComponent>();
-    protected boolean               componentsEnabled = false;
+    private final List<ServerComponent> components        = new ArrayList<ServerComponent>();
+    private boolean                     componentsEnabled = false;
     
     private PexelMaster(final File dataFolder) {
         this.log = new Logger("PexelMaster");
@@ -108,6 +108,9 @@ public final class PexelMaster implements LoggerHolder {
                 PexelMaster.this.periodic();
             }
         }, 2, TimeUnit.SECONDS);
+        
+        // Set up caches.
+        this.caches = new Caches();
         
         // Set up network.
         this.master = new MasterServer("master",
@@ -197,6 +200,7 @@ public final class PexelMaster implements LoggerHolder {
     }
     
     protected void enableComponents() {
+        this.componentsEnabled = true;
         for (ServerComponent c : this.components) {
             this.enableComponent(c);
         }
@@ -264,6 +268,8 @@ public final class PexelMaster implements LoggerHolder {
     }
     
     public Database getDatabase() {
+        if (!this.componentsEnabled) { throw new RuntimeException(
+                "Database not ready yet! Please use it after onEnable()"); }
         return this.database;
     }
     

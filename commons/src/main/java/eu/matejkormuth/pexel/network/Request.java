@@ -22,7 +22,6 @@ package eu.matejkormuth.pexel.network;
  * Class that specifies request.
  */
 public abstract class Request extends Message {
-    protected long       requestID;
     // Null when sending, hold sender object when processing.
     protected ServerInfo sender;
     

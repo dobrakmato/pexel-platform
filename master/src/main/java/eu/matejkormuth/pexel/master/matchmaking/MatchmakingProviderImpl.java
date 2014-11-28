@@ -165,7 +165,8 @@ public class MatchmakingProviderImpl extends MatchmakingProvider {
                     this.makeMatchesBySpecifiedMinigameAndMminigameArenaFromMatchMakingRequest_Version_1_0_0_0_1(request);
                 }
                 else {
-                    List<MatchmakingGameImpl> minigame_arenas = this.arenas.get(request.getMinigame());
+                    List<MatchmakingGameImpl> minigame_arenas = this.arenas.get(request.getMinigame()
+                            .getName());
                     
                     for (MatchmakingGameImpl arena : minigame_arenas) {
                         // If is not empty, and there is a place for them
@@ -216,7 +217,7 @@ public class MatchmakingProviderImpl extends MatchmakingProvider {
     // Must keep name.
     private void makeMatchesBySpecifiedMinigameAndMminigameArenaFromMatchMakingRequest_Version_1_0_0_0_1(
             final MatchmakingRequest request) {
-        for (MatchmakingGameImpl arena : this.arenas.get(request.getMinigame())) {
+        for (MatchmakingGameImpl arena : this.arenas.get(request.getMinigame().getName())) {
             // If is not empty, and there is a place for them
             if (!arena.empty() && arena.canJoin(request.playerCount())) {
                 // Connect all of them
@@ -229,7 +230,7 @@ public class MatchmakingProviderImpl extends MatchmakingProvider {
             }
         }
         
-        for (MatchmakingGameImpl arena : this.arenas.get(request.getMinigame())) {
+        for (MatchmakingGameImpl arena : this.arenas.get(request.getMinigame().getName())) {
             // If is not empty, and there is a place for them
             if (arena.canJoin(request.playerCount())) {
                 // Connect all of them

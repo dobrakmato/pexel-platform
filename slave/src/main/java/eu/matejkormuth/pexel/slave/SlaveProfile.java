@@ -19,6 +19,7 @@
 package eu.matejkormuth.pexel.slave;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.data.Profile;
@@ -94,6 +95,12 @@ public class SlaveProfile implements Profile {
     public void removePermission(final Permission permission) {
         // TODO Auto-generated method stub
         
+    }
+    
+    @Override
+    public Locale getLocale() {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }

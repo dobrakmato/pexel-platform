@@ -34,6 +34,11 @@ public class PlayerTeleportRequest extends Request {
     public String targetServer;
     public UUID   uuid;
     
+    public PlayerTeleportRequest(final String targetServer, final UUID uuid) {
+        this.targetServer = targetServer;
+        this.uuid = uuid;
+    }
+    
     @Override
     public ByteBuffer toByteBuffer() {
         return ByteBuffer.allocate(this.targetServer.length() + 16)

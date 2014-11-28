@@ -18,12 +18,15 @@
 // @formatter:on
 package eu.matejkormuth.pexel.network;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
  * Comparator for priority of two NettyMessages.
  */
-public class NettyMessageComparator implements Comparator<NettyMessage> {
+public class NettyMessageComparator implements Comparator<NettyMessage>, Serializable {
+    private static final long serialVersionUID = -1329662686451759393L;
+    
     @Override
     public int compare(final NettyMessage o1, final NettyMessage o2) {
         return o1.priority - o2.priority;

@@ -131,12 +131,14 @@ public class TeamManager implements Listener {
         if (event.getAction() == org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK
                 || event.getAction() == org.bukkit.event.block.Action.LEFT_CLICK_BLOCK)
             if (event.getClickedBlock().getType() == Material.SIGN_POST
-                    || event.getClickedBlock().getType() == Material.SIGN)
-                if (this.arena.getPlayers().contains(event.getPlayer())) {
-                    this.signClick(PexelSlave.getInstance()
-                            .getObjectFactory()
-                            .getPlayer(event.getPlayer()), event.getClickedBlock());
+                    || event.getClickedBlock().getType() == Material.SIGN) {
+                Player p = PexelSlave.getInstance()
+                        .getObjectFactory()
+                        .getPlayer(event.getPlayer());
+                if (this.arena.getPlayers().contains(p)) {
+                    this.signClick(p, event.getClickedBlock());
                 }
+            }
         
     }
     

@@ -21,7 +21,11 @@ package eu.matejkormuth.pexel.commons.permissions;
 /**
  * All default permissions in Pexel.
  */
-public abstract class Permissions {
+public class Permissions {
+    private Permissions() {
+        
+    }
+    
     /**
      * Permission to give temporary ban to name.
      */

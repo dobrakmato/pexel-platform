@@ -42,7 +42,7 @@ import eu.matejkormuth.pexel.slave.bukkit.core.StorageEngine;
 import eu.matejkormuth.pexel.slave.bukkit.core.TeleportGate;
 
 /**
- * Class where is all hard coded stuff stored.
+ * Class where is all hard coded stuff stored. This class IS NETWORK DEPENDENT.
  * 
  */
 public class HardCoded {

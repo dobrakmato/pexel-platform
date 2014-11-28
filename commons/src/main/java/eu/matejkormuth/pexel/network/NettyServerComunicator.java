@@ -189,7 +189,7 @@ public class NettyServerComunicator extends MessageComunicator {
         }
     }
     
-    class NettyServerComunicatorHandler extends
+    private static class NettyServerComunicatorHandler extends
             SimpleChannelInboundHandler<NettyMessage> {
         private final NettyServerComunicator i;
         

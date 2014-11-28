@@ -51,8 +51,6 @@ public class Storage extends ServerComponent {
     protected ServerSide              side;
     protected File                    rootFolder;
     
-    protected ConfigurationSection    config;
-    
     protected Set<MinigameDescriptor> minigames    = new HashSet<MinigameDescriptor>();
     protected Set<MapDescriptor>      maps         = new HashSet<MapDescriptor>();
     protected Set<String>             tags         = new HashSet<String>();
@@ -165,26 +163,27 @@ public class Storage extends ServerComponent {
         this.logger.info("Starting async file structure scan...");
         // Lock object.
         this.lock.lock();
-        
-        // Maps
-        File maps = this.getFile("maps");
-        for (String folder : maps.list()) {
-            if (new File(maps, folder).isDirectory()) {
-                this.scanMapDir(new File(maps, folder));
+        try {
+            // Maps
+            File maps = this.getFile("maps");
+            for (String folder : maps.list()) {
+                if (new File(maps, folder).isDirectory()) {
+                    this.scanMapDir(new File(maps, folder));
+                }
+            }
+            
+            // Plugins
+            File plugins = this.getFile("minigames");
+            for (String folder : plugins.list()) {
+                if (new File(plugins, folder).isDirectory()) {
+                    this.scanPluginDir(new File(plugins, folder));
+                }
             }
         }
-        
-        // Plugins
-        File plugins = this.getFile("minigames");
-        for (String folder : plugins.list()) {
-            if (new File(plugins, folder).isDirectory()) {
-                this.scanPluginDir(new File(plugins, folder));
-            }
+        finally {
+            // Unlock object.
+            this.lock.unlock();
         }
-        
-        // Unlock object.
-        this.lock.unlock();
-        
         // Log a message.
         this.logger.info("File structure scan finished!");
         this.logger.info("Found " + this.minigames.size() + " plugins, "
@@ -293,7 +292,7 @@ public class Storage extends ServerComponent {
                 // Add tags.
                 this.tags.addAll(Arrays.asList(descriptor.getTags()));
                 
-            } catch (Exception ex) {
+            } catch (RuntimeException ex) {
                 this.logger.error("File " + desc.getAbsolutePath()
                         + " is not valid descriptor!");
             }

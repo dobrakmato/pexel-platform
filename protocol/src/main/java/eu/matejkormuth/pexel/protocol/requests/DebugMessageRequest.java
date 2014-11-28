@@ -23,6 +23,7 @@ import java.nio.ByteBuffer;
 import com.google.common.base.Charsets;
 
 import eu.matejkormuth.pexel.network.Request;
+import eu.matejkormuth.pexel.protocol.PexelProtocol;
 
 public class DebugMessageRequest extends Request {
     public byte   catID;
@@ -41,7 +42,7 @@ public class DebugMessageRequest extends Request {
         return ByteBuffer.allocate(this.content.length() + 2)
                 .put(this.catID)
                 .put(this.typeID)
-                .put(this.content.getBytes());
+                .put(this.content.getBytes(PexelProtocol.CHARSET));
     }
     
     @Override

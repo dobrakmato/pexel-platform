@@ -19,6 +19,7 @@
 package eu.matejkormuth.pexel.master.db;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.Player;
@@ -97,4 +98,9 @@ public class ProfileEntity implements Profile {
         
     }
     
+    @Override
+    public Locale getLocale() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
