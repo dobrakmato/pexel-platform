@@ -16,26 +16,30 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons;
+package eu.matejkormuth.pexel.slave.staticmc;
 
-import eu.matejkormuth.pexel.commons.storage.MinigameDescriptor;
+import eu.matejkormuth.pexel.commons.SlaveMinecraftServer;
+import eu.matejkormuth.pexel.commons.SlaveMinecraftServerType;
 
 /**
- * Interface that specifies how to load and unload plugins on slave server.
+ * Static MC implementation of {@link SlaveMinecraftServer}.
  */
-public interface PluginLoader {
-    /**
-     * Loads plugin by minigame descriptor.
-     */
-    public void load(MinigameDescriptor plugin);
+public class StaticMCSlaveMinecraftSoftware implements SlaveMinecraftServer {
     
-    /**
-     * Unloads plugin by minigame descriptor.
-     */
-    public void unload(MinigameDescriptor plugin);
+    @Override
+    public String getVersion() {
+        return "unknown";
+    }
     
-    /**
-     * Loads all plugins in all plugin directories.
-     */
-    public void loadAll();
+    @Override
+    public int getSlots() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+    
+    @Override
+    public SlaveMinecraftServerType getType() {
+        return SlaveMinecraftServerType.STATICMC;
+    }
+    
 }

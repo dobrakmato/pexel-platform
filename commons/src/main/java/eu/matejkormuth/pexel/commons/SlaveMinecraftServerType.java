@@ -21,7 +21,7 @@ package eu.matejkormuth.pexel.commons;
 /**
  * Enum specifying server software.
  */
-public enum SlaveServerSoftware {
+public enum SlaveMinecraftServerType {
     /**
      * Craftbukkit server.
      */

@@ -16,26 +16,31 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons;
+package eu.matejkormuth.pexel.slave.spigot;
 
-import eu.matejkormuth.pexel.commons.storage.MinigameDescriptor;
+import org.bukkit.Bukkit;
+
+import eu.matejkormuth.pexel.commons.SlaveMinecraftServer;
+import eu.matejkormuth.pexel.commons.SlaveMinecraftServerType;
 
 /**
- * Interface that specifies how to load and unload plugins on slave server.
+ * Bukkit implementation of {@link SlaveMinecraftServer}.
  */
-public interface PluginLoader {
-    /**
-     * Loads plugin by minigame descriptor.
-     */
-    public void load(MinigameDescriptor plugin);
+public class SpigotSlaveMinecraftServer implements SlaveMinecraftServer {
     
-    /**
-     * Unloads plugin by minigame descriptor.
-     */
-    public void unload(MinigameDescriptor plugin);
+    @Override
+    public String getVersion() {
+        return Bukkit.getBukkitVersion();
+    }
     
-    /**
-     * Loads all plugins in all plugin directories.
-     */
-    public void loadAll();
+    @Override
+    public int getSlots() {
+        return Bukkit.getMaxPlayers();
+    }
+    
+    @Override
+    public SlaveMinecraftServerType getType() {
+        return SlaveMinecraftServerType.SPIGOT;
+    }
+    
 }

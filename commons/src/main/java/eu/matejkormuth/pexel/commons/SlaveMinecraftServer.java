@@ -18,24 +18,29 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons;
 
-import eu.matejkormuth.pexel.commons.storage.MinigameDescriptor;
-
 /**
- * Interface that specifies how to load and unload plugins on slave server.
+ * Interface that specifies all actions that slave minecraft software should do.
  */
-public interface PluginLoader {
-    /**
-     * Loads plugin by minigame descriptor.
-     */
-    public void load(MinigameDescriptor plugin);
+public interface SlaveMinecraftServer {
     
     /**
-     * Unloads plugin by minigame descriptor.
+     * Returns minecraft server's version.
+     * 
+     * @return version of server that slave runs on
      */
-    public void unload(MinigameDescriptor plugin);
+    public String getVersion();
     
     /**
-     * Loads all plugins in all plugin directories.
+     * Returns maximum amount of players that can be online at this server at the same time.
+     * 
+     * @return number of slots
      */
-    public void loadAll();
+    public int getSlots();
+    
+    /**
+     * Returns {@link SlaveMinecraftServerType} of this {@link SlaveMinecraftServer}.
+     * 
+     * @return
+     */
+    public SlaveMinecraftServerType getType();
 }

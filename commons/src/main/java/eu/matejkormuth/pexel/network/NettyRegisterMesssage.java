@@ -57,6 +57,7 @@ public class NettyRegisterMesssage {
         byte[] name = new byte[payload.length - 4 - 128];
         ((ByteBuffer) ByteBuffer.wrap(payload).position(4 + 128)).get(name, 0,
                 name.length);
-        return new String(name, Charsets.UTF_8);
+        // Trim the name.
+        return new String(name, Charsets.UTF_8).trim();
     }
 }

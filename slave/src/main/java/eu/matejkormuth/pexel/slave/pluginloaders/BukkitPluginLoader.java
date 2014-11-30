@@ -58,4 +58,10 @@ public class BukkitPluginLoader implements PluginLoader {
         this.internal.disablePlugin(this.plugins.get(plugin));
     }
     
+    @Override
+    public void loadAll() {
+        // TODO Auto-generated method stub
+        
+    }
+    
 }

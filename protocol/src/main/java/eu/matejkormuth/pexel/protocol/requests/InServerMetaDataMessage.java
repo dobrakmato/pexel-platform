@@ -22,7 +22,7 @@ import java.nio.ByteBuffer;
 import java.util.Set;
 
 import eu.matejkormuth.pexel.commons.Providers;
-import eu.matejkormuth.pexel.commons.SlaveServerSoftware;
+import eu.matejkormuth.pexel.commons.SlaveMinecraftServerType;
 import eu.matejkormuth.pexel.commons.storage.MapDescriptor;
 import eu.matejkormuth.pexel.commons.storage.MinigameDescriptor;
 import eu.matejkormuth.pexel.network.Request;
@@ -34,14 +34,24 @@ import eu.matejkormuth.pexel.protocol.PexelProtocol;
 public class InServerMetaDataMessage extends Request {
     public Set<MinigameDescriptor> minigames;
     public Set<MapDescriptor>      maps;
-    public SlaveServerSoftware     software;
+    public SlaveMinecraftServerType     software;
     public String                  softwareVersion;
     public int                     slots;
+    
+    public InServerMetaDataMessage(final Set<MinigameDescriptor> minigames,
+            final Set<MapDescriptor> maps, final SlaveMinecraftServerType software,
+            final String softwareVersion, final int slots) {
+        this.minigames = minigames;
+        this.maps = maps;
+        this.software = software;
+        this.softwareVersion = softwareVersion;
+        this.slots = slots;
+    }
     
     static class ServerConfiguration {
         public Set<MinigameDescriptor> minigames;
         public Set<MapDescriptor>      maps;
-        public SlaveServerSoftware     software;
+        public SlaveMinecraftServerType     software;
         public int                     slots;
         public String                  softwareVersion;
         

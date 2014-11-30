@@ -21,7 +21,7 @@ package eu.matejkormuth.pexel.slave.boot;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import eu.matejkormuth.pexel.commons.SlaveServerSoftware;
+import eu.matejkormuth.pexel.commons.SlaveMinecraftServerType;
 import eu.matejkormuth.pexel.slave.PexelSlave;
 
 /**
@@ -38,7 +38,7 @@ public class PexelSlaveBukkitPlugin extends JavaPlugin {
     public void onEnable() {
         this.getLogger().info(
                 "[BOOT] Bootstrapping PexelSlave throught PexelSlaveBukkitPlugin...");
-        PexelSlave.init(this.getDataFolder(), SlaveServerSoftware.CRAFTBUKKIT);
+        PexelSlave.init(this.getDataFolder(), SlaveMinecraftServerType.CRAFTBUKKIT);
         // Start sync.
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this,
                 PexelSlave.getInstance().getSync().getOnTick(), 0L, 1L);

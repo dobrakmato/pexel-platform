@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import eu.matejkormuth.pexel.commons.AbstractObjectFactory;
@@ -32,12 +33,19 @@ import eu.matejkormuth.pexel.commons.PluginLoader;
 import eu.matejkormuth.pexel.commons.Providers;
 import eu.matejkormuth.pexel.commons.ServerComponent;
 import eu.matejkormuth.pexel.commons.ServerMode;
-import eu.matejkormuth.pexel.commons.SlaveServerSoftware;
+import eu.matejkormuth.pexel.commons.SlaveMinecraftServer;
+import eu.matejkormuth.pexel.commons.SlaveMinecraftServerType;
 import eu.matejkormuth.pexel.commons.Storage;
+import eu.matejkormuth.pexel.commons.storage.MapDescriptor;
+import eu.matejkormuth.pexel.commons.storage.MinigameDescriptor;
 import eu.matejkormuth.pexel.network.SlaveServer;
 import eu.matejkormuth.pexel.protocol.PexelProtocol;
+import eu.matejkormuth.pexel.protocol.requests.InServerMetaDataMessage;
 import eu.matejkormuth.pexel.slave.bukkit.BukkitObjectFactory;
+import eu.matejkormuth.pexel.slave.bukkit.BukkitSlaveMinecraftSoftware;
 import eu.matejkormuth.pexel.slave.pluginloaders.BukkitPluginLoader;
+import eu.matejkormuth.pexel.slave.spigot.SpigotSlaveMinecraftServer;
+import eu.matejkormuth.pexel.slave.staticmc.StaticMCSlaveMinecraftSoftware;
 
 /**
  * PexelSlave server singleton object.
@@ -52,13 +60,14 @@ public class PexelSlave implements LoggerHolder {
     protected PluginLoader          pluginLoader;
     protected Storage               storage;
     protected AbstractObjectFactory objectFactory;
+    protected SlaveMinecraftServer  serverSoftware;
     
     protected ServerMode            mode;
     
     protected List<ServerComponent> components        = new ArrayList<ServerComponent>();
     protected boolean               componentsEnabled = false;
     
-    public PexelSlave(final File dataFolder, final SlaveServerSoftware software) {
+    public PexelSlave(final File dataFolder, final SlaveMinecraftServerType software) {
         this.log = new Logger("PexelSlave");
         this.log.timestamp = true;
         
@@ -85,6 +94,7 @@ public class PexelSlave implements LoggerHolder {
         // Initialize PluginLoader
         switch (software) {
             case CRAFTBUKKIT:
+                this.serverSoftware = new BukkitSlaveMinecraftSoftware();
                 this.pluginLoader = new BukkitPluginLoader();
                 this.objectFactory = new BukkitObjectFactory();
                 break;
@@ -92,6 +102,7 @@ public class PexelSlave implements LoggerHolder {
                 throw new RuntimeException(
                         "What the hell? You are running unsupported server software!");
             case SPIGOT:
+                this.serverSoftware = new SpigotSlaveMinecraftServer();
                 this.pluginLoader = new BukkitPluginLoader();
                 this.objectFactory = new BukkitObjectFactory();
                 break;
@@ -99,6 +110,7 @@ public class PexelSlave implements LoggerHolder {
                 throw new RuntimeException(
                         "What the hell? You are running unsupported server software!");
             case STATICMC:
+                this.serverSoftware = new StaticMCSlaveMinecraftSoftware();
                 this.pluginLoader = null;
                 break;
             default:
@@ -107,6 +119,7 @@ public class PexelSlave implements LoggerHolder {
         }
         
         // TODO: Load all plugins.
+        this.pluginLoader.loadAll();
         
         // Initialize protects.
         
@@ -125,6 +138,14 @@ public class PexelSlave implements LoggerHolder {
                 .get(Configuration.Keys.KEY_SLAVE_NAME, Providers.RANDOM_NAME.next())
                 .asString(), this.config.getSection(SlaveServer.class), this.log,
                 new PexelProtocol());
+        
+        this.server.getMasterServerInfo()
+                .sendRequest(
+                        new InServerMetaDataMessage(new HashSet<MinigameDescriptor>(1),
+                                new HashSet<MapDescriptor>(1),
+                                this.serverSoftware.getType(),
+                                this.serverSoftware.getVersion(),
+                                this.serverSoftware.getSlots()));
     }
     
     public void shutdown() {
@@ -196,7 +217,8 @@ public class PexelSlave implements LoggerHolder {
         return null;
     }
     
-    public static void init(final File dataFolder, final SlaveServerSoftware software) {
+    public static void init(final File dataFolder,
+            final SlaveMinecraftServerType software) {
         PexelSlave.instance = new PexelSlave(dataFolder, software);
     }
     
