@@ -16,7 +16,7 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.slave;
+package eu.matejkormuth.pexel.slave.bukkit;
 
 import java.util.UUID;
 

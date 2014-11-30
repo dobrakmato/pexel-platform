@@ -16,32 +16,14 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.slave.bukkit;
-
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-
-import eu.matejkormuth.pexel.commons.AbstractObjectFactory;
-import eu.matejkormuth.pexel.commons.Player;
+package eu.matejkormuth.pexel.commons;
 
 /**
- * Bukkit implementation of {@link AbstractObjectFactory}.
+ * Class that holds key for I18N internationalization.
  */
-public class BukkitObjectFactory extends AbstractObjectFactory {
-    @Override
-    public Player getPlayer(final UUID uuid) {
-        return new BukkitPlayer(Bukkit.getPlayer(uuid));
+public final class InternationalizationKeys {
+    private InternationalizationKeys() {
     }
     
-    @Override
-    public Player getPlayer(final Object platformType) {
-        if (platformType instanceof org.bukkit.entity.Player) {
-            return new BukkitPlayer((org.bukkit.entity.Player) platformType);
-        }
-        else {
-            throw new IllegalArgumentException(
-                    "platformType must be type of org.bukkit.entity.Player");
-        }
-    }
+    public static final String WORLD_NOT_FOUND = "e/worldnotfound";
 }

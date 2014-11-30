@@ -165,7 +165,7 @@ public class Configuration extends Unmarshaller.Listener {
     }
     
     public static final class Defaults {
-        public static final String AUTH_KEY          = "_DSbXyV9($3t&vjA&)6pTGo*#(*W^m%8PM/o/G)8y1cu)lV^kDj39xQ1uMypZs)q58EQqDAPfC9eOG)Z9iDUG^x0HV#i__yUY3m_hMFm@prEWpeGyIc4DzG**x^/ntG*";
+        public static final String AUTH_KEY          = "hIFgRmfHZbncbkFgT36H3m4ENlcyoSTwqoC8BHFqJTsL3XRNQNkK0feDqh2FZM1g0uer2KHBu0coOU1vxc5oh9SyhK36mVddfiv8S3zcTCrxmiSKkOYsOHRViLRvwVyC";
         public static final String DATABASE_URL      = "jdbc:mysql://127.0.0.1/pexel";
         public static final String DATABASE_USERNAME = "root";
         public static final String DATABASE_PASSWORD = "root";

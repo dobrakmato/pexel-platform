@@ -22,6 +22,9 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.UUID;
 
+import eu.matejkormuth.pexel.commons.Commitable;
+import eu.matejkormuth.pexel.commons.MetadataStore;
+import eu.matejkormuth.pexel.commons.Metadatable;
 import eu.matejkormuth.pexel.commons.data.Profile;
 import eu.matejkormuth.pexel.commons.permissions.Permission;
 import eu.matejkormuth.pexel.commons.permissions.Role;
@@ -29,13 +32,14 @@ import eu.matejkormuth.pexel.commons.permissions.Role;
 /**
  *
  */
-public class SlaveProfile implements Profile {
-    protected long   cached_id;
-    protected UUID   cached_uuid;
-    protected String cached_lastKnownName;
-    protected int    cached_xp;
-    protected int    cached_coins;
-    protected int    cached_premiumConins;
+public class SlaveProfile implements Profile, Commitable, Metadatable {
+    protected long          cached_id;
+    protected UUID          cached_uuid;
+    protected String        cached_lastKnownName;
+    protected int           cached_xp;
+    protected int           cached_coins;
+    protected int           cached_premiumConins;
+    protected MetadataStore metadata;
     
     @Override
     public long getId() {
@@ -65,6 +69,22 @@ public class SlaveProfile implements Profile {
     @Override
     public int getPremiumCoins() {
         return this.cached_premiumConins;
+    }
+    
+    @Override
+    public void setMetadata(final String key, final String value) {
+        if (this.metadata == null) {
+            this.metadata = MetadataStore.create(key, value);
+        }
+        this.metadata.setMetadata(key, value);
+    }
+    
+    @Override
+    public String getMetadata(final String key) {
+        if (this.metadata == null) {
+            //TODO: this.requestMetadata();
+        }
+        return this.metadata.getMetadata(key);
     }
     
     @Override
@@ -101,6 +121,12 @@ public class SlaveProfile implements Profile {
     public Locale getLocale() {
         // TODO Auto-generated method stub
         return null;
+    }
+    
+    @Override
+    public void commit() {
+        // TODO Auto-generated method stub
+        
     }
     
 }

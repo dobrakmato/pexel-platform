@@ -124,7 +124,7 @@ public final class PexelMaster implements LoggerHolder {
         this.master.getMessenger().addResponder(new MatchmakingResponder());
         
         // Set up Database.
-        this.addComponent(new Database());
+        // this.addComponent(new Database());
         
         // Set up API server.
         this.addComponent(new ApiServer());
@@ -214,12 +214,17 @@ public final class PexelMaster implements LoggerHolder {
     
     protected void enableComponent(final ServerComponent e) {
         this.log.info("Enabling [" + e.getClass().getSimpleName() + "] ...");
-        if (e instanceof MasterComponent) {
-            ((MasterComponent) e).master = this;
+        try {
+            if (e instanceof MasterComponent) {
+                ((MasterComponent) e).master = this;
+            }
+            e._initLogger(this);
+            e._initConfig(this.getConfiguration());
+            e.onEnable();
+        } catch (Exception ex) {
+            this.log.info("Error '" + ex.getMessage() + "' while enabling component "
+                    + e.getClass().getSimpleName());
         }
-        e._initLogger(this);
-        e._initConfig(this.getConfiguration());
-        e.onEnable();
     }
     
     protected void disableComponent(final ServerComponent e) {

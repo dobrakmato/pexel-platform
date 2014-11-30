@@ -76,7 +76,7 @@ public class Matchmaking extends MasterComponent {
         
         // Init config.
         this.interval = this.getConfiguration()
-                .get(Configuration.Keys.KEY_MATCHMAKING_INTERVAL, 2000)
+                .get(Configuration.Keys.KEY_MATCHMAKING_INTERVAL, 2000L)
                 .asLong();
         
         this.future = PexelMaster.getInstance()

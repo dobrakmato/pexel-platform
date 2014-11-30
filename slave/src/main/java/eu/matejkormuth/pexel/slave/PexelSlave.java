@@ -19,6 +19,8 @@
 package eu.matejkormuth.pexel.slave;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +60,14 @@ public class PexelSlave implements LoggerHolder {
     
     public PexelSlave(final File dataFolder, final SlaveServerSoftware software) {
         this.log = new Logger("PexelSlave");
-        this.log.timestamp = false;
+        this.log.timestamp = true;
+        
+        try {
+            this.log.setOutput(new FileWriter(dataFolder.getAbsolutePath()
+                    + "/pexel.log"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         
         this.log.info("Booting up PexelSlave...");
         

@@ -71,33 +71,31 @@ public class NettyClientComunicator extends MessageComunicator {
         final SslContext sslCtx = SslContext.newClientContext(InsecureTrustManagerFactory.INSTANCE);
         
         EventLoopGroup group = new NioEventLoopGroup();
-        try {
-            this.b = new Bootstrap();
-            this.b.group(group)
-                    .channel(NioSocketChannel.class)
-                    .handler(new NettyClientComunicatorInitializer(sslCtx, port, host));
-            
-            group.scheduleAtFixedRate(new Runnable() {
-                @Override
-                public void run() {
-                    NettyClientComunicator.this.sendQueue();
-                }
-            }, 0L, 10L, TimeUnit.MILLISECONDS);
-            
-            this.log.info("Connecting to master...");
-            // Start the connection attempt.
-            this.channelToMaster = this.b.connect(host, port).sync().channel();
-            
-            // Log in.
-            this.channelToMaster.writeAndFlush(new NettyMessage(
-                    NettyRegisterMesssage.create(authKey, thisSlaveName)));
-            
-        }
-        finally {
-            // The connection is closed automatically on shutdown.
-            this.log.info("Shutting down..");
-            group.shutdownGracefully();
-        }
+        this.b = new Bootstrap();
+        
+        this.log.info("Connecting to master server (" + host + ":" + port + ")...");
+        // Start the connection attempt. All in one.
+        this.channelToMaster = this.b.group(group)
+                .channel(NioSocketChannel.class)
+                .handler(new NettyClientComunicatorInitializer(sslCtx, port, host))
+                .connect(host, port)
+                .sync()
+                .channel();
+        
+        group.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                NettyClientComunicator.this.sendQueue();
+            }
+        }, 0L, 10L, TimeUnit.MILLISECONDS);
+        
+        // Log in.
+        this.log.info("Sending NettyRegisterMesssage...");
+        this.channelToMaster.writeAndFlush(new NettyMessage(
+                NettyRegisterMesssage.create(authKey, thisSlaveName)));
+        
+        this.log.info("Initialization done!");
+        
     }
     
     protected void sendQueue() {
@@ -124,6 +122,7 @@ public class NettyClientComunicator extends MessageComunicator {
     
     @Override
     public void stop() {
+        this.b.group().shutdownGracefully();
         this.channelToMaster.close();
     }
     

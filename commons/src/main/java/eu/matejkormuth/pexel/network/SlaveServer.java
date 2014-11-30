@@ -77,7 +77,7 @@ public class SlaveServer extends ServerInfo implements Requestable {
                         Configuration.Defaults.AUTH_KEY).asString(), this);
         
         ServerInfo.setLocalServer(this);
-        this.log.info("Network part loaded successfully!");
+        this.log.info("Initialized!");
     }
     
     /**

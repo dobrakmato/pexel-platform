@@ -212,6 +212,7 @@ public class NettyServerComunicator extends MessageComunicator {
                             // Client logged in.
                             
                             // He should send log in packet.
+                            NettyServerComunicatorHandler.this.i.log.debug("SSL handshake ok!");
                         }
                     });
         }
@@ -228,14 +229,17 @@ public class NettyServerComunicator extends MessageComunicator {
                 if (NettyRegisterMesssage.validate(msg.payload, this.i.authKey)) {
                     // Add connected server to pool.
                     NettyServerComunicatorHandler.this.i.channels.add(ctx.channel());
-                    String name = NettyRegisterMesssage.getName(msg.payload);
+                    String name = NettyRegisterMesssage.extractName(msg.payload);
                     SlaveServer server = new SlaveServer(name);
                     NettyServerComunicatorHandler.this.i.ctxByName.put(name, ctx);
                     NettyServerComunicatorHandler.this.i.server.addSlave(server);
                     NettyServerComunicatorHandler.this.i.serverInfoByCTX.put(ctx, server);
+                    this.i.log.info("Registered new SLAVE server: n:" + name + "; ctx:"
+                            + ctx.name());
                 }
                 else {
                     // Bad login. Disconnect.
+                    this.i.log.warn("Bad login authKey from " + ctx.name());
                     ctx.close();
                 }
             }

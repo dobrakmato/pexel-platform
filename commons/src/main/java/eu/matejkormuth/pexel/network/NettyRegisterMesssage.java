@@ -19,6 +19,7 @@
 package eu.matejkormuth.pexel.network;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 import com.google.common.base.Charsets;
 
@@ -28,8 +29,8 @@ public class NettyRegisterMesssage {
     }
     
     public static byte[] create(final String authkey, final String name) {
-        if (authkey.length() <= 128) { throw new RuntimeException(
-                "Specified key is not valid authKey!"); }
+        if (authkey.length() != 128) { throw new IllegalArgumentException("authkey"); }
+        
         return ByteBuffer.allocate(4 + 128 + name.length())
                 .put((byte) 0)
                 .put((byte) 45)
@@ -41,22 +42,21 @@ public class NettyRegisterMesssage {
     }
     
     public static boolean validate(final byte[] array, final String authkey) {
-        if (array.length <= 128) {
-            if (array[0] == 0 && array[1] == 45 && array[2] == 89 && array[3] == 31) {
-                return authkey.equals(new String(ByteBuffer.wrap(array, 4, 128).array(),
-                        Charsets.UTF_8));
-            }
-            else {
-                return false;
-            }
+        if (array[0] == 0 && array[1] == 45 && array[2] == 89 && array[3] == 31) {
+            byte[] received = new byte[128];
+            ((ByteBuffer) ByteBuffer.wrap(array).position(4)).get(received, 0, 128);
+            return Arrays.equals(authkey.getBytes(Charsets.UTF_8), received);
+            
         }
         else {
             return false;
         }
     }
     
-    public static String getName(final byte[] payload) {
-        return new String(ByteBuffer.wrap(payload, 132, payload.length - 132).array(),
-                Charsets.UTF_8);
+    public static String extractName(final byte[] payload) {
+        byte[] name = new byte[payload.length - 4 - 128];
+        ((ByteBuffer) ByteBuffer.wrap(payload).position(4 + 128)).get(name, 0,
+                name.length);
+        return new String(name, Charsets.UTF_8);
     }
 }

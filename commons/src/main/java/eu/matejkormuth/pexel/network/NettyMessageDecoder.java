@@ -29,7 +29,9 @@ public class NettyMessageDecoder extends MessageToMessageDecoder<ByteBuf> {
     @Override
     protected void decode(final ChannelHandlerContext paramChannelHandlerContext,
             final ByteBuf message, final List<Object> out) throws Exception {
-        out.add(new NettyMessage(message.array()));
+        byte[] array = new byte[message.capacity()];
+        message.getBytes(0, array);
+        out.add(new NettyMessage(array));
     }
     
 }
