@@ -19,16 +19,16 @@
 package eu.matejkormuth.pexel.commons.bans;
 
 /**
- * Class that represents BanAuthor, will be replaced.
+ * Interface that specifies author of {@link Ban}.
+ * 
+ * @see PlayerBanAuthor
+ * @see ServerBanAuthor
  */
-public class BanAuthor {
-    private final String name;
-    
-    public BanAuthor(final String name) {
-        this.name = name;
-    }
-    
-    public String getName() {
-        return this.name;
-    }
+public interface BanAuthor {
+    /**
+     * Return's name of author that created this ban.
+     * 
+     * @return author's name
+     */
+    public String getName();
 }

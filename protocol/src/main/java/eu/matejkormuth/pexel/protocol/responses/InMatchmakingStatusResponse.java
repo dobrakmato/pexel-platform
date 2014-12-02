@@ -20,7 +20,7 @@ package eu.matejkormuth.pexel.protocol.responses;
 
 import java.nio.ByteBuffer;
 
-import eu.matejkormuth.pexel.commons.matchmaking.GameState;
+import eu.matejkormuth.pexel.commons.arenas.ArenaState;
 import eu.matejkormuth.pexel.network.Response;
 import eu.matejkormuth.pexel.protocol.PexelProtocol;
 
@@ -28,7 +28,7 @@ import eu.matejkormuth.pexel.protocol.PexelProtocol;
 public class InMatchmakingStatusResponse extends Response {
     public int       freeSlots;
     public int       maximumSlots;
-    public GameState state;
+    public ArenaState state;
     public int       playerCount;
     
     @Override
@@ -45,7 +45,7 @@ public class InMatchmakingStatusResponse extends Response {
         this.freeSlots = buffer.getInt();
         this.maximumSlots = buffer.getInt();
         this.playerCount = buffer.getInt();
-        this.state = GameState.valueOf(new String(buffer.slice().array(),
+        this.state = ArenaState.valueOf(new String(buffer.slice().array(),
                 PexelProtocol.CHARSET));
     }
     

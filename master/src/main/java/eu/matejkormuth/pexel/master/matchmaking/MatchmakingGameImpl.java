@@ -23,7 +23,7 @@ import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.annotations.JsonType;
-import eu.matejkormuth.pexel.commons.matchmaking.GameState;
+import eu.matejkormuth.pexel.commons.arenas.ArenaState;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
 import eu.matejkormuth.pexel.master.PexelMaster;
 import eu.matejkormuth.pexel.network.MessageExtender;
@@ -55,7 +55,7 @@ public class MatchmakingGameImpl extends
     
     protected int                  cached_freeSlots;
     protected int                  cached_maximumSlots;
-    protected GameState            cached_state;
+    protected ArenaState           cached_state;
     protected int                  cached_playerCount; // Could be replaced with player list.
                                                         
     // Name of minigame.                                          
@@ -77,7 +77,7 @@ public class MatchmakingGameImpl extends
     }
     
     @Override
-    public GameState getState() {
+    public ArenaState getState() {
         return this.cached_state;
     }
     
@@ -128,5 +128,11 @@ public class MatchmakingGameImpl extends
     
     public String getMinigameName() {
         return this.minigameName;
+    }
+    
+    @Override
+    public boolean contains(final Player player) {
+        // TODO Auto-generated method stub
+        return false;
     }
 }

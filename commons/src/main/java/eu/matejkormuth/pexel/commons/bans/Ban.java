@@ -18,10 +18,13 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons.bans;
 
-import org.bukkit.entity.Player;
+import eu.matejkormuth.pexel.commons.Player;
 
 /**
  * Interface that specified ban.
+ * 
+ * @see BanAuthor
+ * @see Bannable
  */
 public interface Ban {
     /**

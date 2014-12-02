@@ -36,7 +36,7 @@ import org.bukkit.potion.PotionEffectType;
 import eu.matejkormuth.pexel.commons.BarAPI;
 import eu.matejkormuth.pexel.commons.MapData;
 import eu.matejkormuth.pexel.commons.Player;
-import eu.matejkormuth.pexel.commons.matchmaking.GameState;
+import eu.matejkormuth.pexel.commons.arenas.ArenaState;
 import eu.matejkormuth.pexel.commons.minigame.Minigame;
 import eu.matejkormuth.pexel.slave.PexelSlave;
 import eu.matejkormuth.pexel.slave.bukkit.Pexel;
@@ -291,7 +291,7 @@ public abstract class AdvancedArena extends AbstractArena implements Listener {
      * want to extend reset function, override onReset() function.
      */
     public final void reset() {
-        this.state = GameState.RESETING;
+        this.state = ArenaState.RESETING;
         
         Log.info("Resetting arena " + this.areaName + "...");
         
@@ -312,7 +312,7 @@ public abstract class AdvancedArena extends AbstractArena implements Listener {
     
     /**
      * Called right after the arena resets it's basic things, after {@link AdvancedArena#reset()} was called. <b>Don't
-     * forget to change arena's state to {@link GameState#WAITING_EMPTY} after reset.</b>
+     * forget to change arena's state to {@link ArenaState#WAITING_EMPTY} after reset.</b>
      */
     public void onReset() {
         
@@ -440,9 +440,9 @@ public abstract class AdvancedArena extends AbstractArena implements Listener {
     private void updateGameState() {
         if (!this.gameStarted) {
             if (this.getPlayerCount() == 0)
-                this.state = GameState.WAITING_EMPTY;
+                this.state = ArenaState.WAITING_EMPTY;
             else
-                this.state = GameState.WAITING_PLAYERS;
+                this.state = ArenaState.WAITING_PLAYERS;
         }
     }
     
@@ -519,7 +519,7 @@ public abstract class AdvancedArena extends AbstractArena implements Listener {
         //this.lobbyLocation = lobbyLocation;
     }
     
-    public void setGameState(final GameState state) {
+    public void setGameState(final ArenaState state) {
         this.state = state;
     }
     

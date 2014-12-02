@@ -16,19 +16,19 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons;
+package eu.matejkormuth.pexel.commons.bans;
+
+import eu.matejkormuth.pexel.commons.Player;
 
 /**
- * Interface that represents component that can be enabled and disabled.
+ * Represents {@link Player} author of {@link Ban}.
  */
-public interface Component {
-    /**
-     * Called when componenet is enabled.
-     */
-    public void onEnable();
+public class PlayerBanAuthor implements BanAuthor {
+    private Player invoker;
     
-    /**
-     * Called when componenet is disabled.
-     */
-    public void onDisable();
+    @Override
+    public String getName() {
+        return this.invoker.getName();
+    }
+    
 }

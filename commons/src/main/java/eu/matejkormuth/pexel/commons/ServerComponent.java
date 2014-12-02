@@ -21,7 +21,7 @@ package eu.matejkormuth.pexel.commons;
 /**
  * Interface that represents component that can be enabled, disabled and have own {@link Logger}.
  */
-public abstract class ServerComponent extends Component {
+public abstract class ServerComponent implements Component {
     /**
      * Logger object of this componenet.
      */
@@ -67,5 +67,13 @@ public abstract class ServerComponent extends Component {
      */
     public ConfigurationSection getConfiguration() {
         return this.config;
+    }
+    
+    @Override
+    public void onDisable() {
+    }
+    
+    @Override
+    public void onEnable() {
     }
 }

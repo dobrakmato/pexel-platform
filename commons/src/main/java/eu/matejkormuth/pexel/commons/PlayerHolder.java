@@ -21,7 +21,7 @@ package eu.matejkormuth.pexel.commons;
 import java.util.Collection;
 
 /**
- * Specifies class that hold collection of players.
+ * Specifies class that holds collection of players.
  */
 public interface PlayerHolder {
     /**

@@ -47,8 +47,8 @@ import eu.matejkormuth.pexel.commons.ArenaDisconnectReason;
 import eu.matejkormuth.pexel.commons.MapData;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.PlayerHolder;
+import eu.matejkormuth.pexel.commons.arenas.ArenaState;
 import eu.matejkormuth.pexel.commons.bans.Bannable;
-import eu.matejkormuth.pexel.commons.matchmaking.GameState;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
 import eu.matejkormuth.pexel.commons.minigame.Minigame;
 import eu.matejkormuth.pexel.slave.bukkit.areas.ProtectedArea;
@@ -73,7 +73,7 @@ public abstract class AbstractArena extends ProtectedArea implements Matchmaking
     /**
      * The actual state of the arena.
      */
-    protected GameState          state             = GameState.WAITING_PLAYERS;
+    protected ArenaState          state             = ArenaState.WAITING_PLAYERS;
     /**
      * The game mode that players should get, when they join the game.
      */
@@ -129,7 +129,7 @@ public abstract class AbstractArena extends ProtectedArea implements Matchmaking
     }
     
     @Override
-    public GameState getState() {
+    public ArenaState getState() {
         return this.state;
     }
     
@@ -141,15 +141,15 @@ public abstract class AbstractArena extends ProtectedArea implements Matchmaking
     @Override
     public boolean canJoin() {
         return this.getFreeSlots() >= 1
-                && (this.state == GameState.WAITING_PLAYERS
-                        || this.state == GameState.WAITING_EMPTY || this.state == GameState.PLAYING_CANJOIN);
+                && (this.state == ArenaState.WAITING_PLAYERS
+                        || this.state == ArenaState.WAITING_EMPTY || this.state == ArenaState.PLAYING_CANJOIN);
     }
     
     @Override
     public boolean canJoin(final int count) {
         return this.getFreeSlots() >= count
-                && (this.state == GameState.WAITING_PLAYERS
-                        || this.state == GameState.WAITING_EMPTY || this.state == GameState.PLAYING_CANJOIN);
+                && (this.state == ArenaState.WAITING_PLAYERS
+                        || this.state == ArenaState.WAITING_EMPTY || this.state == ArenaState.PLAYING_CANJOIN);
     }
     
     public void onPlayerJoin(final Player player) {
@@ -374,7 +374,7 @@ public abstract class AbstractArena extends ProtectedArea implements Matchmaking
      * 
      * @param stateToSet
      */
-    public void setState(final GameState stateToSet) {
+    public void setState(final ArenaState stateToSet) {
         this.state = stateToSet;
     }
     

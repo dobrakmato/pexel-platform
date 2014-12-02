@@ -16,12 +16,12 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons.matchmaking;
+package eu.matejkormuth.pexel.commons.arenas;
 
 /**
  * Specifies minigame's current state.
  */
-public enum GameState {
+public enum ArenaState {
     /**
      * Game state when game is operational and is not empty and it's avaiting more players to start game.
      */
@@ -50,7 +50,7 @@ public enum GameState {
     private boolean playing;
     private boolean canjoin;
     
-    private GameState(final boolean playing, final boolean canjoin) {
+    private ArenaState(final boolean playing, final boolean canjoin) {
         this.playing = playing;
         this.canjoin = canjoin;
     }

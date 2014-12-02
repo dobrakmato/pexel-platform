@@ -16,19 +16,29 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons;
+package eu.matejkormuth.pexel.commons.arenas;
+
+import java.util.List;
+
+import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.bans.Bannable;
+import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
 
 /**
- * Interface that represents component that can be enabled and disabled.
+ * Represents minigame arena, that is participating in matchmaking,
  */
-public interface Component {
-    /**
-     * Called when componenet is enabled.
-     */
-    public void onEnable();
+public abstract class Arena implements MatchmakingGame, Bannable {
+    private List<ArenaComponent> components;
     
-    /**
-     * Called when componenet is disabled.
-     */
-    public void onDisable();
+    public void join(final Player player) {
+        
+    }
+    
+    public void leave(final Player player) {
+        
+    }
+    
+    protected abstract void onGameStart();
+    
+    protected abstract void onGameEnd();
 }

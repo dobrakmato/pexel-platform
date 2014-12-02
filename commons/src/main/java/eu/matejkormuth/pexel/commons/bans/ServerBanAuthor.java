@@ -16,19 +16,14 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons;
+package eu.matejkormuth.pexel.commons.bans;
 
 /**
- * Interface that represents component that can be enabled and disabled.
+ * Represents server (automated) author of {@link Ban}.
  */
-public interface Component {
-    /**
-     * Called when componenet is enabled.
-     */
-    public void onEnable();
-    
-    /**
-     * Called when componenet is disabled.
-     */
-    public void onDisable();
+public class ServerBanAuthor implements BanAuthor {
+    @Override
+    public String getName() {
+        return "Server";
+    }
 }

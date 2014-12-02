@@ -16,19 +16,13 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons;
+package eu.matejkormuth.pexel.commons.arenas;
+
+import eu.matejkormuth.pexel.commons.Component;
 
 /**
- * Interface that represents component that can be enabled and disabled.
+ * Represent's {@link Arena} component, that is enabled when game starts and disabled when game ends.
  */
-public interface Component {
-    /**
-     * Called when componenet is enabled.
-     */
-    public void onEnable();
+public interface ArenaComponent extends Component {
     
-    /**
-     * Called when componenet is disabled.
-     */
-    public void onDisable();
 }

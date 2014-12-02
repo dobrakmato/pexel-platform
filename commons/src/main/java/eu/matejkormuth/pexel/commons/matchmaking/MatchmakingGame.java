@@ -18,14 +18,13 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons.matchmaking;
 
-import java.util.List;
-
-import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.PlayerHolder;
+import eu.matejkormuth.pexel.commons.arenas.ArenaState;
 
 /**
  * Specifies that the object is game participating in matchmaking.
  */
-public interface MatchmakingGame {
+public interface MatchmakingGame extends PlayerHolder {
     /**
      * Returns number of free slots in the game.
      * 
@@ -43,7 +42,7 @@ public interface MatchmakingGame {
     /**
      * Returns number of all slots in game.
      * 
-     * @return all slots count.
+     * @return all slots count
      */
     public int getMaximumSlots();
     
@@ -52,21 +51,7 @@ public interface MatchmakingGame {
      * 
      * @return state of arena
      */
-    public GameState getState();
-    
-    /**
-     * Returns list of players in game.
-     * 
-     * @return
-     */
-    public List<Player> getPlayers();
-    
-    /**
-     * Returns number of player in game.
-     * 
-     * @return number of players in arena
-     */
-    public int getPlayerCount();
+    public ArenaState getState();
     
     /**
      * Returns if one player can join game.
@@ -83,8 +68,4 @@ public interface MatchmakingGame {
      * @return true or false
      */
     public boolean canJoin(int count);
-    
-    // Note: Removed these methods since they are slave only methods, so they will be in slave's MatchmakingGame implementation.
-    // public void onPlayerJoin(Player player);
-    // public void onPlayerLeft(Player player, ArenaDisconnectReason reason);
 }
