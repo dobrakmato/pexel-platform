@@ -45,6 +45,9 @@ import eu.matejkormuth.pexel.slave.bukkit.BukkitObjectFactory;
 import eu.matejkormuth.pexel.slave.bukkit.BukkitSlaveMinecraftSoftware;
 import eu.matejkormuth.pexel.slave.pluginloaders.BukkitPluginLoader;
 import eu.matejkormuth.pexel.slave.spigot.SpigotSlaveMinecraftServer;
+import eu.matejkormuth.pexel.slave.sponge.SpongeObjectFactory;
+import eu.matejkormuth.pexel.slave.sponge.SpongePluginLoader;
+import eu.matejkormuth.pexel.slave.sponge.SpongeSlaveMinecraftServer;
 import eu.matejkormuth.pexel.slave.staticmc.StaticMCSlaveMinecraftSoftware;
 
 /**
@@ -107,8 +110,10 @@ public class PexelSlave implements LoggerHolder {
                 this.objectFactory = new BukkitObjectFactory();
                 break;
             case SPONGE:
-                throw new RuntimeException(
-                        "What the hell? You are running unsupported server software!");
+                this.serverSoftware = new SpongeSlaveMinecraftServer();
+                this.pluginLoader = new SpongePluginLoader();
+                this.objectFactory = new SpongeObjectFactory();
+                break;
             case STATICMC:
                 this.serverSoftware = new StaticMCSlaveMinecraftSoftware();
                 this.pluginLoader = null;
