@@ -20,13 +20,13 @@ package eu.matejkormuth.pexel.slave.bukkit;
 
 import java.util.UUID;
 
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import eu.matejkormuth.pexel.commons.GameMode;
 import eu.matejkormuth.pexel.commons.MetadataStore;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.data.Profile;
@@ -111,7 +111,7 @@ public class BukkitPlayer extends Player {
     
     @Override
     public void setGameMode(final GameMode mode) {
-        this.internal.setGameMode(mode);
+        this.internal.setGameMode(org.bukkit.GameMode.valueOf(mode.name()));
     }
     
     @Override

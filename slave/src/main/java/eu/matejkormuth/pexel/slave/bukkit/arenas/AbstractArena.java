@@ -46,8 +46,8 @@ import org.w3c.dom.Element;
 import eu.matejkormuth.pexel.commons.MapData;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.PlayerHolder;
-import eu.matejkormuth.pexel.commons.arenas.LeaveReason;
 import eu.matejkormuth.pexel.commons.arenas.ArenaState;
+import eu.matejkormuth.pexel.commons.arenas.LeaveReason;
 import eu.matejkormuth.pexel.commons.bans.Bannable;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
 import eu.matejkormuth.pexel.commons.minigame.Minigame;
@@ -73,7 +73,7 @@ public abstract class AbstractArena extends ProtectedArea implements Matchmaking
     /**
      * The actual state of the arena.
      */
-    protected ArenaState          state             = ArenaState.WAITING_PLAYERS;
+    protected ArenaState         state             = ArenaState.WAITING_PLAYERS;
     /**
      * The game mode that players should get, when they join the game.
      */
@@ -159,7 +159,7 @@ public abstract class AbstractArena extends ProtectedArea implements Matchmaking
         //}
         //else {
         this.activePlayers.add(player);
-        player.setGameMode(this.defaultGameMode);
+        player.setGameMode(eu.matejkormuth.pexel.commons.GameMode.valueOf(this.defaultGameMode.name()));
         //}
     }
     
@@ -199,7 +199,7 @@ public abstract class AbstractArena extends ProtectedArea implements Matchmaking
                 player.getInventory().addItem(
                         ItemUtils.namedItemStack(Material.COMPASS, ChatColor.YELLOW
                                 + "Spectating", null));
-                player.setGameMode(GameMode.ADVENTURE);
+                player.setGameMode(eu.matejkormuth.pexel.commons.GameMode.ADVENTURE);
                 player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,
                         Integer.MAX_VALUE, 0));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY,
@@ -221,7 +221,7 @@ public abstract class AbstractArena extends ProtectedArea implements Matchmaking
                 player.sendMessage(ChatManager.success("You are no longer spectating!"));
                 StorageEngine.getProfile(player.getUniqueId()).setSpectating(false);
                 player.getInventory().clear();
-                player.setGameMode(this.defaultGameMode);
+                player.setGameMode(eu.matejkormuth.pexel.commons.GameMode.valueOf(this.defaultGameMode.name()));
                 player.removePotionEffect(PotionEffectType.NIGHT_VISION);
                 player.removePotionEffect(PotionEffectType.INVISIBILITY);
                 player.setAllowFlight(false);

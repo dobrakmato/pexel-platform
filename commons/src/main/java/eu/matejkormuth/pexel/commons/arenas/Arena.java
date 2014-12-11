@@ -23,8 +23,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bukkit.GameMode;
-
+import eu.matejkormuth.pexel.commons.GameMode;
 import eu.matejkormuth.pexel.commons.MapData;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.bans.Bannable;

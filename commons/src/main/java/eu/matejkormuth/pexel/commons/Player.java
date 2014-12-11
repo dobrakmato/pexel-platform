@@ -20,7 +20,6 @@ package eu.matejkormuth.pexel.commons;
 
 import java.util.UUID;
 
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -125,7 +124,8 @@ public abstract class Player extends ProxiedPlayer {
      * @param adventure
      */
     //DEBUKKITIZE:
-    public abstract void setGameMode(final GameMode gameMode);
+    public abstract void setGameMode(
+            final eu.matejkormuth.pexel.commons.GameMode survival);
     
     /**
      * @param potionEffect

@@ -2,7 +2,6 @@ package eu.matejkormuth.pexel.slave.sponge;
 
 import java.util.UUID;
 
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.inventory.Inventory;
@@ -92,12 +91,6 @@ public class SpongePlayer extends Player {
     }
     
     @Override
-    public void setGameMode(final GameMode gameMode) {
-        // TODO Auto-generated method stub
-        
-    }
-    
-    @Override
     public void addPotionEffect(final PotionEffect potionEffect) {
         // TODO Auto-generated method stub
         //this.internal.addPotionEffect(PotionEffectTypes.JUMP_BOOST, true);
@@ -159,6 +152,11 @@ public class SpongePlayer extends Player {
     @Override
     public void setHealth(final double level) {
         // TODO Auto-generated method stub
+        
+    }
+    
+    @Override
+    public void setGameMode(final eu.matejkormuth.pexel.commons.GameMode survival) {
         
     }
     
