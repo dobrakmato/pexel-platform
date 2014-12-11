@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Messenger implements PayloadHandler {
-    private final Map<Class<? extends Request>, Handle> methods = new HashMap<Class<? extends Request>, Handle>();
+    private final Map<Class<? extends Request>, MethodOfObject> methods = new HashMap<Class<? extends Request>, MethodOfObject>();
     private final CallbackHandler                       callbackHandler;
     private final Protocol                              protocol;
     
@@ -52,7 +52,7 @@ public class Messenger implements PayloadHandler {
                     // And that request is supported by protocol.
                     if (this.protocol.supportsRequest((Class<? extends Request>) types[0])) {
                         this.methods.put((Class<? extends Request>) types[0],
-                                new Handle(responder, m));
+                                new MethodOfObject(responder, m));
                     }
                 }
             }

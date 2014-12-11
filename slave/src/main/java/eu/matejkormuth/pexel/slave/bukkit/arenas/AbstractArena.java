@@ -43,10 +43,10 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import eu.matejkormuth.pexel.commons.ArenaDisconnectReason;
 import eu.matejkormuth.pexel.commons.MapData;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.PlayerHolder;
+import eu.matejkormuth.pexel.commons.arenas.LeaveReason;
 import eu.matejkormuth.pexel.commons.arenas.ArenaState;
 import eu.matejkormuth.pexel.commons.bans.Bannable;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
@@ -260,7 +260,7 @@ public abstract class AbstractArena extends ProtectedArea implements Matchmaking
     }
     
     /**
-     * Kicks all players from arena. Uses KICK_BY_GAME as {@link ArenaDisconnectReason}
+     * Kicks all players from arena. Uses KICK_BY_GAME as {@link LeaveReason}
      */
     public void kickAll() {
         // Iteration problem, pls fix. - fixed.
@@ -270,7 +270,7 @@ public abstract class AbstractArena extends ProtectedArea implements Matchmaking
     }
     
     /**
-     * Sends a message to all players and kicks them. Uses KICK_BY_GAME as {@link ArenaDisconnectReason}
+     * Sends a message to all players and kicks them. Uses KICK_BY_GAME as {@link LeaveReason}
      * 
      * @param message
      *            message to send

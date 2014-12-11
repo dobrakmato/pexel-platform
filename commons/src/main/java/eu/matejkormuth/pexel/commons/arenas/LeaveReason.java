@@ -16,33 +16,34 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+package eu.matejkormuth.pexel.commons.arenas;
 
 /**
- * Class that represents handle.
+ * Reasons for disconnecting from arena.
  */
-public class Handle {
-    protected Method method;
-    protected Object object;
-    
-    public Handle(final Object object, final Method method) {
-        this.object = object;
-        this.method = method;
-    }
-    
-    public Object invoke(final Object... args) throws IllegalAccessException,
-            IllegalArgumentException, InvocationTargetException {
-        return this.method.invoke(this.object, args);
-    }
-    
-    public Method getMethod() {
-        return this.method;
-    }
-    
-    public Object getObject() {
-        return this.object;
-    }
+public enum LeaveReason {
+    /**
+     * Player has invoked disconnect from server.
+     */
+    PLAYER_DISCONNECT,
+    /**
+     * Player has lost connection to server.
+     */
+    PLAYER_CONNECTION_LOST,
+    /**
+     * Player has used /leave command or left by his decision.
+     */
+    PLAYER_LEAVE,
+    /**
+     * Invoked by game (eg. player has lost match).
+     */
+    LEAVE_BY_GAME,
+    /**
+     * Invoked by admin (eg. kicked for violating rules).
+     */
+    KICK_BY_SERVER,
+    /**
+     * Unknown or other reason. (Avoid using this one)
+     */
+    UNKNOWN,
 }

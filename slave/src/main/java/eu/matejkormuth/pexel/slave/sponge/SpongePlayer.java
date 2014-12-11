@@ -54,20 +54,17 @@ public class SpongePlayer extends Player {
     
     @Override
     public String getName() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.internal.getName();
     }
     
     @Override
     public int getEntityId() {
-        // TODO Auto-generated method stub
-        return 0;
+        return 0; //TODO
     }
     
     @Override
     public double getHealth() {
-        // TODO Auto-generated method stub
-        return 0;
+        return this.internal.getHealth();
     }
     
     @Override
@@ -78,8 +75,7 @@ public class SpongePlayer extends Player {
     
     @Override
     public void sendMessage(final String msg) {
-        // TODO Auto-generated method stub
-        
+        this.internal.sendMessage(msg);
     }
     
     @Override
@@ -104,19 +100,17 @@ public class SpongePlayer extends Player {
     @Override
     public void addPotionEffect(final PotionEffect potionEffect) {
         // TODO Auto-generated method stub
-        
+        //this.internal.addPotionEffect(PotionEffectTypes.JUMP_BOOST, true);
     }
     
     @Override
     public void setAllowFlight(final boolean allowFlight) {
-        // TODO Auto-generated method stub
-        
+        this.internal.setAllowFlight(allowFlight);
     }
     
     @Override
     public void setFlying(final boolean flying) {
-        // TODO Auto-generated method stub
-        
+        //this.internal.setFly
     }
     
     @Override
@@ -127,20 +121,17 @@ public class SpongePlayer extends Player {
     
     @Override
     public void setFoodLevel(final int foodLevel) {
-        // TODO Auto-generated method stub
-        
+        //this.internal.setHunger(foodLevel);
     }
     
     @Override
     public boolean isOnline() {
-        // TODO Auto-generated method stub
-        return false;
+        return this.internal.isOnline();
     }
     
     @Override
     public boolean isOp() {
-        // TODO Auto-generated method stub
-        return false;
+        return false;//return this.internal.is
     }
     
     @Override
@@ -157,8 +148,18 @@ public class SpongePlayer extends Player {
     
     @Override
     public String getDisplayName() {
+        return this.internal.getDisplayName();
+    }
+    
+    @Override
+    public void setBossBar(final String text, final float percent) {
+        
+    }
+    
+    @Override
+    public void setHealth(final double level) {
         // TODO Auto-generated method stub
-        return null;
+        
     }
     
 }

@@ -158,4 +158,16 @@ public class BukkitPlayer extends Player {
     public boolean isOp() {
         return this.internal.isOp();
     }
+    
+    @Override
+    public void setBossBar(final String text, final float percent) {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    @Override
+    public void setHealth(final double level) {
+        // TODO Auto-generated method stub
+        
+    }
 }

@@ -22,6 +22,7 @@ import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.AbstractObjectFactory;
 import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.slave.boot.PexelSlaveSpongePlugin;
 
 /**
  * Sponge ObjectFactory.
@@ -30,14 +31,16 @@ public class SpongeObjectFactory extends AbstractObjectFactory {
     
     @Override
     public Player getPlayer(final Object platformType) {
-        // TODO Auto-generated method stub
+        if (platformType instanceof org.spongepowered.api.entity.player.Player) { return new SpongePlayer(
+                PexelSlaveSpongePlugin.game.getPlayer(
+                        ((org.spongepowered.api.entity.player.Player) platformType).getUniqueId())
+                        .get()); }
         return null;
     }
     
     @Override
     public Player getPlayer(final UUID uuid) {
-        // TODO Auto-generated method stub
-        return null;
+        return new SpongePlayer(PexelSlaveSpongePlugin.game.getPlayer(uuid).get());
     }
     
 }

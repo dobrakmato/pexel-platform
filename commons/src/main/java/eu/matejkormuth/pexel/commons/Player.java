@@ -201,4 +201,21 @@ public abstract class Player extends ProxiedPlayer {
      *            command to be executed
      */
     public abstract void performCommand(final String command);
+    
+    /**
+     * Set's message in boss bar and percentage of boss bar filling.
+     * 
+     * @param text
+     *            text
+     * @param percent
+     */
+    public abstract void setBossBar(final String text, final float percent);
+    
+    /**
+     * Sets player's health level. 20 is default maximum.
+     * 
+     * @param level
+     *            level
+     */
+    public abstract void setHealth(double level);
 }

@@ -43,6 +43,7 @@ import eu.matejkormuth.pexel.protocol.PexelProtocol;
 import eu.matejkormuth.pexel.protocol.requests.InServerMetaDataMessage;
 import eu.matejkormuth.pexel.slave.bukkit.BukkitObjectFactory;
 import eu.matejkormuth.pexel.slave.bukkit.BukkitSlaveMinecraftSoftware;
+import eu.matejkormuth.pexel.slave.bukkit.core.Scheduler;
 import eu.matejkormuth.pexel.slave.pluginloaders.BukkitPluginLoader;
 import eu.matejkormuth.pexel.slave.spigot.SpigotSlaveMinecraftServer;
 import eu.matejkormuth.pexel.slave.sponge.SpongeObjectFactory;
@@ -64,6 +65,7 @@ public class PexelSlave implements LoggerHolder {
     protected Storage               storage;
     protected AbstractObjectFactory objectFactory;
     protected SlaveMinecraftServer  serverSoftware;
+    protected Scheduler             scheduler;
     
     protected ServerMode            mode;
     

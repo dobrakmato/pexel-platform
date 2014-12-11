@@ -25,7 +25,7 @@ import java.util.Collection;
  */
 public interface PlayerHolder {
     /**
-     * Returns collection of players in this object.
+     * Returns new collection of players in this object.
      * 
      * @return list of players.
      */

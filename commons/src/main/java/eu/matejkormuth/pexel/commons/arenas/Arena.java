@@ -18,8 +18,13 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons.arenas;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.bukkit.GameMode;
+
+import eu.matejkormuth.pexel.commons.MapData;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.bans.Bannable;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
@@ -28,17 +33,255 @@ import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
  * Represents minigame arena, that is participating in matchmaking,
  */
 public abstract class Arena implements MatchmakingGame, Bannable {
-    private List<ArenaComponent> components;
+    // Minimum amount of players required to start countdown.
+    public static final float MIN_RATIO              = 0.75F;
+    // Player in arena.
+    private final Set<Player> players                = new HashSet<Player>();
+    // State of arena.
+    private ArenaState        state;
+    // Maximum amount of players in this arena.
+    private final int         maxPlayers             = 16;
+    
+    private final long        countdownLenght        = 60;
+    // Current remaining time of countdown.
+    private long              countdownRemaining     = this.countdownLenght;
+    // Whether to use boss bar for countdown.
+    private final boolean     useBossBar             = true;
+    // Whether the game has started or not.
+    private boolean           gameStarted            = false;
+    
+    // Whether this arena is in competitive mode.
+    protected boolean         competitiveModeEnabled = false;
+    
+    /**
+     * Currently played map in this arena.
+     */
+    protected MapData         map;
     
     public void join(final Player player) {
+        this.broadcast("-> " + player.getDisplayName());
+        // Clear player first.
+        this.clearPlayer(player);
         
+        this.players.add(player);
+        
+        if (this.competitiveModeEnabled) {
+            player.sendMessage("Warning: This arena is in competitive mode! That means you are commiting yourself to play full match, and don't disconnect in middle. Leaving this type of match WILL BE penalized!");
+        }
+        
+        // Fire event.
+        this.onPlayerJoin(player);
+        // Try to start countdown.
+        this.startCountdown();
     }
     
-    public void leave(final Player player) {
+    public void leave(final Player player, final LeaveReason reason) {
+        this.broadcast("<- " + player.getDisplayName());
         
+        this.players.remove(player);
+        if (this.gameStarted
+                && this.competitiveModeEnabled
+                && (reason == LeaveReason.PLAYER_LEAVE || reason == LeaveReason.PLAYER_DISCONNECT)) {
+            player.sendMessage("You left competitive match before it's end! You will be penaized for that!");
+            // TODO: Penalize player.
+        }
+        
+        // Fire event.
+        this.onPlayerLeave(player, reason);
+        // Try to stop countdown.
+        this.stopCountdown();
     }
     
+    /**
+     * Cleares (removes gamemode, flying, potions, armor and items) player.
+     * 
+     * @param player
+     *            player to be cleared
+     */
+    protected void clearPlayer(final Player player) {
+        player.setGameMode(GameMode.SURVIVAL);
+        player.setAllowFlight(false);
+        player.setFlying(false);
+        player.setHealth(20D);
+        player.setFoodLevel(20);
+        // TODO: Armor & potions.
+    }
+    
+    // Tries to start countdown.
+    private void startCountdown() {
+        if (this.getPlayerCount() >= MIN_RATIO * this.maxPlayers) {
+            this.startCountdown0();
+        }
+    }
+    
+    // Tries to stop countdown.
+    private void stopCountdown() {
+        if (this.getPlayerCount() < MIN_RATIO * this.maxPlayers) {
+            this.resetCountdown0();
+        }
+    }
+    
+    // Actually start countdown.
+    private void startCountdown0() {
+        // TODO: Make actually countdown count!
+    }
+    
+    // Actually stops and resets countdown.
+    private void resetCountdown0() {
+        // TODO: Stop countdown task.
+        this.countdownRemaining = this.countdownLenght;
+    }
+    
+    /**
+     * Called each second, updates boss bars, chat + start games when countdown reaches zero.
+     */
+    private void doCountdown() {
+        // Lower remaining time.
+        this.countdownRemaining--;
+        
+        //Countdown in boss bar.
+        for (Player p : this.players) {
+            if (this.useBossBar) {
+                p.setBossBar(
+                        this.countdownRemaining + " seconds to start!",
+                        ((float) this.countdownRemaining / (float) this.countdownLenght * 100F));
+            }
+        }
+        
+        // Countdown in chat.
+        if (this.countdownRemaining < 10L) {
+            this.broadcast(this.countdownRemaining
+                    + " seconds to game start! Get ready!");
+        }
+        
+        // If we reached zero, start that game!
+        if (this.countdownRemaining <= 0) {
+            this.resetCountdown0();
+            this.broadcast("Map " + this.map.getName() + " by " + this.map.getAuthor());
+            this.gameStarted = true;
+            
+            this.setState(ArenaState.PLAYING_CANTJOIN);
+            this.onGameStart();
+        }
+    }
+    
+    /**
+     * Reset's this arena.
+     */
+    public void reset() {
+        this.gameStarted = false;
+        
+        this.onReset();
+        this.setState(ArenaState.WAITING_EMPTY);
+    }
+    
+    /**
+     * Sets this arena's state.
+     * 
+     * @param state
+     */
+    public void setState(final ArenaState state) {
+        this.state = state;
+    }
+    
+    /**
+     * Broadcasts message to player in this arena.
+     * 
+     * @param message
+     *            message to be broadcasted
+     */
+    public void broadcast(final String message) {
+        for (Player player : this.players) {
+            player.sendMessage(message);
+        }
+    }
+    
+    /**
+     * Called when countdown reaches zero and game is about to start.
+     */
     protected abstract void onGameStart();
     
-    protected abstract void onGameEnd();
+    /**
+     * Called when arena should be resetted to it's default state and prepeare for next match. Triggered automatically,
+     * when all the players are disconnected / kicked from arena.
+     */
+    protected abstract void onReset();
+    
+    /**
+     * Called when player joins this arena.
+     * 
+     * @param player
+     *            player that joined
+     */
+    protected abstract void onPlayerJoin(Player player);
+    
+    /**
+     * Called when player leaves this arena with specified reason of leave.
+     * 
+     * @param player
+     *            player that left
+     * @param reason
+     *            leave reason
+     */
+    protected abstract void onPlayerLeave(Player player, LeaveReason reason);
+    
+    @Override
+    public ArenaState getState() {
+        return this.state;
+    }
+    
+    @Override
+    public boolean empty() {
+        return this.players.size() == 0;
+    }
+    
+    @Override
+    public int getPlayerCount() {
+        return this.players.size();
+    }
+    
+    @Override
+    public boolean canJoin() {
+        return this.canJoin(1);
+    }
+    
+    @Override
+    public boolean canJoin(final int count) {
+        return this.getFreeSlots() >= count;
+    }
+    
+    @Override
+    public int getMaximumSlots() {
+        return this.maxPlayers;
+    }
+    
+    @Override
+    public int getFreeSlots() {
+        return this.maxPlayers - this.players.size();
+    }
+    
+    @Override
+    public boolean contains(final Player player) {
+        return this.players.contains(player);
+    }
+    
+    @Override
+    public Collection<Player> getPlayers() {
+        return new HashSet<Player>(this.players);
+    }
+    
+    public boolean isCompetitiveModeEnabled() {
+        return this.competitiveModeEnabled;
+    }
+    
+    public void setCompetitiveModeEnabled(final boolean competitiveModeEnabled) {
+        this.competitiveModeEnabled = competitiveModeEnabled;
+        if (competitiveModeEnabled) {
+            this.broadcast("Warning, competitive mode is now enabled! Each disconnect before game's end will be penalized!");
+        }
+        else {
+            this.broadcast("Competitive mode is now disabled.");
+        }
+    }
+    
 }

@@ -48,9 +48,7 @@ public class NettyRegisterMesssage {
             return Arrays.equals(authkey.getBytes(Charsets.UTF_8), received);
             
         }
-        else {
-            return false;
-        }
+        return false;
     }
     
     public static String extractName(final byte[] payload) {
