@@ -21,6 +21,7 @@ package eu.matejkormuth.pexel.commons.arenas;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.GameMode;
 
@@ -51,7 +52,10 @@ public abstract class Arena implements MatchmakingGame, Bannable {
     private boolean           gameStarted            = false;
     
     // Whether this arena is in competitive mode.
-    protected boolean         competitiveModeEnabled = false;
+    private boolean           competitiveModeEnabled = false;
+    
+    //Random UUID - gameID.
+    private final UUID        gameId                 = UUID.randomUUID();
     
     /**
      * Currently played map in this arena.
@@ -69,6 +73,9 @@ public abstract class Arena implements MatchmakingGame, Bannable {
             player.sendMessage("Warning: This arena is in competitive mode! That means you are commiting yourself to play full match, and don't disconnect in middle. Leaving this type of match WILL BE penalized!");
         }
         
+        // Update waiting state.
+        this.setState(ArenaState.WAITING_PLAYERS);
+        
         // Fire event.
         this.onPlayerJoin(player);
         // Try to start countdown.
@@ -84,6 +91,11 @@ public abstract class Arena implements MatchmakingGame, Bannable {
                 && (reason == LeaveReason.PLAYER_LEAVE || reason == LeaveReason.PLAYER_DISCONNECT)) {
             player.sendMessage("You left competitive match before it's end! You will be penaized for that!");
             // TODO: Penalize player.
+        }
+        
+        if (this.empty()) {
+            // Update waiting state.
+            this.setState(ArenaState.WAITING_EMPTY);
         }
         
         // Fire event.
@@ -117,25 +129,26 @@ public abstract class Arena implements MatchmakingGame, Bannable {
     // Tries to stop countdown.
     private void stopCountdown() {
         if (this.getPlayerCount() < MIN_RATIO * this.maxPlayers) {
-            this.resetCountdown0();
+            this.resetCountdown();
         }
     }
     
     // Actually start countdown.
-    private void startCountdown0() {
-        // TODO: Make actually countdown count!
-    }
+    protected abstract void startCountdown0();
+    
+    // Actaully stop countdown.
+    protected abstract void stopCountdown0();
     
     // Actually stops and resets countdown.
-    private void resetCountdown0() {
-        // TODO: Stop countdown task.
+    private void resetCountdown() {
+        this.stopCountdown0();
         this.countdownRemaining = this.countdownLenght;
     }
     
     /**
      * Called each second, updates boss bars, chat + start games when countdown reaches zero.
      */
-    private void doCountdown() {
+    protected void doCountdown() {
         // Lower remaining time.
         this.countdownRemaining--;
         
@@ -156,7 +169,7 @@ public abstract class Arena implements MatchmakingGame, Bannable {
         
         // If we reached zero, start that game!
         if (this.countdownRemaining <= 0) {
-            this.resetCountdown0();
+            this.resetCountdown();
             this.broadcast("Map " + this.map.getName() + " by " + this.map.getAuthor());
             this.gameStarted = true;
             
@@ -284,4 +297,7 @@ public abstract class Arena implements MatchmakingGame, Bannable {
         }
     }
     
+    public UUID getUUID() {
+        return this.gameId;
+    }
 }

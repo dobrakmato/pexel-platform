@@ -18,7 +18,9 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave;
 
+import java.util.HashSet;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -28,10 +30,11 @@ public class Sync {
     /**
      * Maximum amount of tasks, that can be executed on one server tick.
      */
-    public static final int       MAX_TASKS_PER_TICK = 128;
-    private final Runnable        onTick;
-    private final Queue<Runnable> tasks              = new LinkedBlockingQueue<Runnable>();
-    private int                   lastTasksCount     = 0;
+    public static final int        MAX_TASKS_PER_TICK = 128;
+    private final Runnable         onTick;
+    private final Queue<Runnable>  tasks              = new LinkedBlockingQueue<Runnable>();
+    private int                    lastTasksCount     = 0;
+    private final Set<TickHandler> handlers           = new HashSet<TickHandler>();
     
     public Sync() {
         this.onTick = new Runnable() {
@@ -53,12 +56,29 @@ public class Sync {
         this.tasks.add(runnable);
     }
     
+    public void addTickHandler(final TickHandler handler) {
+        this.handlers.add(handler);
+    }
+    
     protected void onTick(final long tick) {
+        // First make sync handlers happy.
+        for (TickHandler th : this.handlers) {
+            try {
+                th.tick();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
         this.lastTasksCount = 0;
         Runnable task;
         while ((task = this.tasks.peek()) != null
                 && this.lastTasksCount < Sync.MAX_TASKS_PER_TICK) {
-            task.run();
+            try {
+                task.run();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         
         if (this.lastTasksCount > Sync.MAX_TASKS_PER_TICK - 20) {

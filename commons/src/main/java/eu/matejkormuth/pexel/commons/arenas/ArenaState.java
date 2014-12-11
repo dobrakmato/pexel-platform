@@ -18,6 +18,9 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons.arenas;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Specifies minigame's current state.
  */
@@ -25,34 +28,40 @@ public enum ArenaState {
     /**
      * Game state when game is operational and is not empty and it's avaiting more players to start game.
      */
-    WAITING_PLAYERS(false, true),
+    WAITING_PLAYERS(false, true, (byte) 0),
     /**
      * Game state when game is operational but it's empty.
      */
-    WAITING_EMPTY(false, true),
+    WAITING_EMPTY(false, true, (byte) 1),
     /**
      * Game state, when game is runnning, but players can join in mid-game.
      */
-    PLAYING_CANJOIN(true, true),
+    PLAYING_CANJOIN(true, true, (byte) 2),
     /**
      * Game sate, when game is running, but no more players can join the running game.
      */
-    PLAYING_CANTJOIN(true, false),
+    PLAYING_CANTJOIN(true, false, (byte) 3),
     /**
      * Game state, when game is reseting it's arena, thus is not operational.
      */
-    RESETING(false, false),
+    RESETING(false, false, (byte) 4),
     /**
      * Game state, when game is not operational at all.
      */
-    DISABLED(false, false);
+    DISABLED(false, false, (byte) 5);
     
     private boolean playing;
     private boolean canjoin;
+    private byte    id;
     
-    private ArenaState(final boolean playing, final boolean canjoin) {
+    private ArenaState(final boolean playing, final boolean canjoin, final byte id) {
         this.playing = playing;
         this.canjoin = canjoin;
+        this.id = id;
+    }
+    
+    public byte id() {
+        return this.id;
     }
     
     /**
@@ -71,5 +80,16 @@ public enum ArenaState {
      */
     public boolean canJoin() {
         return this.canjoin;
+    }
+    
+    private static Map<Byte, ArenaState> mapping = new HashMap<Byte, ArenaState>();
+    static {
+        for (ArenaState as : ArenaState.values()) {
+            mapping.put(as.id, as);
+        }
+    }
+    
+    public static ArenaState byId(final byte id) {
+        return mapping.get(id);
     }
 }

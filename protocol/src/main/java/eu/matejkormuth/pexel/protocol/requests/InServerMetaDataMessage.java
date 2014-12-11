@@ -32,11 +32,11 @@ import eu.matejkormuth.pexel.protocol.PexelProtocol;
  * Reports minigames and maps on this server. Sent by slave server after connecting to master.
  */
 public class InServerMetaDataMessage extends Request {
-    public Set<MinigameDescriptor> minigames;
-    public Set<MapDescriptor>      maps;
-    public SlaveMinecraftServerType     software;
-    public String                  softwareVersion;
-    public int                     slots;
+    public Set<MinigameDescriptor>  minigames;
+    public Set<MapDescriptor>       maps;
+    public SlaveMinecraftServerType software;
+    public String                   softwareVersion;
+    public int                      slots;
     
     public InServerMetaDataMessage(final Set<MinigameDescriptor> minigames,
             final Set<MapDescriptor> maps, final SlaveMinecraftServerType software,
@@ -49,11 +49,11 @@ public class InServerMetaDataMessage extends Request {
     }
     
     static class ServerConfiguration {
-        public Set<MinigameDescriptor> minigames;
-        public Set<MapDescriptor>      maps;
-        public SlaveMinecraftServerType     software;
-        public int                     slots;
-        public String                  softwareVersion;
+        public Set<MinigameDescriptor>  minigames;
+        public Set<MapDescriptor>       maps;
+        public SlaveMinecraftServerType software;
+        public int                      slots;
+        public String                   softwareVersion;
         
         public ServerConfiguration from(
                 final InServerMetaDataMessage serverConfigurationRequest) {

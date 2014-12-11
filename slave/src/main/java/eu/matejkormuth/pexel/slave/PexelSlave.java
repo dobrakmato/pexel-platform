@@ -43,7 +43,6 @@ import eu.matejkormuth.pexel.protocol.PexelProtocol;
 import eu.matejkormuth.pexel.protocol.requests.InServerMetaDataMessage;
 import eu.matejkormuth.pexel.slave.bukkit.BukkitObjectFactory;
 import eu.matejkormuth.pexel.slave.bukkit.BukkitSlaveMinecraftSoftware;
-import eu.matejkormuth.pexel.slave.bukkit.core.Scheduler;
 import eu.matejkormuth.pexel.slave.pluginloaders.BukkitPluginLoader;
 import eu.matejkormuth.pexel.slave.spigot.SpigotSlaveMinecraftServer;
 import eu.matejkormuth.pexel.slave.sponge.SpongeObjectFactory;
@@ -139,6 +138,10 @@ public class PexelSlave implements LoggerHolder {
         
         // Create sync object.
         this.sync = new Sync();
+        
+        // Create scheduler and attach it to sync.
+        this.scheduler = new Scheduler();
+        this.sync.addTickHandler(this.scheduler);
         
         // Connect to master - other thread.
         this.server = new SlaveServer(this.config.getSection(PexelSlave.class)
@@ -252,6 +255,10 @@ public class PexelSlave implements LoggerHolder {
     
     public Storage getStorage() {
         return this.storage;
+    }
+    
+    public Scheduler getScheduler() {
+        return this.scheduler;
     }
     
     public AbstractObjectFactory getObjectFactory() {

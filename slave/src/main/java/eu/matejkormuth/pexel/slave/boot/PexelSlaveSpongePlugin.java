@@ -42,8 +42,12 @@ public class PexelSlaveSpongePlugin {
         PexelSlave.init(new File("."), SlaveMinecraftServerType.CRAFTBUKKIT);
         PexelSlaveSpongePlugin.game = event.getGame();
         // Start sync.
-        //Bukkit.getScheduler().scheduleSyncRepeatingTask(this,
-        //        PexelSlave.getInstance().getSync().getOnTick(), 0L, 1L);
+        event.getGame()
+                .getScheduler()
+                .runRepeatingTask(
+                        event.getGame().getPluginManager().getPlugin("pexelslave").get(),
+                        PexelSlave.getInstance().getSync().getOnTick(), 1L);
+        
         //PexelSlaveBukkitPlugin.instance = this;
     }
     
