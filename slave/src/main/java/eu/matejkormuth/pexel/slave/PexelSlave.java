@@ -134,7 +134,7 @@ public class PexelSlave implements LoggerHolder {
         // Initialize whole shit from PexelCore.
         
         // Legacy PexelCore <https://github.com/dobrakmato/PexelCore> code.
-        this.addComponent(new LegacyCoreComponent());
+        //this.addComponent(new LegacyCoreComponent());
         
         // Create sync object.
         this.sync = new Sync();
@@ -156,6 +156,8 @@ public class PexelSlave implements LoggerHolder {
                                 this.serverSoftware.getType(),
                                 this.serverSoftware.getVersion(),
                                 this.serverSoftware.getSlots()));
+        
+        this.enableComponents();
     }
     
     public void shutdown() {

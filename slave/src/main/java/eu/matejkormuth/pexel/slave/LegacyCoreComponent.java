@@ -18,6 +18,12 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave;
 
+import java.io.File;
+
+import eu.matejkormuth.pexel.slave.boot.PexelSlaveBukkitPlugin;
+import eu.matejkormuth.pexel.slave.bukkit.HardCoded;
+import eu.matejkormuth.pexel.slave.bukkit.PexelCore;
+
 /**
  * ServerComponent that does initialize legacy PexelCore code.
  */
@@ -25,6 +31,13 @@ public class LegacyCoreComponent extends SlaveComponent {
     @Override
     public void onEnable() {
         this.getLogger().info("Enabling legacy PexelCore code...");
+        File f = new File(PexelSlaveBukkitPlugin.getInstance()
+                .getDataFolder()
+                .getAbsolutePath()
+                + "/$legacy/");
+        f.mkdirs();
+        new PexelCore(f, PexelSlaveBukkitPlugin.getInstance()).onEnable();
+        HardCoded.main();
     }
     
     @Override

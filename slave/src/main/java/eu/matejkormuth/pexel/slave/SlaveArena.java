@@ -21,6 +21,7 @@ package eu.matejkormuth.pexel.slave;
 import eu.matejkormuth.pexel.commons.arenas.Arena;
 import eu.matejkormuth.pexel.commons.arenas.ArenaState;
 import eu.matejkormuth.pexel.protocol.requests.InArenaStateChangedRequest;
+import eu.matejkormuth.pexel.protocol.requests.InMatchmakingRegisterGameMessage;
 import eu.matejkormuth.pexel.slave.Scheduler.ScheduledTask;
 
 /**
@@ -28,6 +29,14 @@ import eu.matejkormuth.pexel.slave.Scheduler.ScheduledTask;
  */
 public abstract class SlaveArena extends Arena {
     private ScheduledTask task;
+    
+    public SlaveArena(final String minigame) {
+        super();
+        
+        // Register this game on master.
+        PexelSlave.getInstance().server.getMasterServerInfo().sendRequest(
+                new InMatchmakingRegisterGameMessage(this.getUUID(), minigame));
+    }
     
     @Override
     protected void startCountdown0() {

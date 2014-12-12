@@ -180,6 +180,8 @@ public class NettyServerComunicator extends MessageComunicator {
             pipeline.addLast(this.sslCtx.newHandler(ch.alloc()));
             
             // On top of the SSL handler, add messages decoder and encoder.
+            pipeline.addLast(new IntegerHeaderFrameDecoder());
+            pipeline.addLast(new IntegerHeaderFrameEncoder());
             pipeline.addLast(new NettyMessageDecoder());
             pipeline.addLast(new NettyMessageEncoder());
             
@@ -220,8 +222,10 @@ public class NettyServerComunicator extends MessageComunicator {
         @Override
         public void channelRead0(final ChannelHandlerContext ctx, final NettyMessage msg)
                 throws Exception {
+            this.i.log.debug(">NettyMessage#" + msg.hashCode() + " - "
+                    + msg.payload.length);
             // Invoke onReceive if registered server.
-            if (this.i.channels.contains(ctx)) {
+            if (this.i.channels.contains(ctx.channel())) {
                 this.i.onReceive(this.i.getServerInfo(ctx), msg.payload);
             }
             else {
@@ -234,8 +238,8 @@ public class NettyServerComunicator extends MessageComunicator {
                     NettyServerComunicatorHandler.this.i.ctxByName.put(name, ctx);
                     NettyServerComunicatorHandler.this.i.server.addSlave(server);
                     NettyServerComunicatorHandler.this.i.serverInfoByCTX.put(ctx, server);
-                    this.i.log.info("Registered new SLAVE server: n:" + name + "; ctx:"
-                            + ctx.name());
+                    this.i.log.info("Registered new SLAVE server:" + name + ";ctx:"
+                            + ctx.hashCode());
                 }
                 else {
                     // Bad login. Disconnect.

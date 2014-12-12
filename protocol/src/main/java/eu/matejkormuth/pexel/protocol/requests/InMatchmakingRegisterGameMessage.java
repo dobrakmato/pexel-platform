@@ -32,6 +32,11 @@ public class InMatchmakingRegisterGameMessage extends Request {
     public UUID   gameId;
     public String minigame;
     
+    public InMatchmakingRegisterGameMessage(final UUID gameId, final String minigame) {
+        this.gameId = gameId;
+        this.minigame = minigame;
+    }
+    
     @Override
     public ByteBuffer toByteBuffer() {
         return ByteUtils.writeUUID(ByteBuffer.allocate(8 + this.minigame.length()),

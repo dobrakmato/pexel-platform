@@ -34,6 +34,13 @@ public class PexelSlaveBukkitPlugin extends JavaPlugin {
         return PexelSlaveBukkitPlugin.instance;
     }
     
+    /**
+     * 
+     */
+    public PexelSlaveBukkitPlugin() {
+        instance = this;
+    }
+    
     @Override
     public void onEnable() {
         this.getLogger().info(

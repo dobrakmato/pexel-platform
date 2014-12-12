@@ -91,8 +91,8 @@ public class NettyClientComunicator extends MessageComunicator {
         
         // Log in.
         this.log.info("Sending NettyRegisterMesssage...");
-        this.channelToMaster.writeAndFlush(new NettyMessage(
-                NettyRegisterMesssage.create(authKey, thisSlaveName)));
+        this.payloads.add(new NettyMessage(NettyRegisterMesssage.create(authKey,
+                thisSlaveName)));
         
         this.log.info("Initialization done!");
         
@@ -100,6 +100,8 @@ public class NettyClientComunicator extends MessageComunicator {
     
     protected void sendQueue() {
         while (!this.payloads.isEmpty()) {
+            this.log.debug("<NettyMessage#" + this.payloads.peek().hashCode() + " - "
+                    + this.payloads.peek().payload.length);
             this.channelToMaster.writeAndFlush(this.payloads.poll());
         }
     }
@@ -107,7 +109,8 @@ public class NettyClientComunicator extends MessageComunicator {
     @Override
     public void send(final ServerInfo target, final byte[] payload, final int priority) {
         if (target != this.master) {
-            throw new RuntimeException("Sorry, slave can only send payloads to master.");
+            throw new UnsupportedOperationException(
+                    "Sorry, slave can only send payloads to master.");
         }
         else {
             
@@ -144,6 +147,8 @@ public class NettyClientComunicator extends MessageComunicator {
             pipeline.addLast(this.sslCtx.newHandler(ch.alloc(), this.host, this.port));
             
             // On top of the SSL handler, add the text line codec.
+            pipeline.addLast(new IntegerHeaderFrameDecoder());
+            pipeline.addLast(new IntegerHeaderFrameEncoder());
             pipeline.addLast(new NettyMessageDecoder());
             pipeline.addLast(new NettyMessageEncoder());
             
@@ -157,6 +162,8 @@ public class NettyClientComunicator extends MessageComunicator {
         @Override
         public void channelRead0(final ChannelHandlerContext ctx, final NettyMessage msg)
                 throws Exception {
+            NettyClientComunicator.this.log.debug(">NettyMessage#" + msg.hashCode()
+                    + " - " + msg.payload.length);
             NettyClientComunicator.this.onReceive(NettyClientComunicator.this.master,
                     msg.payload);
         }

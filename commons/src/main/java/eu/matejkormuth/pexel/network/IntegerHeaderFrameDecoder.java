@@ -20,18 +20,17 @@ package eu.matejkormuth.pexel.network;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToMessageDecoder;
+import io.netty.handler.codec.ReplayingDecoder;
 
 import java.util.List;
 
-public class NettyMessageDecoder extends MessageToMessageDecoder<ByteBuf> {
-    
+/**
+ * IntegerHeaderFrameDecoder.
+ */
+public class IntegerHeaderFrameDecoder extends ReplayingDecoder<Void> {
     @Override
-    protected void decode(final ChannelHandlerContext paramChannelHandlerContext,
-            final ByteBuf message, final List<Object> out) throws Exception {
-        byte[] array = new byte[message.nioBuffer().remaining()];
-        message.getBytes(0, array);
-        out.add(new NettyMessage(array));
+    protected void decode(final ChannelHandlerContext ctx, final ByteBuf buf,
+            final List<Object> out) throws Exception {
+        out.add(buf.readBytes(buf.readInt()));
     }
-    
 }
