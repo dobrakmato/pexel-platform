@@ -21,6 +21,7 @@ package eu.matejkormuth.pexel.master.responders;
 import eu.matejkormuth.pexel.master.PexelMaster;
 import eu.matejkormuth.pexel.master.matchmaking.Matchmaking;
 import eu.matejkormuth.pexel.master.matchmaking.MatchmakingGameImpl;
+import eu.matejkormuth.pexel.protocol.requests.InGameStateChangedMessage;
 import eu.matejkormuth.pexel.protocol.requests.InMatchmakingRegisterGameMessage;
 
 /**
@@ -32,5 +33,9 @@ public class MatchmakingResponder {
         MatchmakingGameImpl game = new MatchmakingGameImpl(msg.getSender(), msg.gameId,
                 msg.minigame);
         PexelMaster.getInstance().getComponent(Matchmaking.class).registerArena(game);
+    }
+    
+    public void onGameStatusChage(final InGameStateChangedMessage msg) {
+        PexelMaster.getInstance().getComponent(Matchmaking.class).getGame(msg.gameId).cached_state = msg.newState;
     }
 }

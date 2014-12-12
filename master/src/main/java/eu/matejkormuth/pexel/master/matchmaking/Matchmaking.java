@@ -19,6 +19,7 @@
 package eu.matejkormuth.pexel.master.matchmaking;
 
 import java.util.Collection;
+import java.util.UUID;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -96,5 +97,9 @@ public class Matchmaking extends MasterComponent {
     
     protected void doMatchmaking() {
         this.provider.doMatchmaking();
+    }
+    
+    public MatchmakingGameImpl getGame(final UUID gameId) {
+        return this.provider.getGame(gameId);
     }
 }

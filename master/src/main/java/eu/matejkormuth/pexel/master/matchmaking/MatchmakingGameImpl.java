@@ -53,10 +53,10 @@ public class MatchmakingGameImpl extends
     protected transient ServerInfo host;
     protected UUID                 gameId;
     
-    protected int                  cached_freeSlots;
-    protected int                  cached_maximumSlots;
-    protected ArenaState           cached_state;
-    protected int                  cached_playerCount; // Could be replaced with player list.
+    public int                     cached_freeSlots;
+    public int                     cached_maximumSlots;
+    public ArenaState              cached_state;
+    public int                     cached_playerCount; // Could be replaced with player list.
                                                         
     // Name of minigame.                                          
     protected String               minigameName;

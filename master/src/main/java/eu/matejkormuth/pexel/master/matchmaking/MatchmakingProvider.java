@@ -19,6 +19,7 @@
 package eu.matejkormuth.pexel.master.matchmaking;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingRequest;
@@ -84,4 +85,13 @@ public abstract class MatchmakingProvider {
      *            arena to register
      */
     public abstract void registerArena(MatchmakingGameImpl game);
+    
+    /**
+     * Returns game by spcified gameId.
+     * 
+     * @param gameId
+     *            game id
+     * @return game object
+     */
+    public abstract MatchmakingGameImpl getGame(final UUID gameId);
 }

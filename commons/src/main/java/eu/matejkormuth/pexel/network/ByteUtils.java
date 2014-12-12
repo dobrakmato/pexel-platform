@@ -22,6 +22,8 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.UUID;
 
+import com.google.common.base.Preconditions;
+
 /**
  * Byte utilities.
  */
@@ -30,6 +32,9 @@ public class ByteUtils {
     }
     
     public static void writeInt(final int i, final byte[] array, final int index) {
+        Preconditions.checkArgument(array.length > i + 4,
+                "Array is too small for int at " + i);
+        
         array[index + 0] = (byte) (i >> 24);
         array[index + 1] = (byte) (i >> 16);
         array[index + 2] = (byte) (i >> 8);
@@ -37,6 +42,9 @@ public class ByteUtils {
     }
     
     public static void writeLong(final long i, final byte[] array, final int index) {
+        Preconditions.checkArgument(array.length > i + 8,
+                "Array is too small for long at " + i);
+        
         array[index + 0] = (byte) (i >> 56);
         array[index + 1] = (byte) (i >> 48);
         array[index + 2] = (byte) (i >> 40);
@@ -73,18 +81,32 @@ public class ByteUtils {
     }
     
     public static long readLong(final byte[] payload, final int i) {
+        Preconditions.checkArgument(payload.length > i + 8,
+                "Array is too small for long at " + i);
         long num = 0;
-        for (int h = 0; h < 8; h++) {
-            num = num | ((payload[i + h] & 0xff) << h * 8);
-        }
+        
+        num = num | (payload[i + 0] & 0xff) << 56;
+        num = num | (payload[i + 1] & 0xff) << 48;
+        num = num | (payload[i + 2] & 0xff) << 40;
+        num = num | (payload[i + 3] & 0xff) << 32;
+        num = num | (payload[i + 4] & 0xff) << 24;
+        num = num | (payload[i + 5] & 0xff) << 16;
+        num = num | (payload[i + 6] & 0xff) << 8;
+        num = num | (payload[i + 7] & 0xff) << 0;
+        
         return num;
     }
     
     public static int readInt(final byte[] payload, final int i) {
+        Preconditions.checkArgument(payload.length > i + 4,
+                "Array is too small for int at " + i);
         int num = 0;
-        for (int h = 0; h < 4; h++) {
-            num = num | ((payload[i + h] & 0xff) << h * 8);
-        }
+        
+        num = num | (payload[i + 0] & 0xff) << 24;
+        num = num | (payload[i + 1] & 0xff) << 16;
+        num = num | (payload[i + 2] & 0xff) << 8;
+        num = num | (payload[i + 3] & 0xff) << 0;
+        
         return num;
     }
 }

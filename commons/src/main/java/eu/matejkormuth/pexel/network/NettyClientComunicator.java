@@ -163,7 +163,7 @@ public class NettyClientComunicator extends MessageComunicator {
         public void channelRead0(final ChannelHandlerContext ctx, final NettyMessage msg)
                 throws Exception {
             NettyClientComunicator.this.log.debug(">NettyMessage#" + msg.hashCode()
-                    + " - " + msg.payload.length);
+                    + " - " + msg.payload.length + "[" + new String(msg.payload) + "]");
             NettyClientComunicator.this.onReceive(NettyClientComunicator.this.master,
                     msg.payload);
         }

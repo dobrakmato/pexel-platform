@@ -111,7 +111,8 @@ public class Messenger implements PayloadHandler {
         
         try {
             // Create request object.
-            Request request = this.protocol.getRequest(requestType).newInstance();
+            Class<? extends Request> requestTypeClazz = this.protocol.getRequest(requestType);
+            Request request = requestTypeClazz.newInstance();
             request.requestID = requestID;
             request.fromByteBuffer(ByteBuffer.wrap(payload, 13, payload.length - 13));
             

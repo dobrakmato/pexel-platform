@@ -223,7 +223,7 @@ public class NettyServerComunicator extends MessageComunicator {
         public void channelRead0(final ChannelHandlerContext ctx, final NettyMessage msg)
                 throws Exception {
             this.i.log.debug(">NettyMessage#" + msg.hashCode() + " - "
-                    + msg.payload.length);
+                    + msg.payload.length + "[" + new String(msg.payload) + "]");
             // Invoke onReceive if registered server.
             if (this.i.channels.contains(ctx.channel())) {
                 this.i.onReceive(this.i.getServerInfo(ctx), msg.payload);

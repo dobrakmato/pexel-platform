@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import net.md_5.bungee.api.ChatColor;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingRequest;
@@ -39,24 +40,28 @@ public class MatchmakingProviderImpl extends MatchmakingProvider {
     /**
      * List of registered minigames.
      */
-    protected final Set<String>                            minigames = new HashSet<String>();                           // Might be removed
+    protected final Set<String>                            minigames   = new HashSet<String>();                           // Might be removed
     /**
      * List of registered arenas.
      */
-    protected final Map<String, List<MatchmakingGameImpl>> arenas    = new HashMap<String, List<MatchmakingGameImpl>>();
+    protected final Map<String, List<MatchmakingGameImpl>> arenas      = new HashMap<String, List<MatchmakingGameImpl>>();
+    /**
+     * Mapping {@link UUID} (gameId) to games {@link MatchmakingGameImpl}.
+     */
+    protected final Map<UUID, MatchmakingGameImpl>         uuidMapping = new HashMap<UUID, MatchmakingGameImpl>();
     /**
      * List of players in matchmaking.
      */
-    protected final List<ProxiedPlayer>                    players   = new ArrayList<ProxiedPlayer>();
+    protected final List<ProxiedPlayer>                    players     = new ArrayList<ProxiedPlayer>();
     
     /**
      * Pending matchmaking request.
      */
-    protected final List<MatchmakingRequest>               requests  = new ArrayList<MatchmakingRequest>();
+    protected final List<MatchmakingRequest>               requests    = new ArrayList<MatchmakingRequest>();
     /**
      * List of request being removed in this iteration.
      */
-    protected final List<MatchmakingRequest>               removing  = new ArrayList<MatchmakingRequest>();
+    protected final List<MatchmakingRequest>               removing    = new ArrayList<MatchmakingRequest>();
     
     @Override
     public void cancelRequest(final MatchmakingRequest request) {
@@ -77,10 +82,12 @@ public class MatchmakingProviderImpl extends MatchmakingProvider {
     public void registerArena(final MatchmakingGameImpl game) {
         if (this.arenas.containsKey(game.getMinigameName())) {
             this.arenas.get(game.getMinigameName()).add(game);
+            this.uuidMapping.put(game.getUUID(), game);
         }
         else {
             this.arenas.put(game.getMinigameName(), new ArrayList<MatchmakingGameImpl>(
                     Arrays.asList(game)));
+            this.uuidMapping.put(game.getUUID(), game);
         }
     }
     
@@ -252,5 +259,10 @@ public class MatchmakingProviderImpl extends MatchmakingProvider {
             games.addAll(game);
         }
         return games;
+    }
+    
+    @Override
+    public MatchmakingGameImpl getGame(final UUID gameId) {
+        return this.uuidMapping.get(gameId);
     }
 }
