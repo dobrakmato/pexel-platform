@@ -60,13 +60,13 @@ public class SlaveServer extends ServerInfo implements Requestable {
             @Override
             public void sendRequest(final Request request) {
                 SlaveServer.this.comunicator.send(SlaveServer.this.masterServerInfo,
-                        request.toByteBuffer().array());
+                        SlaveServer.this.protocol.getPayload(request));
             }
             
             @Override
             public void sendResponse(final Response response) {
                 SlaveServer.this.comunicator.send(SlaveServer.this.masterServerInfo,
-                        response.toByteBuffer().array());
+                        SlaveServer.this.protocol.getPayload(response));
             }
         };
         this.log.info("Initializing NettyClientComunicator...");

@@ -26,8 +26,8 @@ import java.util.Map;
 
 public class Messenger implements PayloadHandler {
     private final Map<Class<? extends Request>, MethodOfObject> methods = new HashMap<Class<? extends Request>, MethodOfObject>();
-    private final CallbackHandler                       callbackHandler;
-    private final Protocol                              protocol;
+    private final CallbackHandler                               callbackHandler;
+    private final Protocol                                      protocol;
     
     public Messenger(final CallbackHandler listener, final Protocol protocol) {
         this.callbackHandler = listener;

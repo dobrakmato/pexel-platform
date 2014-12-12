@@ -126,4 +126,20 @@ public abstract class Protocol {
     public Class<? extends Response> getResponse(final int responseType) {
         return this.responsemapping.inverse().get(responseType);
     }
+    
+    /**
+     * @param request
+     * @return
+     */
+    public int getRequestType(final Request request) {
+        return this.requestmapping.get(request.getClass());
+    }
+    
+    /**
+     * @param response
+     * @return
+     */
+    public int getResponseType(final Response response) {
+        return this.responsemapping.get(response.getClass());
+    }
 }
