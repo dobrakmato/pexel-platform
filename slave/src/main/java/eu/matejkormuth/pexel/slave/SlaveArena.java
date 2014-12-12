@@ -20,7 +20,7 @@ package eu.matejkormuth.pexel.slave;
 
 import eu.matejkormuth.pexel.commons.arenas.Arena;
 import eu.matejkormuth.pexel.commons.arenas.ArenaState;
-import eu.matejkormuth.pexel.protocol.requests.InArenaStateChangedRequest;
+import eu.matejkormuth.pexel.protocol.requests.InGameStateChangedMessage;
 import eu.matejkormuth.pexel.protocol.requests.InMatchmakingRegisterGameMessage;
 import eu.matejkormuth.pexel.slave.Scheduler.ScheduledTask;
 
@@ -57,7 +57,7 @@ public abstract class SlaveArena extends Arena {
     public void setState(final ArenaState state) {
         // Listen for changes and redirect them to master.
         PexelSlave.getInstance().server.getMasterServerInfo().sendRequest(
-                new InArenaStateChangedRequest(this.getUUID(), state));
+                new InGameStateChangedMessage(this.getUUID(), state));
         
         super.setState(state);
     }

@@ -28,11 +28,14 @@ import eu.matejkormuth.pexel.network.Request;
 /**
  *
  */
-public class InArenaStateChangedRequest extends Request {
-    UUID       gameId;
-    ArenaState newState;
+public class InGameStateChangedMessage extends Request {
+    public UUID       gameId;
+    public ArenaState newState;
     
-    public InArenaStateChangedRequest(final UUID uuid, final ArenaState state) {
+    public InGameStateChangedMessage() {
+    }
+    
+    public InGameStateChangedMessage(final UUID uuid, final ArenaState state) {
         this.gameId = uuid;
         this.newState = state;
     }

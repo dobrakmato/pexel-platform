@@ -28,6 +28,9 @@ public class ServerStatusResponse extends Response {
     public int  slots;
     public int  playerCount;
     
+    public ServerStatusResponse() {
+    }
+    
     public ServerStatusResponse(final long maxMem, final long usedMem) {
         this.maxMem = maxMem;
         this.usedMem = usedMem;

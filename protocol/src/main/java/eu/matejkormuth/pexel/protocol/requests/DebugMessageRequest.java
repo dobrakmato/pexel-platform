@@ -30,6 +30,9 @@ public class DebugMessageRequest extends Request {
     public byte   typeID;
     public String content;
     
+    public DebugMessageRequest() {
+    }
+    
     public DebugMessageRequest(final byte catID, final byte typeID, final String content) {
         super();
         this.catID = catID;

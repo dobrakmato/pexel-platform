@@ -27,7 +27,10 @@ import eu.matejkormuth.pexel.network.Response;
  */
 public class DataProfileResponse extends Response {
     
-    private final Object profile;
+    public Object profile;
+    
+    public DataProfileResponse() {
+    }
     
     public DataProfileResponse(final Object profileEntity) {
         this.profile = profileEntity;

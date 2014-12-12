@@ -38,6 +38,9 @@ public class InServerMetaDataMessage extends Request {
     public String                   softwareVersion;
     public int                      slots;
     
+    public InServerMetaDataMessage() {
+    }
+    
     public InServerMetaDataMessage(final Set<MinigameDescriptor> minigames,
             final Set<MapDescriptor> maps, final SlaveMinecraftServerType software,
             final String softwareVersion, final int slots) {

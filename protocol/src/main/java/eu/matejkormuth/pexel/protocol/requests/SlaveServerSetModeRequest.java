@@ -27,6 +27,9 @@ import eu.matejkormuth.pexel.protocol.PexelProtocol;
 public class SlaveServerSetModeRequest extends Request {
     public ServerMode mode;
     
+    public SlaveServerSetModeRequest() {
+    }
+    
     @Override
     public ByteBuffer toByteBuffer() {
         return ByteBuffer.allocate(1).put(

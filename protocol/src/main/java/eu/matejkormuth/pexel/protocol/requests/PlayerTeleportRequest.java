@@ -34,6 +34,9 @@ public class PlayerTeleportRequest extends Request {
     public String targetServer;
     public UUID   uuid;
     
+    public PlayerTeleportRequest() {
+    }
+    
     public PlayerTeleportRequest(final String targetServer, final UUID uuid) {
         this.targetServer = targetServer;
         this.uuid = uuid;

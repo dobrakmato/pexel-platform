@@ -28,6 +28,9 @@ import eu.matejkormuth.pexel.network.Response;
 public class OutIsBannedFromResponse extends Response {
     public boolean banned;
     
+    public OutIsBannedFromResponse() {
+    }
+    
     @Override
     public ByteBuffer toByteBuffer() {
         return ByteBuffer.allocate(1).put((byte) (this.banned ? 1 : 0));

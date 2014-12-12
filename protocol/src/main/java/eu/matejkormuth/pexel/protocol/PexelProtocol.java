@@ -25,6 +25,7 @@ import com.google.common.base.Charsets;
 import eu.matejkormuth.pexel.network.Protocol;
 import eu.matejkormuth.pexel.protocol.requests.DebugMessageRequest;
 import eu.matejkormuth.pexel.protocol.requests.FileTransferRequest;
+import eu.matejkormuth.pexel.protocol.requests.InGameStateChangedMessage;
 import eu.matejkormuth.pexel.protocol.requests.InIsBannedFromRequest;
 import eu.matejkormuth.pexel.protocol.requests.InMatchmakingRegisterGameMessage;
 import eu.matejkormuth.pexel.protocol.requests.InServerMetaDataMessage;
@@ -52,16 +53,17 @@ public class PexelProtocol extends Protocol {
         // Messages
         this.registerRequest(4, InServerMetaDataMessage.class);
         this.registerRequest(6, InMatchmakingRegisterGameMessage.class);
+        this.registerRequest(7, InGameStateChangedMessage.class);
         
         // Responses
         this.registerResponse(1, ServerStatusResponse.class);
         
         // Request with responses
-        this.registerRequest(10, OutMatchmakingGameStatusRequest.class);
+        this.registerRequest(10, OutMatchmakingGameStatusRequest.class); //nezmysel
         this.registerRequest(11, InIsBannedFromRequest.class);
         
         // Responses to requests
-        this.registerResponse(10, InMatchmakingStatusResponse.class);
+        this.registerResponse(10, InMatchmakingStatusResponse.class); //nezmysel
         this.registerResponse(11, OutIsBannedFromResponse.class);
     }
 }

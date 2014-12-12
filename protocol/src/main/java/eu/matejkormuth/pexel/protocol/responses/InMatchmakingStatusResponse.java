@@ -26,10 +26,13 @@ import eu.matejkormuth.pexel.protocol.PexelProtocol;
 
 //Sent by slave
 public class InMatchmakingStatusResponse extends Response {
-    public int       freeSlots;
-    public int       maximumSlots;
+    public int        freeSlots;
+    public int        maximumSlots;
     public ArenaState state;
-    public int       playerCount;
+    public int        playerCount;
+    
+    public InMatchmakingStatusResponse() {
+    }
     
     @Override
     public ByteBuffer toByteBuffer() {

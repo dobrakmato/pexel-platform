@@ -32,6 +32,9 @@ public class FileTransferRequest extends Request {
     public String          name;
     public byte[]          data;
     
+    public FileTransferRequest() {
+    }
+    
     public FileTransferRequest(final TransferPurpose tranfserPurpose, final String name,
             final byte[] data) {
         this.tranfserPurpose = tranfserPurpose;

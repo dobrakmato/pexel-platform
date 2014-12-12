@@ -32,6 +32,9 @@ public class InMatchmakingRegisterGameMessage extends Request {
     public UUID   gameId;
     public String minigame;
     
+    public InMatchmakingRegisterGameMessage() {
+    }
+    
     public InMatchmakingRegisterGameMessage(final UUID gameId, final String minigame) {
         this.gameId = gameId;
         this.minigame = minigame;
