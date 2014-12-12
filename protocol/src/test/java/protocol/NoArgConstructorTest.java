@@ -41,8 +41,8 @@ public class NoArgConstructorTest {
                 "eu.matejkormuth.pexel.protocol.responses");
         Set<Class<? extends Response>> responses = reflections_responses.getSubTypesOf(Response.class);
         
-        System.out.println(requests.size() + " requests and " + responses.size()
-                + " responses");
+        System.out.println("Testing " + requests.size() + " requests and "
+                + responses.size() + " responses...");
         
         for (Class<? extends Request> clazz : requests) {
             try {
