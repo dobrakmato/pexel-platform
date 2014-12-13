@@ -18,13 +18,13 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave.bukkit.teams;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.Location;
 
+import eu.matejkormuth.pexel.commons.ChatColor;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.PlayerHolder;
 import eu.matejkormuth.pexel.slave.PexelSlave;

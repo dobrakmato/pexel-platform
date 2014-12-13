@@ -18,47 +18,17 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons;
 
-
 /**
- * Custom implemenation of dragon bar api.
+ * Class that provieds access to player teleports.
  */
-public class BarAPI {
-    
+public interface TeleportProvider {
     /**
+     * Teleports specified player to specified location.
+     * 
      * @param player
-     * @return
+     *            player to teleport
+     * @param location
+     *            destination
      */
-    public static boolean hasBar(final Player player) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-    
-    /**
-     * @param player
-     */
-    public static void removeBar(final Player player) {
-        // TODO Auto-generated method stub
-        
-    }
-    
-    /**
-     * @param p
-     * @param message
-     */
-    public static void setMessage(final Player p, final String message) {
-        // TODO Auto-generated method stub
-        
-    }
-    
-    /**
-     * @param p
-     * @param message
-     * @param percent
-     */
-    public static void setMessage(final Player p, final String message,
-            final float percent) {
-        // TODO Auto-generated method stub
-        
-    }
-    
+    public void teleport(Player player, Location location);
 }

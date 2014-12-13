@@ -23,16 +23,19 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import eu.matejkormuth.pexel.commons.ChatColor;
 import eu.matejkormuth.pexel.commons.GameMode;
 import eu.matejkormuth.pexel.commons.MapData;
 import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.TextTable;
 import eu.matejkormuth.pexel.commons.bans.Bannable;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
+import eu.matejkormuth.pexel.commons.minigame.Minigame;
 
 /**
  * Represents minigame arena, that is participating in matchmaking,
  */
-public abstract class Arena implements MatchmakingGame, Bannable {
+public abstract class Arena extends ProtectedArea implements MatchmakingGame, Bannable {
     // Minimum amount of players required to start countdown.
     public static final float MIN_RATIO              = 0.75F;
     // Player in arena.
@@ -169,13 +172,30 @@ public abstract class Arena implements MatchmakingGame, Bannable {
         // If we reached zero, start that game!
         if (this.countdownRemaining <= 0) {
             this.resetCountdown();
-            this.broadcast("Map " + this.map.getName() + " by " + this.map.getAuthor());
+            
+            // Build table.
+            TextTable table = new TextTable(TextTable.MINECRAFT_CHAT_WIDTH, 5);
+            table.renderLeftAlignedText(1, "Game: "
+                    + this.getMinigame().getDisplayName());
+            table.renderLeftAlignedText(2, "Map: " + this.map.getName() + " by "
+                    + this.map.getAuthor());
+            table.formatBorder(ChatColor.YELLOW);
+            
+            this.broadcast(table.toString());
+            
             this.gameStarted = true;
             
             this.setState(ArenaState.PLAYING_CANTJOIN);
             this.onGameStart();
         }
     }
+    
+    /**
+     * Returns minigame information.
+     * 
+     * @return minigame object
+     */
+    public abstract Minigame getMinigame();
     
     /**
      * Reset's this arena.

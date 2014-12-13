@@ -40,6 +40,20 @@ public interface Minigame extends Bannable {
     public String getName();
     
     /**
+     * Return's name of author of this minigame.
+     * 
+     * @return author's name
+     */
+    public String getAuthor();
+    
+    /**
+     * Returs this game description.
+     * 
+     * @return description of game
+     */
+    public String getDescription();
+    
+    /**
      * Returns minigame category.
      * 
      * @return minigame categorry

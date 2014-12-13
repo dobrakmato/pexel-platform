@@ -33,11 +33,11 @@ public class TableTest {
         t.renderCenteredText(1, "Party Invitation");
         t.renderSpacerLine(2);
         t.renderCenteredText(3, "Player pitkes22 invites You to his party!");
-        t.renderCenteredText(4, "Type /party acccept to join!");
-        t.formatPart(1, "Party Invitation", "&n");
-        t.formatPart(3, "pitkes22", "&e");
+        t.renderCenteredText(4, "Type /party accept to join!");
+        t.formatString(1, "Party Invitation", "&n");
+        t.formatString(3, "pitkes22", "&e");
         t.formatBorder("&a");
-        //System.out.println(t.toString());
+        System.out.println(t.toString());
         
         t = new TextTable(50, 8);
         t.renderCenteredText(1, "Match summary");

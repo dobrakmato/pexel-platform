@@ -25,14 +25,29 @@ public abstract class MinigameCategories {
     /**
      * Aracade minigame (ex. Tnt Tag).
      */
-    public static final MinigameCategory ARCADE     = null;
+    public static final MinigameCategory ARCADE     = new MinigameCategory() {
+                                                        @Override
+                                                        public String getName() {
+                                                            return "Arcade";
+                                                        }
+                                                    };
     /**
      * Minigame that is about to survive (ex. Survival Games).
      */
-    public static final MinigameCategory SURVIVAL   = null;
+    public static final MinigameCategory SURVIVAL   = new MinigameCategory() {
+                                                        @Override
+                                                        public String getName() {
+                                                            return "Survival";
+                                                        }
+                                                    };
     /**
      * Mingiame that is ready for tournaments (ex. Kingdom Wars, Annihilation). Minigames in this category have enabled
      * negative points for leaving match before match ends.
      */
-    public static final MinigameCategory TOURNAMENT = null;
+    public static final MinigameCategory TOURNAMENT = new MinigameCategory() {
+                                                        @Override
+                                                        public String getName() {
+                                                            return "Tournament";
+                                                        }
+                                                    };
 }

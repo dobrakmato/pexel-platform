@@ -97,20 +97,22 @@ import com.google.common.base.Preconditions;
  * @see #insertNewLineBeforeLast()
  * @see #formatBorder(String)
  * @see #formatLine(int, String)
- * @see #formatPart(int, String, String)
+ * @see #formatString(int, String, String)
  * @author Matej Kormuth
  */
 public class TextTable {
+    // Default minecraft chat width
+    public static final int    MINECRAFT_CHAT_WIDTH = 35;
     // TextTable border and space characters.
-    public static final String VERTICAL_SIDE   = "║";
-    public static final String HORIZONTAL_SIDE = "═";
-    public static final String TOP_LEFT        = "╔";
-    public static final String TOP_RIGHT       = "╗";
-    public static final String BOTTOM_LEFT     = "╚";
-    public static final String BOTTOM_RIGHT    = "╝";
-    public static final String SPACE           = " ";
+    public static final String VERTICAL_SIDE        = "║";
+    public static final String HORIZONTAL_SIDE      = "═";
+    public static final String TOP_LEFT             = "╔";
+    public static final String TOP_RIGHT            = "╗";
+    public static final String BOTTOM_LEFT          = "╚";
+    public static final String BOTTOM_RIGHT         = "╝";
+    public static final String SPACE                = " ";
     // Reset style chat code.
-    public static final String RESET_STYLE     = "&r";
+    public static final String RESET_STYLE          = "&r";
     
     /**
      * Array of internal lines.
@@ -255,7 +257,7 @@ public class TextTable {
      */
     public void renderClearLine(final int line) {
         Preconditions.checkPositionIndex(line, this.lines.length);
-        for (int i = 0; i < this.internalWidth + 2; i++) {
+        for (int i = 0; i < this.internalWidth + 1; i++) {
             if (i == 0) {
                 this.renderText(line, i, VERTICAL_SIDE);
             }
@@ -274,7 +276,7 @@ public class TextTable {
     public void insertNewLineBeforeLast() {
         StringBuilder[] newlines = new StringBuilder[this.lines.length + 1];
         for (int i = 0; i < this.lines.length; i++) {
-            if (i == this.lines.length) {
+            if (i == this.lines.length - 1) {
                 newlines[i] = new StringBuilder();
                 newlines[i + 2] = this.lines[i];
             }
@@ -284,6 +286,30 @@ public class TextTable {
         }
         this.lines = newlines;
         this.renderClearLine(this.lines.length - 1);
+    }
+    
+    /**
+     * Inserts empty lines with side borders before last (border) line.
+     */
+    public void insertNewLinesBeforeLast(final int count) {
+        Preconditions.checkArgument(count > 0, "count < 0");
+        
+        StringBuilder[] newlines = new StringBuilder[this.lines.length + count + 1];
+        for (int i = 0; i < this.lines.length; i++) {
+            if (i == this.lines.length - 1) {
+                for (int k = 0; k <= count; k++) {
+                    newlines[i + k] = new StringBuilder();
+                }
+                newlines[i + count + 1] = this.lines[i];
+            }
+            else {
+                newlines[i] = this.lines[i];
+            }
+        }
+        this.lines = newlines;
+        for (int i = 0; i < count; i++) {
+            this.renderClearLine(this.lines.length - i - 1);
+        }
     }
     
     /**
@@ -308,6 +334,10 @@ public class TextTable {
                 this.formatPart(i, index2, 1, style);
             }
         }
+    }
+    
+    public void formatBorder(final ChatColor color) {
+        this.formatBorder(color.toString());
     }
     
     /**
@@ -342,7 +372,17 @@ public class TextTable {
         this.lines[line].insert(index + style.length() + length, RESET_STYLE);
     }
     
-    public void formatPart(final int line, final String formatted, final String style) {
+    /**
+     * Applies specified style to specified text, if found in specified line.
+     * 
+     * @param line
+     *            line to search for
+     * @param formatted
+     *            text to apply style to
+     * @param style
+     *            style to be applied
+     */
+    public void formatString(final int line, final String formatted, final String style) {
         Preconditions.checkPositionIndex(line, this.lines.length);
         int index = this.lines[line].indexOf(formatted);
         this.formatPart(line, index, formatted.length(), style);
