@@ -43,6 +43,7 @@ import eu.matejkormuth.pexel.protocol.PexelProtocol;
 import eu.matejkormuth.pexel.protocol.requests.InServerMetaDataMessage;
 import eu.matejkormuth.pexel.slave.bukkit.BukkitObjectFactory;
 import eu.matejkormuth.pexel.slave.bukkit.BukkitSlaveMinecraftSoftware;
+import eu.matejkormuth.pexel.slave.bukkit.BukkitTeleporter;
 import eu.matejkormuth.pexel.slave.pluginloaders.BukkitPluginLoader;
 import eu.matejkormuth.pexel.slave.spigot.SpigotSlaveMinecraftServer;
 import eu.matejkormuth.pexel.slave.sponge.SpongeObjectFactory;
@@ -101,6 +102,7 @@ public class PexelSlave implements LoggerHolder {
                 this.serverSoftware = new BukkitSlaveMinecraftSoftware();
                 this.pluginLoader = new BukkitPluginLoader();
                 this.objectFactory = new BukkitObjectFactory();
+                this.addComponent(new BukkitTeleporter());
                 break;
             case FORGE:
                 throw new RuntimeException(

@@ -144,8 +144,11 @@ public abstract class AdvancedArena extends AbstractArena implements Listener {
      *            destination location
      */
     public void teleportPlayers(final Location location) {
+        eu.matejkormuth.pexel.commons.Location loc = new eu.matejkormuth.pexel.commons.Location(
+                location.getX(), location.getY(), location.getZ(), location.getYaw(),
+                location.getPitch(), location.getWorld().getUID());
         for (Player p : this.activePlayers)
-            p.teleport(location);
+            p.teleport(loc);
     }
     
     /**
@@ -387,7 +390,11 @@ public abstract class AdvancedArena extends AbstractArena implements Listener {
                             + this.slots + ")"));
             
             // Teleport player to arena spawn location.
-            player.teleport(this.gameSpawn);
+            eu.matejkormuth.pexel.commons.Location loc = new eu.matejkormuth.pexel.commons.Location(
+                    this.gameSpawn.getX(), this.gameSpawn.getY(), this.gameSpawn.getZ(),
+                    this.gameSpawn.getYaw(), this.gameSpawn.getPitch(),
+                    this.gameSpawn.getWorld().getUID());
+            player.teleport(loc);
         }
         else {
             player.sendMessage(ChatManager.error("Alredy playing!"));

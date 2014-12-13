@@ -22,7 +22,6 @@ import java.util.Arrays;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -33,6 +32,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import eu.matejkormuth.pexel.commons.Location;
 import eu.matejkormuth.pexel.slave.PexelSlave;
 import eu.matejkormuth.pexel.slave.bukkit.Pexel;
 import eu.matejkormuth.pexel.slave.bukkit.actions.CommandAction;
@@ -88,7 +88,7 @@ public class MagicClock implements Listener {
         
         InventoryMenuItem teleportItem = new InventoryMenuItem(ItemUtils.namedItemStack(
                 Material.BED, "Teleport to 0 255 0", null), new TeleportAction(
-                new Location(Bukkit.getWorld("world"), 0, 255, 0)), 3, true);
+                new Location(0, 255, 0, Bukkit.getWorld("world").getUID())), 3, true);
         
         InventoryMenuItem commandItem = new InventoryMenuItem(ItemUtils.namedItemStack(
                 Material.BEACON, "Suprise", null), new CommandAction("me je gay"), 4,

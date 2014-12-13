@@ -20,7 +20,6 @@ package eu.matejkormuth.pexel.commons;
 
 import java.util.UUID;
 
-import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.inventory.Inventory;
@@ -185,7 +184,7 @@ public abstract class Player extends ProxiedPlayer {
     //TODO: Extract from location.
     //DEBUKKITIZE:
     public World getWorld() {
-        return this.getLocation().getWorld();
+        return null;
     }
     
     /**

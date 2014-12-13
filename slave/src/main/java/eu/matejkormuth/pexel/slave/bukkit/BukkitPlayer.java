@@ -20,16 +20,18 @@ package eu.matejkormuth.pexel.slave.bukkit;
 
 import java.util.UUID;
 
-import org.bukkit.Location;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import eu.matejkormuth.pexel.commons.GameMode;
+import eu.matejkormuth.pexel.commons.Location;
 import eu.matejkormuth.pexel.commons.MetadataStore;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.data.Profile;
+import eu.matejkormuth.pexel.slave.PexelSlave;
 
 /**
  * Bukkit compactibile implementation of player.
@@ -49,7 +51,9 @@ public class BukkitPlayer extends Player {
     
     @Override
     public void teleport(final Location loc) {
-        this.internal.teleport(loc);
+        PexelSlave.getInstance()
+                .getComponent(BukkitTeleporter.class)
+                .teleport(this, loc);
     }
     
     @Override
@@ -90,7 +94,10 @@ public class BukkitPlayer extends Player {
     
     @Override
     public Location getLocation() {
-        return this.internal.getLocation();
+        return new Location(this.internal.getLocation().getX(),
+                this.internal.getLocation().getY(), this.internal.getLocation().getZ(),
+                this.internal.getLocation().getYaw(), this.internal.getLocation()
+                        .getPitch(), this.internal.getLocation().getWorld().getUID());
     }
     
     @Override
@@ -101,7 +108,10 @@ public class BukkitPlayer extends Player {
     @Override
     public void playSound(final Location location, final Sound sound,
             final float volume, final float pitch) {
-        this.internal.playSound(location, sound, volume, pitch);
+        org.bukkit.Location loc = new org.bukkit.Location(
+                Bukkit.getWorld(location.getWorld()), location.getX(), location.getY(),
+                location.getZ(), location.getYaw(), location.getPitch());
+        this.internal.playSound(loc, sound, volume, pitch);
     }
     
     @Override

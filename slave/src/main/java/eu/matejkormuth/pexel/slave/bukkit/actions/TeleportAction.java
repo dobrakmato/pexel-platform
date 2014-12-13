@@ -18,8 +18,7 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave.bukkit.actions;
 
-import org.bukkit.Location;
-
+import eu.matejkormuth.pexel.commons.Location;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.network.ServerInfo;
 

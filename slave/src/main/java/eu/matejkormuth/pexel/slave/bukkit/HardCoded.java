@@ -32,7 +32,6 @@ import org.bukkit.util.Vector;
 import eu.matejkormuth.pexel.commons.CuboidRegion;
 import eu.matejkormuth.pexel.commons.MapData;
 import eu.matejkormuth.pexel.commons.SerializableLocation;
-import eu.matejkormuth.pexel.network.ServerInfo;
 import eu.matejkormuth.pexel.slave.bukkit.actions.CommandAction;
 import eu.matejkormuth.pexel.slave.bukkit.actions.TeleportAction;
 import eu.matejkormuth.pexel.slave.bukkit.areas.AreaFlag;
@@ -174,10 +173,10 @@ public class HardCoded {
                 26, 50, 266), new Vector(28, 55, 260), Bukkit.getWorld("world")),
                 new TeleportAction(null, null)));
         
-        StorageEngine.addGate("Lminigame", new TeleportGate(new CuboidRegion(new Vector(
-                7, 50, 280), new Vector(13, 55, 282), Bukkit.getWorld("world")),
-                new TeleportAction(new Location(Bukkit.getWorld("world"), 1972.5, 147.5,
-                        2492.5), ServerInfo.localServer())));
+        // StorageEngine.addGate("Lminigame", new TeleportGate(new CuboidRegion(new Vector(
+        //        7, 50, 280), new Vector(13, 55, 282), Bukkit.getWorld("world")),
+        ///        new TeleportAction(new Location(Bukkit.getWorld("world"), 1972.5, 147.5,
+        //               2492.5), ServerInfo.localServer())));
         
         //Initialize gates
         StorageEngine.addGate("mg_colorwar",

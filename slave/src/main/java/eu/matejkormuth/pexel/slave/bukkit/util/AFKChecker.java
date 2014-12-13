@@ -3,8 +3,7 @@ package eu.matejkormuth.pexel.slave.bukkit.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.Location;
-
+import eu.matejkormuth.pexel.commons.Location;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.PlayerHolder;
 

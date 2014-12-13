@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -33,7 +32,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.material.Sign;
 import org.bukkit.util.Vector;
 
 import eu.matejkormuth.pexel.slave.PexelSlave;
@@ -53,7 +51,6 @@ import eu.matejkormuth.pexel.slave.bukkit.menu.InventoryMenuItem;
 import eu.matejkormuth.pexel.slave.bukkit.util.ItemUtils;
 import eu.matejkormuth.pexel.slave.bukkit.util.ParametrizedRunnable;
 import eu.matejkormuth.pexel.slave.bukkit.util.ParticleEffect2;
-import eu.matejkormuth.pexel.slave.bukkit.util.TimeBomb;
 
 /**
  * Alternate method of handling commands. I'm lazy to do this in plugin.yml.
@@ -223,11 +220,11 @@ public class AlternativeCommands implements Listener {
             this.particleEffectMenu.showTo(sender);
         }
         else if (command.contains("/timebomb")) {
-            sender.getLocation().getBlock().setType(Material.TNT);
-            Block b = sender.getLocation().getBlock().getRelative(BlockFace.NORTH);
-            b.setType(Material.WALL_SIGN);
-            ((Sign) b.getState().getData()).setFacingDirection(BlockFace.NORTH.getOppositeFace());
-            new TimeBomb(sender.getLocation().getBlock(), b, 60);
+            //sender.getLocation().getBlock().setType(Material.TNT);
+            //Block b = sender.getLocation().getBlock().getRelative(BlockFace.NORTH);
+            //b.setType(Material.WALL_SIGN);
+            //((Sign) b.getState().getData()).setFacingDirection(BlockFace.NORTH.getOppositeFace());
+            //new TimeBomb(sender.getLocation().getBlock(), b, 60);
         }
         else if (command.contains("/grassgen")) {
             int i = 3;
@@ -237,7 +234,12 @@ public class AlternativeCommands implements Listener {
             
             World w = sender.getWorld();
             
-            Location pLoc = sender.getLocation();
+            eu.matejkormuth.pexel.commons.Location location = sender.getLocation();
+            
+            org.bukkit.Location pLoc = new org.bukkit.Location(
+                    Bukkit.getWorld(location.getWorld()), location.getX(),
+                    location.getY(), location.getZ(), location.getYaw(),
+                    location.getPitch());
             
             sender.sendMessage(ChatColor.GREEN
                     + "/grassgen <radius> <flowers?> <longgrass?>");
