@@ -18,7 +18,7 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons.permissions;
 
-import java.util.Collection;
+import java.util.Set;
 
 /**
  * Interface that represents type that can be permissiable.
@@ -54,5 +54,5 @@ public interface Permissiable {
      * 
      * @return collection of this role permissions
      */
-    public Collection<Permission> getPermissions();
+    public Set<Permission> getPermissions();
 }

@@ -18,89 +18,115 @@
 // @formatter:on
 package eu.matejkormuth.pexel.master.db;
 
-import java.util.Collection;
 import java.util.Locale;
+import java.util.Set;
 import java.util.UUID;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.avaje.ebean.Ebean;
+import com.google.common.collect.Sets;
 
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.data.Profile;
 import eu.matejkormuth.pexel.commons.permissions.Permission;
 import eu.matejkormuth.pexel.commons.permissions.Role;
+import eu.matejkormuth.pexel.commons.permissions.Roles;
 
 /**
  * Entity that represnts {@link Player}'s {@link Profile} in {@link Database}.
  */
+@Entity
+@Table(name = "profiles")
 public class ProfileEntity implements Profile {
+    @Transient
+    private final Set<Permission> userPermisisons;
+    
+    @Id
+    private UUID                  uuid;
+    private String                lastKnownName;
+    @Column(name = "exp")
+    private int                   xp;
+    @Column(name = "coins")
+    private int                   coins;
+    @Column(name = "premium_coins")
+    private int                   premiumCoins;
+    @Column(name = "role", length = 16)
+    private String                roleName;
+    @Column(name = "locale", length = 2)
+    private String                localeCode;
+    
+    public ProfileEntity() {
+        this.userPermisisons = Sets.newHashSet();
+    }
     
     @Override
     public long getId() {
-        // TODO Auto-generated method stub
         return 0;
     }
     
     @Override
     public UUID getUUID() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.uuid;
     }
     
     @Override
     public String getLastKnownName() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.lastKnownName;
     }
     
     @Override
     public int getXP() {
-        // TODO Auto-generated method stub
-        return 0;
+        return this.xp;
     }
     
     @Override
     public int getCoins() {
-        // TODO Auto-generated method stub
-        return 0;
+        return this.coins;
     }
     
     @Override
     public int getPremiumCoins() {
-        // TODO Auto-generated method stub
-        return 0;
+        return this.premiumCoins;
     }
     
     @Override
     public boolean hasPermission(final Permission permission) {
-        // TODO Auto-generated method stub
-        return false;
+        if (this.userPermisisons.contains(permission))
+            return true;
+        return this.getRole().hasPermission(permission);
     }
     
     @Override
-    public Collection<Permission> getPermissions() {
-        // TODO Auto-generated method stub
-        return null;
+    public Set<Permission> getPermissions() {
+        return Sets.union(this.userPermisisons, this.getRole().getPermissions());
     }
     
     @Override
     public Role getRole() {
-        // TODO Auto-generated method stub
-        return null;
+        return Roles.byName(this.roleName);
     }
     
     @Override
     public void addPermission(final Permission permission) {
-        // TODO Auto-generated method stub
-        
+        this.userPermisisons.add(permission);
     }
     
     @Override
     public void removePermission(final Permission permission) {
-        // TODO Auto-generated method stub
-        
+        this.userPermisisons.remove(permission);
     }
     
     @Override
     public Locale getLocale() {
-        // TODO Auto-generated method stub
-        return null;
+        return Locale.getDefault();
+    }
+    
+    public void save() {
+        Ebean.save(this);
     }
 }

@@ -31,9 +31,6 @@ import eu.matejkormuth.pexel.network.ByteUtils;
 public class ByteUtilsTest {
     private final Random random = new Random();
     
-    /**
-     * Test method for {@link eu.matejkormuth.pexel.network.ByteUtils#writeInt(int, byte[], int)}.
-     */
     @Test
     public void testInt() {
         int i = this.random.nextInt();
@@ -43,9 +40,6 @@ public class ByteUtilsTest {
         assertEquals(i, k);
     }
     
-    /**
-     * Test method for {@link eu.matejkormuth.pexel.network.ByteUtils#writeLong(long, byte[], int)}.
-     */
     @Test
     public void testLong() {
         long i = this.random.nextLong();

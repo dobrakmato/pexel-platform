@@ -80,21 +80,27 @@ public class ByteUtils {
         return new String(array, Charset.defaultCharset());
     }
     
-    public static long readLong(final byte[] payload, final int i) {
-        Preconditions.checkArgument(payload.length >= i + 8,
-                "Array is too small for long at " + i);
-        long num = 0;
+    public static long readLong(final byte[] bytes, final int offset) {
+        Preconditions.checkArgument(bytes.length >= offset + 8,
+                "Array is too small for long at " + offset);
         
-        num = num | (payload[i + 0] & 0xff) << 56;
-        num = num | (payload[i + 1] & 0xff) << 48;
-        num = num | (payload[i + 2] & 0xff) << 40;
-        num = num | (payload[i + 3] & 0xff) << 32;
-        num = num | (payload[i + 4] & 0xff) << 24;
-        num = num | (payload[i + 5] & 0xff) << 16;
-        num = num | (payload[i + 6] & 0xff) << 8;
-        num = num | (payload[i + 7] & 0xff) << 0;
-        
-        return num;
+        long retVal = 0;
+        retVal |= ((long) bytes[offset + 0] & 0xFF);
+        retVal <<= 8;
+        retVal |= ((long) bytes[offset + 1] & 0xFF);
+        retVal <<= 8;
+        retVal |= ((long) bytes[offset + 2] & 0xFF);
+        retVal <<= 8;
+        retVal |= ((long) bytes[offset + 3] & 0xFF);
+        retVal <<= 8;
+        retVal |= ((long) bytes[offset + 4] & 0xFF);
+        retVal <<= 8;
+        retVal |= ((long) bytes[offset + 5] & 0xFF);
+        retVal <<= 8;
+        retVal |= ((long) bytes[offset + 6] & 0xFF);
+        retVal <<= 8;
+        retVal |= ((long) bytes[offset + 7] & 0xFF);
+        return retVal;
     }
     
     public static int readInt(final byte[] payload, final int i) {

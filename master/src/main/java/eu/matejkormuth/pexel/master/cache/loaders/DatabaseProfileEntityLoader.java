@@ -16,15 +16,21 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.master.cache;
+package eu.matejkormuth.pexel.master.cache.loaders;
+
+import java.util.UUID;
+
+import com.avaje.ebean.Ebean;
+import com.google.common.cache.CacheLoader;
+
+import eu.matejkormuth.pexel.master.db.ProfileEntity;
 
 /**
- * Class that represents access to object cache.
+ * Profile loader.
  */
-public interface CacheAccess<K, V> {
-    public boolean has(K key);
-    
-    public V get(K key);
-    
-    public void remove(K key);
+public class DatabaseProfileEntityLoader extends CacheLoader<UUID, ProfileEntity> {
+    @Override
+    public ProfileEntity load(final UUID key) throws Exception {
+        return Ebean.find(ProfileEntity.class, key);
+    }
 }

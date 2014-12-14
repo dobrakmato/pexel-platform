@@ -38,17 +38,20 @@ public class Role implements Permissiable {
     public Role(final String name) {
         this.roleName = name;
         this.permissions = new HashSet<Permission>();
+        Roles.mapping.put(name, this);
     }
     
     public Role(final String name, final Permission... permission) {
         this.roleName = name;
         this.permissions = new HashSet<Permission>(Arrays.asList(permission));
+        Roles.mapping.put(name, this);
     }
     
     public Role(final String name, final Role parent, final Permission... permission) {
         this.roleName = name;
         this.permissions = new HashSet<Permission>(Arrays.asList(permission));
         this.permissions.addAll(parent.getPermissions());
+        Roles.mapping.put(name, this);
     }
     
     /**
@@ -75,7 +78,7 @@ public class Role implements Permissiable {
     }
     
     @Override
-    public Collection<Permission> getPermissions() {
+    public Set<Permission> getPermissions() {
         return Collections.unmodifiableSet(this.permissions);
     }
     

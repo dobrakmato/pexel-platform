@@ -18,22 +18,37 @@
 // @formatter:on
 package eu.matejkormuth.pexel.master.cache;
 
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.LoadingCache;
 import com.google.gson.JsonObject;
 
 import eu.matejkormuth.pexel.commons.Providers;
+import eu.matejkormuth.pexel.master.cache.loaders.DatabaseProfileEntityLoader;
+import eu.matejkormuth.pexel.master.db.ProfileEntity;
 
 /**
  * Object that holds all caches on master.
  */
 public class Caches {
-    private final ProfileCache profileCache = new ProfileCache();
+    private final LoadingCache<UUID, ProfileEntity> profiles;
     
-    public ProfileCache getProfileCache() {
-        return this.profileCache;
+    public Caches() {
+        this.profiles = CacheBuilder.newBuilder()
+                .concurrencyLevel(4)
+                .expireAfterWrite(30, TimeUnit.MINUTES)
+                .maximumSize(2000)
+                .build(new DatabaseProfileEntityLoader());
     }
     
-    public int totalSize() {
-        return this.profileCache.size();
+    public LoadingCache<UUID, ProfileEntity> getProfileCache() {
+        return this.profiles;
+    }
+    
+    public long totalSize() {
+        return this.profiles.size();
     }
     
     public long totalMemSize() {
@@ -46,7 +61,7 @@ public class Caches {
         obj.addProperty("totalMemSize", this.totalMemSize());
         // Build array of caches.
         JsonObject caches = new JsonObject();
-        caches.add("profile", Providers.JSON.toJsonTree(this.profileCache));
+        caches.add("profile", Providers.JSON.toJsonTree(this.profiles));
         obj.add("caches", caches);
         // Return final object.
         return obj;
