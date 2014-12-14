@@ -33,7 +33,13 @@ import eu.matejkormuth.pexel.commons.Player;
 public class BukkitObjectFactory extends AbstractObjectFactory {
     @Override
     public Player getPlayer(final UUID uuid) {
-        return new BukkitPlayer(Bukkit.getPlayer(uuid));
+        org.bukkit.entity.Player p = Bukkit.getPlayer(uuid);
+        if (p.isOnline()) {
+            return new BukkitPlayer(p);
+        }
+        else {
+            return null;
+        }
     }
     
     @Override

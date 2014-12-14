@@ -58,7 +58,7 @@ public class Matchmaking extends MasterComponent {
     }
     
     public void registerArena(final MatchmakingGameImpl game) {
-        this.logger.info("Registering arena " + game.getUUID().toString());
+        this.logger.info("Registering arena " + game.getGameUUID().toString());
         this.provider.registerArena(game);
     }
     

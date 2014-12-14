@@ -16,13 +16,16 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.slave;
+package eu.matejkormuth.pexel.slave.components;
+
+import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.CuboidRegion;
 import eu.matejkormuth.pexel.commons.arenas.Arena;
 import eu.matejkormuth.pexel.commons.arenas.ArenaState;
 import eu.matejkormuth.pexel.protocol.requests.InGameStateChangedMessage;
 import eu.matejkormuth.pexel.protocol.requests.InMatchmakingRegisterGameMessage;
+import eu.matejkormuth.pexel.slave.PexelSlave;
 import eu.matejkormuth.pexel.slave.Scheduler.ScheduledTask;
 
 /**
@@ -31,6 +34,9 @@ import eu.matejkormuth.pexel.slave.Scheduler.ScheduledTask;
 public abstract class SlaveArena extends Arena {
     private ScheduledTask task;
     
+    // Random UUID for each arena.
+    protected UUID        uuid = UUID.randomUUID();
+    
     public SlaveArena(final CuboidRegion region, final String minigame) {
         super(region);
         
@@ -38,8 +44,12 @@ public abstract class SlaveArena extends Arena {
         PexelSlave.getInstance().getEventBus().register(this);
         
         // Register this game on master.
-        PexelSlave.getInstance().server.getMasterServerInfo().sendRequest(
-                new InMatchmakingRegisterGameMessage(this.getUUID(), minigame));
+        PexelSlave.getInstance()
+                .getServer()
+                .getMasterServerInfo()
+                .sendRequest(
+                        new InMatchmakingRegisterGameMessage(this.getGameUUID(),
+                                minigame));
     }
     
     public SlaveArena(final CuboidRegion region, final String minigame, final String tag) {
@@ -65,9 +75,16 @@ public abstract class SlaveArena extends Arena {
     @Override
     public void setState(final ArenaState state) {
         // Listen for changes and redirect them to master.
-        PexelSlave.getInstance().server.getMasterServerInfo().sendRequest(
-                new InGameStateChangedMessage(this.getUUID(), state));
+        PexelSlave.getInstance()
+                .getServer()
+                .getMasterServerInfo()
+                .sendRequest(new InGameStateChangedMessage(this.getGameUUID(), state));
         
         super.setState(state);
+    }
+    
+    @Override
+    public UUID getGameUUID() {
+        return this.uuid;
     }
 }

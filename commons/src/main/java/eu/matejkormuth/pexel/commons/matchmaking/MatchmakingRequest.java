@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import eu.matejkormuth.pexel.commons.Player;
-import eu.matejkormuth.pexel.commons.minigame.Minigame;
 
 /**
  * Request for matchmaking.
@@ -33,9 +32,9 @@ public class MatchmakingRequest {
      */
     private final List<Player>    players;
     /**
-     * The minigame that the players want to play.
+     * The name of minigame that the players want to play.
      */
-    private final Minigame        minigame;
+    private final String          minigame;
     /**
      * Arena that players want to play.
      */
@@ -45,7 +44,7 @@ public class MatchmakingRequest {
      */
     public int                    tries = 0;
     
-    public MatchmakingRequest(final List<Player> players, final Minigame minigame,
+    public MatchmakingRequest(final List<Player> players, final String minigame,
             final MatchmakingGame game) {
         this.players = players;
         this.minigame = minigame;
@@ -73,27 +72,6 @@ public class MatchmakingRequest {
     }
     
     /**
-     * Creates new request with specified game and random arena.
-     * 
-     * @param player
-     *            player
-     */
-    public static MatchmakingRequest create(final Player player, final Minigame minigame) {
-        return new MatchmakingRequest(Arrays.asList(player), minigame, null);
-    }
-    
-    /**
-     * Creates new request with specified game and random arena.
-     * 
-     * @param player
-     *            players
-     */
-    public static MatchmakingRequest create(final Minigame minigame,
-            final Player... player) {
-        return new MatchmakingRequest(Arrays.asList(player), minigame, null);
-    }
-    
-    /**
      * Returns list of players in this request.
      */
     public List<Player> getPlayers() {
@@ -101,9 +79,9 @@ public class MatchmakingRequest {
     }
     
     /**
-     * Returns minigame of this request.
+     * Returns minigame name of this request.
      */
-    public Minigame getMinigame() {
+    public String getMinigameName() {
         return this.minigame;
     }
     

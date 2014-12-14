@@ -18,8 +18,12 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons.matchmaking;
 
+import java.util.UUID;
+
+import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.PlayerHolder;
 import eu.matejkormuth.pexel.commons.arenas.ArenaState;
+import eu.matejkormuth.pexel.commons.arenas.LeaveReason;
 
 /**
  * Specifies that the object is game participating in matchmaking.
@@ -46,6 +50,10 @@ public interface MatchmakingGame extends PlayerHolder {
      */
     public int getMaximumSlots();
     
+    public void join(Player player);
+    
+    public void leave(Player player, LeaveReason reason);
+    
     /**
      * Returns game actual state.
      * 
@@ -68,4 +76,11 @@ public interface MatchmakingGame extends PlayerHolder {
      * @return true or false
      */
     public boolean canJoin(int count);
+    
+    /**
+     * Returns this game id.
+     * 
+     * @return uuid of this matchmaking game
+     */
+    public UUID getGameUUID();
 }

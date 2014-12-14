@@ -24,6 +24,7 @@ import java.util.UUID;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.annotations.JsonType;
 import eu.matejkormuth.pexel.commons.arenas.ArenaState;
+import eu.matejkormuth.pexel.commons.arenas.LeaveReason;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
 import eu.matejkormuth.pexel.master.PexelMaster;
 import eu.matejkormuth.pexel.network.MessageExtender;
@@ -31,6 +32,7 @@ import eu.matejkormuth.pexel.network.ProxiedPlayer;
 import eu.matejkormuth.pexel.network.ServerInfo;
 import eu.matejkormuth.pexel.network.ServerType;
 import eu.matejkormuth.pexel.protocol.requests.OutMatchmakingGameStatusRequest;
+import eu.matejkormuth.pexel.protocol.requests.OutPlayerMatchmakedMessage;
 import eu.matejkormuth.pexel.protocol.responses.InMatchmakingStatusResponse;
 
 /**
@@ -96,12 +98,14 @@ public class MatchmakingGameImpl extends
         return this.getFreeSlots() >= count;
     }
     
-    public UUID getUUID() {
+    @Override
+    public UUID getGameUUID() {
         return this.gameId;
     }
     
     public void connectPlayer(final ProxiedPlayer player) {
-        // TODO: Start onPlayerJoin on slave server.
+        // Send information about player's join on target server.
+        this.host.sendRequest(new OutPlayerMatchmakedMessage(player, this.gameId));
         
         // Cross server teleport.
         PexelMaster.getInstance().getProxy().connect(player, this.host);
@@ -134,5 +138,17 @@ public class MatchmakingGameImpl extends
     public boolean contains(final Player player) {
         // TODO Auto-generated method stub
         return false;
+    }
+    
+    @Override
+    public void join(final Player player) {
+        // Not valid for master server.
+        throw new UnsupportedOperationException("join; use connectPlayer() on master");
+    }
+    
+    @Override
+    public void leave(final Player player, final LeaveReason reason) {
+        // Not valid for master server.
+        throw new UnsupportedOperationException("leave");
     }
 }

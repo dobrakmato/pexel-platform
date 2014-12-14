@@ -21,7 +21,6 @@ package eu.matejkormuth.pexel.commons.arenas;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.CuboidRegion;
 import eu.matejkormuth.pexel.commons.GameMode;
@@ -57,9 +56,6 @@ public abstract class Arena extends ProtectedArea implements MatchmakingGame, Ba
     // Whether this arena is in competitive mode.
     private boolean           competitiveModeEnabled = false;
     
-    //Random UUID - gameID.
-    private final UUID        gameId                 = UUID.randomUUID();
-    
     /**
      * Currently played map in this arena.
      */
@@ -73,6 +69,7 @@ public abstract class Arena extends ProtectedArea implements MatchmakingGame, Ba
         super(region, tag);
     }
     
+    @Override
     public void join(final Player player) {
         this.broadcast("-> " + player.getDisplayName());
         // Clear player first.
@@ -93,6 +90,7 @@ public abstract class Arena extends ProtectedArea implements MatchmakingGame, Ba
         this.startCountdown();
     }
     
+    @Override
     public void leave(final Player player, final LeaveReason reason) {
         this.broadcast("<- " + player.getDisplayName());
         
@@ -325,9 +323,5 @@ public abstract class Arena extends ProtectedArea implements MatchmakingGame, Ba
         else {
             this.broadcast("Competitive mode is now disabled.");
         }
-    }
-    
-    public UUID getUUID() {
-        return this.gameId;
     }
 }

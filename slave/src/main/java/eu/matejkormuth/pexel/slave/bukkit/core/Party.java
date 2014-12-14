@@ -83,7 +83,7 @@ public class Party implements PlayerHolder {
      */
     public MatchmakingRequest toRequest(final Minigame minigame,
             final MatchmakingGame game) {
-        return new MatchmakingRequest(this.players, minigame, game);
+        return new MatchmakingRequest(this.players, minigame.getName(), game);
     }
     
     @Override

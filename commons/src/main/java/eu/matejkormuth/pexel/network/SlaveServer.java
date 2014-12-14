@@ -142,6 +142,10 @@ public class SlaveServer extends ServerInfo implements Requestable {
         return this.log;
     }
     
+    public Messenger getMessenger() {
+        return this.messenger;
+    }
+    
     public void shutdown() {
         this.log.info("Shutting down...");
         this.comunicator.stop();

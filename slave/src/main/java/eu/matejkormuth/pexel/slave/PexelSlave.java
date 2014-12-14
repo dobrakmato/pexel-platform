@@ -53,6 +53,7 @@ import eu.matejkormuth.pexel.slave.events.player.PlayerJoinEvent;
 import eu.matejkormuth.pexel.slave.events.player.PlayerLeaveEvent;
 import eu.matejkormuth.pexel.slave.pluginloaders.BukkitPluginLoader;
 import eu.matejkormuth.pexel.slave.pluginloaders.SlaveComponentLoader;
+import eu.matejkormuth.pexel.slave.responders.MatchmakingResponder;
 import eu.matejkormuth.pexel.slave.spigot.SpigotSlaveMinecraftServer;
 import eu.matejkormuth.pexel.slave.sponge.SpongeObjectFactory;
 import eu.matejkormuth.pexel.slave.sponge.SpongePluginLoader;
@@ -70,7 +71,7 @@ public class PexelSlave implements LoggerHolder {
     protected Configuration         config;
     protected Sync                  sync;
     protected PluginLoader          pluginLoader;
-    protected StorageImpl               storage;
+    protected StorageImpl           storage;
     protected AbstractObjectFactory objectFactory;
     protected SlaveMinecraftServer  serverSoftware;
     protected Scheduler             scheduler;
@@ -107,6 +108,9 @@ public class PexelSlave implements LoggerHolder {
             this.config = Configuration.load(f);
         }
         
+        // Initialize event bus.
+        this.eventBus = new SlaveEventBus();
+        
         // Initialize PluginLoader
         switch (software) {
             case CRAFTBUKKIT:
@@ -140,8 +144,6 @@ public class PexelSlave implements LoggerHolder {
         // Initialize online players list.
         this.onlinePlayers = new ArrayList<Player>(this.serverSoftware.getSlots());
         
-        this.eventBus = new SlaveEventBus();
-        
         // Load all components.
         this.log.info("Loading all components...");
         File libsFolder = new File(dataFolder.getAbsoluteFile() + "/libs/");
@@ -173,6 +175,10 @@ public class PexelSlave implements LoggerHolder {
                 .asString(), this.config.getSection(SlaveServer.class), this.log,
                 new PexelProtocol());
         
+        // Register responders.
+        this.server.getMessenger().addResponder(new MatchmakingResponder());
+        
+        // Register myself on master.
         this.server.getMasterServerInfo()
                 .sendRequest(
                         new InServerMetaDataMessage(new HashSet<MinigameDescriptor>(1),
@@ -328,5 +334,9 @@ public class PexelSlave implements LoggerHolder {
      */
     public List<Player> getOnlinePlayers() {
         return this.onlinePlayers;
+    }
+    
+    public SlaveServer getServer() {
+        return this.server;
     }
 }

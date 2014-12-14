@@ -76,7 +76,7 @@ public abstract class MatchmakingProvider {
      * @param name
      *            name of minigame
      */
-    public abstract void registerMinigame(String name);
+    public abstract void registerMinigame(String minigameName);
     
     /**
      * Registers {@link MatchmakingGameImpl} arena to this {@link MatchmakingProvider}.
