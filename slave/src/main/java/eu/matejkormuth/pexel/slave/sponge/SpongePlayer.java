@@ -18,8 +18,6 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave.sponge;
 
-import java.util.UUID;
-
 import org.bukkit.Sound;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.potion.PotionEffect;
@@ -50,11 +48,6 @@ public class SpongePlayer extends Player {
     public MetadataStore getMetadata() {
         // TODO Auto-generated method stub
         return null;
-    }
-    
-    @Override
-    public UUID getUUID() {
-        return this.internal.getUniqueId();
     }
     
     @Override

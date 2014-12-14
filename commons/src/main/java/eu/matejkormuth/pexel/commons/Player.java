@@ -18,8 +18,6 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons;
 
-import java.util.UUID;
-
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.inventory.Inventory;
@@ -42,13 +40,6 @@ public abstract class Player extends ProxiedPlayer {
      * Returns player's {@link MetadataStore}.
      */
     public abstract MetadataStore getMetadata();
-    
-    /**
-     * Returns player's {@link UUID}.
-     * 
-     * @return player's uuid on network
-     */
-    public abstract UUID getUUID();
     
     /**
      * Kicks this player from server with specified reason.

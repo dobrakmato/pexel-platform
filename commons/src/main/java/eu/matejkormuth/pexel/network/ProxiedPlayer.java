@@ -24,8 +24,14 @@ import java.util.UUID;
  * Class that represents player connected via proxy.
  */
 public abstract class ProxiedPlayer {
+    
     protected UUID uuid;
     
+    /**
+     * Returns player's {@link UUID}.
+     * 
+     * @return player's uuid on network
+     */
     public UUID getUniqueId() {
         return this.uuid;
     }

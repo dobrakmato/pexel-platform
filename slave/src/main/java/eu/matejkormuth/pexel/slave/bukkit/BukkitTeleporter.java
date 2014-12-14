@@ -35,7 +35,7 @@ public class BukkitTeleporter extends SlaveComponent implements TeleportProvider
         org.bukkit.Location loc = new org.bukkit.Location(
                 Bukkit.getWorld(location.getWorld()), location.getX(), location.getY(),
                 location.getZ(), location.getYaw(), location.getPitch());
-        Bukkit.getPlayer(player.getUUID()).teleport(loc);
+        Bukkit.getPlayer(player.getUniqueId()).teleport(loc);
     }
     
 }

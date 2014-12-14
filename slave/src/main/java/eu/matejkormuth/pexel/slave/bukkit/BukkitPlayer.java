@@ -63,7 +63,7 @@ public class BukkitPlayer extends Player {
     }
     
     @Override
-    public UUID getUUID() {
+    public UUID getUniqueId() {
         return this.internal.getUniqueId();
     }
     
