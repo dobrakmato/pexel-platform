@@ -18,6 +18,7 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave;
 
+import eu.matejkormuth.pexel.commons.CuboidRegion;
 import eu.matejkormuth.pexel.commons.arenas.Arena;
 import eu.matejkormuth.pexel.commons.arenas.ArenaState;
 import eu.matejkormuth.pexel.protocol.requests.InGameStateChangedMessage;
@@ -30,13 +31,20 @@ import eu.matejkormuth.pexel.slave.Scheduler.ScheduledTask;
 public abstract class SlaveArena extends Arena {
     private ScheduledTask task;
     
-    public SlaveArena(final String minigame) {
+    public SlaveArena(final CuboidRegion region, final String minigame) {
+        super(region);
+        
         // Register events in this arena.
         PexelSlave.getInstance().getEventBus().register(this);
         
         // Register this game on master.
         PexelSlave.getInstance().server.getMasterServerInfo().sendRequest(
                 new InMatchmakingRegisterGameMessage(this.getUUID(), minigame));
+    }
+    
+    public SlaveArena(final CuboidRegion region, final String minigame, final String tag) {
+        this(region, minigame);
+        this.setTag(tag);
     }
     
     @Override

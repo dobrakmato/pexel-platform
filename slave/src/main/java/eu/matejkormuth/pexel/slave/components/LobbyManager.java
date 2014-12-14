@@ -16,38 +16,36 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.slave;
+package eu.matejkormuth.pexel.slave.components;
 
-import eu.matejkormuth.pexel.commons.Configuration;
-import eu.matejkormuth.pexel.commons.LoggerHolder;
-import eu.matejkormuth.pexel.commons.ServerComponent;
+import java.util.HashSet;
+import java.util.Set;
+
+import eu.matejkormuth.pexel.slave.Lobby;
+import eu.matejkormuth.pexel.slave.SlaveComponent;
 
 /**
- * Interface that represents component in MasterServer.
+ * Class that manages lobbies.
  */
-public abstract class SlaveComponent extends ServerComponent {
-    PexelSlave slave;
+public class LobbyManager extends SlaveComponent implements Runnable {
+    private final Set<Lobby> lobbies = new HashSet<Lobby>();
     
-    /**
-     * Returns current {@link PexelMaster} instance.
-     */
-    public PexelSlave getSlave() {
-        return this.slave;
+    public void addLobby(final Lobby lobby) {
+        this.lobbies.add(lobby);
     }
     
     @Override
     public void onEnable() {
-    };
-    
-    @Override
-    public void onDisable() {
-    };
-    
-    protected void __initLogger(final LoggerHolder holder) {
-        this._initLogger(holder);
+        this.getSlave()
+                .getScheduler()
+                .each(this.getConfiguration().get("teleportInterval", 20L).asLong(),
+                        this);
     }
     
-    protected void __initConfig(final Configuration parentConfiguration) {
-        this._initConfig(parentConfiguration);
+    @Override
+    public void run() {
+        for (Lobby lobby : this.lobbies) {
+            lobby.teleportPlayers();
+        }
     }
 }

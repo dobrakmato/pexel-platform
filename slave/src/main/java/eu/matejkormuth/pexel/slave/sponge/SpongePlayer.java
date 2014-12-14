@@ -125,7 +125,7 @@ public class SpongePlayer extends Player {
     
     @Override
     public void setFoodLevel(final int foodLevel) {
-        //this.internal.setHunger(foodLevel);
+        this.internal.setHunger(foodLevel);
     }
     
     @Override
@@ -162,12 +162,16 @@ public class SpongePlayer extends Player {
     
     @Override
     public void setHealth(final double level) {
-        // TODO Auto-generated method stub
-        
+        this.internal.setHealth(level);
     }
     
     @Override
     public void setGameMode(final eu.matejkormuth.pexel.commons.GameMode survival) {
+        
+    }
+    
+    @Override
+    public void setPlayerTime(final long l, final boolean b) {
         
     }
     

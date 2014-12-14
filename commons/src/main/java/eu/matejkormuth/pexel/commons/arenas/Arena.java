@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import eu.matejkormuth.pexel.commons.CuboidRegion;
 import eu.matejkormuth.pexel.commons.GameMode;
 import eu.matejkormuth.pexel.commons.MapData;
 import eu.matejkormuth.pexel.commons.Player;
@@ -63,6 +64,14 @@ public abstract class Arena extends ProtectedArea implements MatchmakingGame, Ba
      * Currently played map in this arena.
      */
     protected MapData         map;
+    
+    public Arena(final CuboidRegion region) {
+        super(region);
+    }
+    
+    public Arena(final CuboidRegion region, final String tag) {
+        super(region, tag);
+    }
     
     public void join(final Player player) {
         this.broadcast("-> " + player.getDisplayName());

@@ -37,7 +37,7 @@ public abstract class ServerComponent implements Component {
      * @param parentLogger
      *            object that contains parent logger.
      */
-    public void _initLogger(final LoggerHolder parentLogger) {
+    protected void _initLogger(final LoggerHolder parentLogger) {
         this.logger = parentLogger.getLogger().getChild(this.getClass().getSimpleName());
     }
     
@@ -47,7 +47,7 @@ public abstract class ServerComponent implements Component {
      * @param parentConfiguration
      *            configuration of parent, who contains this component.
      */
-    public void _initConfig(final Configuration parentConfiguration) {
+    protected void _initConfig(final Configuration parentConfiguration) {
         this.config = parentConfiguration.getSection(this.getClass().getCanonicalName());
     }
     

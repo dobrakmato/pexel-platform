@@ -18,7 +18,9 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave;
 
+import eu.matejkormuth.pexel.commons.CuboidRegion;
 import eu.matejkormuth.pexel.commons.Location;
+import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.arenas.AreaPermissions;
 import eu.matejkormuth.pexel.commons.arenas.ProtectedArea;
 
@@ -36,7 +38,9 @@ public class Lobby extends ProtectedArea {
      */
     private Location        spawn;
     
-    public Lobby() {
+    public Lobby(final CuboidRegion region, final Location spawn) {
+        super(region);
+        this.spawn = spawn;
         this.setGlobalPermission(AreaPermissions.BLOCK_BREAK, false);
         this.setGlobalPermission(AreaPermissions.BLOCK_PLACE, false);
         
@@ -46,12 +50,18 @@ public class Lobby extends ProtectedArea {
         this.setGlobalPermission(AreaPermissions.PLAYER_DROPITEM, false);
     }
     
+    public Lobby(final CuboidRegion region, final Location spawn, final String tag) {
+        this(region, spawn);
+        this.setTag(tag);
+    }
+    
     public void teleportPlayers() {
-        //for (Player p : this.getRegion().getPlayersXZ()) {
-        //    if (p.getLocation().getY() < Lobby.THRESHOLD_Y) {
-        //        p.teleport(this.spawn);
-        //    }
-        //}
+        for (Player p : this.getRegion().getPlayersXZ(
+                PexelSlave.getInstance().getOnlinePlayers())) {
+            if (p.getLocation().getY() < Lobby.THRESHOLD_Y) {
+                p.teleport(this.spawn);
+            }
+        }
     }
     
     public Location getSpawn() {

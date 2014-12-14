@@ -30,6 +30,7 @@ import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.commons.LoggerHolder;
 import eu.matejkormuth.pexel.commons.ServerComponent;
 import eu.matejkormuth.pexel.commons.Storage;
+import eu.matejkormuth.pexel.commons.StorageImpl;
 import eu.matejkormuth.pexel.master.cache.Caches;
 import eu.matejkormuth.pexel.master.db.Database;
 import eu.matejkormuth.pexel.master.matchmaking.Matchmaking;
@@ -61,11 +62,11 @@ public final class PexelMaster implements LoggerHolder {
     private final Logger                log;
     private Configuration               config;
     private final Scheduler             scheduler;
-    private final Storage               storage;
+    private final MasterStorageProxy    storage;
     private Database                    database;
     private final Caches                caches;
     
-    private final List<ServerComponent> components        = new ArrayList<ServerComponent>();
+    private final List<MasterComponent> components        = new ArrayList<MasterComponent>();
     private boolean                     componentsEnabled = false;
     
     private PexelMaster(final File dataFolder) {
@@ -95,7 +96,8 @@ public final class PexelMaster implements LoggerHolder {
         // Load storage.
         File storageFolder = new File(dataFolder.getAbsolutePath() + "/storage");
         storageFolder.mkdirs();
-        this.storage = new Storage(storageFolder, this.config.getSection(Storage.class));
+        this.storage = new MasterStorageProxy(new StorageImpl(storageFolder,
+                this.config.getSection(StorageImpl.class)));
         this.addComponent(this.storage);
         
         // Set up scheduler.
@@ -191,7 +193,7 @@ public final class PexelMaster implements LoggerHolder {
      * @param component
      *            component to add
      */
-    public void addComponent(final ServerComponent component) {
+    public void addComponent(final MasterComponent component) {
         this.components.add(component);
         
         if (this.componentsEnabled) {
@@ -201,7 +203,7 @@ public final class PexelMaster implements LoggerHolder {
     
     protected void enableComponents() {
         this.componentsEnabled = true;
-        for (ServerComponent c : this.components) {
+        for (MasterComponent c : this.components) {
             this.enableComponent(c);
         }
     }
@@ -212,14 +214,14 @@ public final class PexelMaster implements LoggerHolder {
         }
     }
     
-    protected void enableComponent(final ServerComponent e) {
+    protected void enableComponent(final MasterComponent e) {
         this.log.info("Enabling [" + e.getClass().getSimpleName() + "] ...");
         try {
             if (e instanceof MasterComponent) {
-                ((MasterComponent) e).master = this;
+                e.master = this;
             }
-            e._initLogger(this);
-            e._initConfig(this.getConfiguration());
+            e.__initLogger(this);
+            e.__initConfig(this.getConfiguration());
             e.onEnable();
         } catch (Exception ex) {
             this.log.info("Error '" + ex.getMessage() + "' while enabling component "

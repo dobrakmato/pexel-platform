@@ -28,6 +28,12 @@ import java.util.List;
 public class Scheduler implements TickHandler {
     private final List<ScheduledTask> tasks = new ArrayList<Scheduler.ScheduledTask>();
     
+    public ScheduledTask delay(final long delay, final Runnable runnable) {
+        ScheduledTask task = new ScheduledTask(runnable, -1, delay);
+        this.tasks.add(task);
+        return task;
+    }
+    
     public ScheduledTask each(final long interval, final Runnable runnable) {
         ScheduledTask task = new ScheduledTask(runnable, interval);
         this.tasks.add(task);
@@ -46,13 +52,14 @@ public class Scheduler implements TickHandler {
         long time = System.currentTimeMillis();
         for (Iterator<ScheduledTask> iterator = this.tasks.iterator(); iterator.hasNext();) {
             ScheduledTask task = iterator.next();
-            if (task.nextRun == -1) {
-                iterator.remove();
-            }
             
             if (task.nextRun < time) {
                 task.fire();
                 task.nextRun = time + task.interval;
+            }
+            
+            if (task.nextRun == -1 || task.interval == -1) {
+                iterator.remove();
             }
         }
     }
@@ -70,7 +77,12 @@ public class Scheduler implements TickHandler {
         
         public ScheduledTask(final Runnable runnable, final long interval,
                 final long delay) {
-            this.interval = interval * 20 * 1000;
+            if (interval != -1) {
+                this.interval = interval * 20 * 1000;
+            }
+            else {
+                this.interval = -1;
+            }
             this.task = runnable;
             this.nextRun = System.currentTimeMillis() + delay * 20 * 1000;
         }

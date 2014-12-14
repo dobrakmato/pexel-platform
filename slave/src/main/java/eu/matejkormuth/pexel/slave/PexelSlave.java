@@ -39,7 +39,7 @@ import eu.matejkormuth.pexel.commons.ServerComponent;
 import eu.matejkormuth.pexel.commons.ServerMode;
 import eu.matejkormuth.pexel.commons.SlaveMinecraftServer;
 import eu.matejkormuth.pexel.commons.SlaveMinecraftServerType;
-import eu.matejkormuth.pexel.commons.Storage;
+import eu.matejkormuth.pexel.commons.StorageImpl;
 import eu.matejkormuth.pexel.commons.storage.MapDescriptor;
 import eu.matejkormuth.pexel.commons.storage.MinigameDescriptor;
 import eu.matejkormuth.pexel.network.SlaveServer;
@@ -52,6 +52,7 @@ import eu.matejkormuth.pexel.slave.events.SlaveEventBus;
 import eu.matejkormuth.pexel.slave.events.player.PlayerJoinEvent;
 import eu.matejkormuth.pexel.slave.events.player.PlayerLeaveEvent;
 import eu.matejkormuth.pexel.slave.pluginloaders.BukkitPluginLoader;
+import eu.matejkormuth.pexel.slave.pluginloaders.SlaveComponentLoader;
 import eu.matejkormuth.pexel.slave.spigot.SpigotSlaveMinecraftServer;
 import eu.matejkormuth.pexel.slave.sponge.SpongeObjectFactory;
 import eu.matejkormuth.pexel.slave.sponge.SpongePluginLoader;
@@ -69,7 +70,7 @@ public class PexelSlave implements LoggerHolder {
     protected Configuration         config;
     protected Sync                  sync;
     protected PluginLoader          pluginLoader;
-    protected Storage               storage;
+    protected StorageImpl               storage;
     protected AbstractObjectFactory objectFactory;
     protected SlaveMinecraftServer  serverSoftware;
     protected Scheduler             scheduler;
@@ -77,7 +78,7 @@ public class PexelSlave implements LoggerHolder {
     
     protected ServerMode            mode;
     
-    protected List<ServerComponent> components        = new ArrayList<ServerComponent>();
+    protected List<SlaveComponent>  components        = new ArrayList<SlaveComponent>();
     protected boolean               componentsEnabled = false;
     
     private final List<Player>      onlinePlayers;
@@ -140,6 +141,12 @@ public class PexelSlave implements LoggerHolder {
         this.onlinePlayers = new ArrayList<Player>(this.serverSoftware.getSlots());
         
         this.eventBus = new SlaveEventBus();
+        
+        // Load all components.
+        this.log.info("Loading all components...");
+        File libsFolder = new File(dataFolder.getAbsoluteFile() + "/libs/");
+        libsFolder.mkdirs();
+        new SlaveComponentLoader(this.log).loadAll(libsFolder);
         
         // TODO: Load all plugins.
         this.pluginLoader.loadAll();
@@ -230,7 +237,7 @@ public class PexelSlave implements LoggerHolder {
      * @param component
      *            component to add
      */
-    public void addComponent(final ServerComponent component) {
+    public void addComponent(final SlaveComponent component) {
         this.components.add(component);
         
         if (this.componentsEnabled) {
@@ -239,7 +246,7 @@ public class PexelSlave implements LoggerHolder {
     }
     
     protected void enableComponents() {
-        for (ServerComponent c : this.components) {
+        for (SlaveComponent c : this.components) {
             this.enableComponent(c);
         }
     }
@@ -250,13 +257,13 @@ public class PexelSlave implements LoggerHolder {
         }
     }
     
-    protected void enableComponent(final ServerComponent e) {
+    protected void enableComponent(final SlaveComponent e) {
         this.log.info("Enabling [" + e.getClass().getSimpleName() + "] ...");
         if (e instanceof SlaveComponent) {
-            ((SlaveComponent) e).slave = this;
+            e.slave = this;
         }
-        e._initLogger(this);
-        e._initConfig(this.getConfiguration());
+        e.__initLogger(this);
+        e.__initConfig(this.getConfiguration());
         e.onEnable();
     }
     
@@ -298,7 +305,7 @@ public class PexelSlave implements LoggerHolder {
         return this.log;
     }
     
-    public Storage getStorage() {
+    public StorageImpl getStorage() {
         return this.storage;
     }
     

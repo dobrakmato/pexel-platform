@@ -30,13 +30,13 @@ import eu.matejkormuth.pexel.commons.permissions.Permission;
  * Area that is protected.
  */
 public abstract class ProtectedArea {
-    private String                                          tag;
-    private CuboidRegion                                    region;
+    private String                               tag;
+    private final CuboidRegion                   region;
     
     /**
      * Map of default values for flags.
      */
-    public static final Map<Permission, Boolean>            defaultFlags = new HashMap<Permission, Boolean>();
+    public static final Map<Permission, Boolean> defaultFlags = new HashMap<Permission, Boolean>();
     
     //Initialization of static values.
     static {
@@ -51,14 +51,23 @@ public abstract class ProtectedArea {
         ProtectedArea.defaultFlags.put(AreaPermissions.AREA_CHAT_WELCOME, true);
     }
     
+    public ProtectedArea(final CuboidRegion region) {
+        this.region = region;
+    }
+    
+    public ProtectedArea(final CuboidRegion region, final String tag) {
+        this.region = region;
+        this.tag = tag;
+    }
+    
     /**
      * Global area flags.
      */
-    protected final Map<Permission, Boolean>                globalFlags  = new HashMap<Permission, Boolean>();
+    protected final Map<Permission, Boolean>                globalFlags = new HashMap<Permission, Boolean>();
     /**
      * Player area flags.
      */
-    protected final Map<UUID, HashMap<Permission, Boolean>> playerFlags  = new HashMap<UUID, HashMap<Permission, Boolean>>();
+    protected final Map<UUID, HashMap<Permission, Boolean>> playerFlags = new HashMap<UUID, HashMap<Permission, Boolean>>();
     
     /**
      * Sets global permission value.

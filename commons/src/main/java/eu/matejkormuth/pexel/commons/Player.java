@@ -208,4 +208,13 @@ public abstract class Player extends ProxiedPlayer {
      *            level
      */
     public abstract void setHealth(double level);
+    
+    /**
+     * Sets player's time.
+     * 
+     * @param l
+     *            time
+     * @param b
+     */
+    public abstract void setPlayerTime(long l, boolean b);
 }

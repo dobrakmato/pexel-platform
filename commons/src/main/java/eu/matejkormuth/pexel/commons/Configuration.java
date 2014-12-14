@@ -153,7 +153,7 @@ public class Configuration extends Unmarshaller.Listener {
         public static final String KEY_MASTER_IP            = "masterIp";
         public static final String KEY_SLAVE_NAME           = "slaveName";
         public static final String KEY_LIMBO_SERVER_NAME    = "limboServer";
-        // Storage keys.
+        // StorageImpl keys.
         public static final String KEY_STORAGE_AUTOUPDATES  = "autoUpdates";
         public static final String KEY_STORAGE_ONLYTRUSTED  = "onlyTrustedSources";
         // Matchmaking keys.

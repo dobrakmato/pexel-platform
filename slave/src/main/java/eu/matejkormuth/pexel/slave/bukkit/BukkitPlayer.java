@@ -180,4 +180,9 @@ public class BukkitPlayer extends Player {
         // TODO Auto-generated method stub
         
     }
+    
+    @Override
+    public void setPlayerTime(final long l, final boolean b) {
+        this.internal.setPlayerTime(l, b);
+    }
 }
