@@ -18,7 +18,7 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave;
 
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -94,7 +94,7 @@ public class SlaveProfile implements Profile, Commitable, Metadatable {
     }
     
     @Override
-    public Collection<Permission> getPermissions() {
+    public HashSet<Permission> getPermissions() {
         // TODO Auto-generated method stub
         return null;
     }

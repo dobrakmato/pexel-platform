@@ -50,4 +50,9 @@ public class BungeeProxy implements Proxy {
                 .getPlayer(player.getUniqueId())
                 .sendMessage(new TextComponent(message));
     }
+    
+    @Override
+    public void broadcast(final String message) {
+        ProxyServer.getInstance().broadcast(new TextComponent(message));
+    }
 }

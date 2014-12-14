@@ -77,7 +77,7 @@ public class SlaveComponentLoader {
             JsonElement element = Streams.parse(new JsonReader(new InputStreamReader(in)));
             JsonObject obj = element.getAsJsonObject();
             this.log.info("Enabling " + obj.get("name").getAsString() + "...");
-            Class<?> clazz = Class.forName(obj.get("componentClass").getAsString());
+            Class<?> clazz = Class.forName(obj.get("slaveComponentClass").getAsString());
             if (SlaveComponent.class.isAssignableFrom(clazz)) {
                 try {
                     Object component = clazz.getConstructor().newInstance();

@@ -59,4 +59,12 @@ public interface Proxy {
      *            message to be send
      */
     public void sendMessage(ProxiedPlayer player, String message);
+    
+    /**
+     * Broadcasts specified message to all conected servers.
+     * 
+     * @param message
+     *            message to broadcast
+     */
+    public void broadcast(String message);
 }

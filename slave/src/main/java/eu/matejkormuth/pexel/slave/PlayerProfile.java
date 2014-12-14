@@ -18,8 +18,8 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave;
 
-import java.util.Collection;
 import java.util.Locale;
+import java.util.Set;
 import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.Commitable;
@@ -98,7 +98,7 @@ public class PlayerProfile implements Profile, Commitable, Metadatable {
     }
     
     @Override
-    public Collection<Permission> getPermissions() {
+    public Set<Permission> getPermissions() {
         // TODO Auto-generated method stub
         return null;
     }

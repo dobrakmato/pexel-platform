@@ -25,6 +25,10 @@ import eu.matejkormuth.pexel.network.ProxyBrand;
  * Provider or chat on master server.
  */
 public class ChatProvider extends MasterComponent {
+    public void broadcast(final String message) {
+        PexelMaster.getInstance().getProxy().broadcast(message);
+    }
+    
     public void sendMessage(final ProxiedPlayer player, final String message) {
         // Currently send only throught bungee.
         if (PexelMaster.getInstance().getProxy().getBrand() == ProxyBrand.BUNGEE_CORD) {

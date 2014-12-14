@@ -27,4 +27,32 @@ public class ItemStack {
     private int      amount;
     private byte     data;
     
+    public short getDurability() {
+        return this.durability;
+    }
+    
+    public void setDurability(final short durability) {
+        this.durability = durability;
+    }
+    
+    public int getAmount() {
+        return this.amount;
+    }
+    
+    public void setAmount(final int amount) {
+        this.amount = amount;
+    }
+    
+    public byte getData() {
+        return this.data;
+    }
+    
+    public void setData(final byte data) {
+        this.data = data;
+    }
+    
+    public Material getType() {
+        return this.type;
+    }
+    
 }
