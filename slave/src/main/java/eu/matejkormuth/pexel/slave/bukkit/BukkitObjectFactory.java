@@ -23,6 +23,8 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 
 import eu.matejkormuth.pexel.commons.AbstractObjectFactory;
+import eu.matejkormuth.pexel.commons.ItemStackBuilder;
+import eu.matejkormuth.pexel.commons.Material;
 import eu.matejkormuth.pexel.commons.Player;
 
 /**
@@ -43,5 +45,10 @@ public class BukkitObjectFactory extends AbstractObjectFactory {
             throw new IllegalArgumentException(
                     "platformType must be type of org.bukkit.entity.Player");
         }
+    }
+    
+    @Override
+    public ItemStackBuilder createItemStackBuilder(final Material material) {
+        return new BukkitItemStackBuilder(material);
     }
 }

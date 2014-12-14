@@ -31,7 +31,8 @@ public abstract class SlaveArena extends Arena {
     private ScheduledTask task;
     
     public SlaveArena(final String minigame) {
-        super();
+        // Register events in this arena.
+        PexelSlave.getInstance().getEventBus().register(this);
         
         // Register this game on master.
         PexelSlave.getInstance().server.getMasterServerInfo().sendRequest(

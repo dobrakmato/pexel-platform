@@ -25,12 +25,12 @@ import java.util.List;
  */
 public interface ItemStackBuilder {
     /**
-     * Applies durability to this item stack.
+     * Applies damage/durability to this item stack.
      * 
-     * @param durability
-     *            specified durability level
+     * @param damage
+     *            specified durability/damage level
      */
-    public void durability(short durability);
+    public ItemStackBuilder damage(short damage);
     
     /**
      * Specifies amount of items in this item stack.
@@ -38,7 +38,7 @@ public interface ItemStackBuilder {
      * @param amount
      *            amount
      */
-    public void amount(int amount);
+    public ItemStackBuilder quantity(int amount);
     
     /**
      * Returns built item stack.
@@ -53,7 +53,7 @@ public interface ItemStackBuilder {
      * @param name
      *            custom display name
      */
-    public void name(String name);
+    public ItemStackBuilder name(String name);
     
     /**
      * Applies lore to this item stack.
@@ -61,7 +61,7 @@ public interface ItemStackBuilder {
      * @param lines
      *            lines with lore
      */
-    public void lore(List<String> lines);
+    public ItemStackBuilder lore(List<String> lines);
     
     /**
      * Applies lore to specfied line with specified content.
@@ -71,5 +71,5 @@ public interface ItemStackBuilder {
      * @param content
      *            content of line
      */
-    public void lore(int line, String content);
+    public ItemStackBuilder lore(int line, String content);
 }

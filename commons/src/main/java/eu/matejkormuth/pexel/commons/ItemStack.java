@@ -22,10 +22,9 @@ package eu.matejkormuth.pexel.commons;
  * Class that represents an item stack.
  */
 public class ItemStack {
-    private int    int_type;
-    private String type;
-    private short  durability;
-    private int    amount;
-    private byte   data;
+    private Material type;
+    private short    durability;
+    private int      amount;
+    private byte     data;
     
 }

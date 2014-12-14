@@ -21,6 +21,8 @@ package eu.matejkormuth.pexel.slave.sponge;
 import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.AbstractObjectFactory;
+import eu.matejkormuth.pexel.commons.ItemStackBuilder;
+import eu.matejkormuth.pexel.commons.Material;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.slave.boot.PexelSlaveSpongePlugin;
 
@@ -41,6 +43,11 @@ public class SpongeObjectFactory extends AbstractObjectFactory {
     @Override
     public Player getPlayer(final UUID uuid) {
         return new SpongePlayer(PexelSlaveSpongePlugin.game.getPlayer(uuid).get());
+    }
+    
+    @Override
+    public ItemStackBuilder createItemStackBuilder(final Material material) {
+        return new SpongeItemStackBuilder(material);
     }
     
 }

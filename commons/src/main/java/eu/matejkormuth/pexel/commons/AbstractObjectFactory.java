@@ -34,4 +34,11 @@ public abstract class AbstractObjectFactory {
      * @return player object
      */
     public abstract Player getPlayer(final UUID uuid);
+    
+    /**
+     * Returns {@link ItemStackBuilder} valid for current platform.
+     * 
+     * @return item stack build object
+     */
+    public abstract ItemStackBuilder createItemStackBuilder(Material material);
 }

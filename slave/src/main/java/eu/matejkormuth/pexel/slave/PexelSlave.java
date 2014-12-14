@@ -48,6 +48,9 @@ import eu.matejkormuth.pexel.protocol.requests.InServerMetaDataMessage;
 import eu.matejkormuth.pexel.slave.bukkit.BukkitObjectFactory;
 import eu.matejkormuth.pexel.slave.bukkit.BukkitSlaveMinecraftSoftware;
 import eu.matejkormuth.pexel.slave.bukkit.BukkitTeleporter;
+import eu.matejkormuth.pexel.slave.events.SlaveEventBus;
+import eu.matejkormuth.pexel.slave.events.player.PlayerJoinEvent;
+import eu.matejkormuth.pexel.slave.events.player.PlayerLeaveEvent;
 import eu.matejkormuth.pexel.slave.pluginloaders.BukkitPluginLoader;
 import eu.matejkormuth.pexel.slave.spigot.SpigotSlaveMinecraftServer;
 import eu.matejkormuth.pexel.slave.sponge.SpongeObjectFactory;
@@ -70,6 +73,7 @@ public class PexelSlave implements LoggerHolder {
     protected AbstractObjectFactory objectFactory;
     protected SlaveMinecraftServer  serverSoftware;
     protected Scheduler             scheduler;
+    protected SlaveEventBus         eventBus;
     
     protected ServerMode            mode;
     
@@ -135,6 +139,8 @@ public class PexelSlave implements LoggerHolder {
         // Initialize online players list.
         this.onlinePlayers = new ArrayList<Player>(this.serverSoftware.getSlots());
         
+        this.eventBus = new SlaveEventBus();
+        
         // TODO: Load all plugins.
         this.pluginLoader.loadAll();
         
@@ -195,13 +201,13 @@ public class PexelSlave implements LoggerHolder {
     public void addPlayer(final Player player) {
         this.onlinePlayers.add(player);
         // Fire player join events.
-        
+        this.eventBus.post(new PlayerJoinEvent(player));
     }
     
     public void removePlayer(final Player player) {
         this.onlinePlayers.remove(player);
         // Fire player left events.
-        
+        this.eventBus.post(new PlayerLeaveEvent(player));
     }
     
     public Optional<Player> getPlayer(final UUID uuid) {
@@ -294,6 +300,10 @@ public class PexelSlave implements LoggerHolder {
     
     public Storage getStorage() {
         return this.storage;
+    }
+    
+    public SlaveEventBus getEventBus() {
+        return this.eventBus;
     }
     
     public Scheduler getScheduler() {
