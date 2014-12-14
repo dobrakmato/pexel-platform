@@ -20,7 +20,7 @@ package commons;
 
 import org.junit.Test;
 
-import eu.matejkormuth.pexel.commons.TextTable;
+import eu.matejkormuth.pexel.commons.text.TextTable;
 
 /**
  * {@link TextTable} test.

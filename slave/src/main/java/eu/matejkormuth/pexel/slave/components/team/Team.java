@@ -22,10 +22,10 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.matejkormuth.pexel.commons.ChatColor;
 import eu.matejkormuth.pexel.commons.Location;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.PlayerHolder;
+import eu.matejkormuth.pexel.commons.text.ChatColor;
 import eu.matejkormuth.pexel.slave.PexelSlave;
 import eu.matejkormuth.pexel.slave.bukkit.chat.ChatChannel;
 import eu.matejkormuth.pexel.slave.bukkit.chat.PexelPlayerChannelSubscriber;

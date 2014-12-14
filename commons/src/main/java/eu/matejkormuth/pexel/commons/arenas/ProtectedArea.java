@@ -61,11 +61,23 @@ public abstract class ProtectedArea {
     protected final Map<UUID, HashMap<Permission, Boolean>> playerFlags  = new HashMap<UUID, HashMap<Permission, Boolean>>();
     
     /**
+     * Sets global permission value.
+     * 
+     * @param permission
+     *            permission to set
+     * @param value
+     *            true of permission should be allowed, false otherwise
+     */
+    public void setGlobalPermission(final Permission permission, final boolean value) {
+        this.globalFlags.put(permission, value);
+    }
+    
+    /**
      * Returns value of global flag. If not specified uses parent's flag (default).
      * 
      * @param flag
      */
-    public boolean getGlobalFlag(final Permission permission) {
+    public boolean getGlobalPermission(final Permission permission) {
         if (this.globalFlags.get(permission) == null)
             if (ProtectedArea.defaultFlags.get(permission) == null)
                 return false;
@@ -83,7 +95,7 @@ public abstract class ProtectedArea {
      * @param value
      * @param player
      */
-    public void setPlayerFlag(final Permission permission, final boolean value,
+    public void setPlayerPermission(final Permission permission, final boolean value,
             final Player player) {
         if (this.playerFlags.containsKey(player.getUniqueId()))
             this.playerFlags.get(player.getUniqueId()).put(permission, value);

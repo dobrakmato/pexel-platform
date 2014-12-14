@@ -223,6 +223,7 @@ public class CuboidRegion implements Region {
     public List<Player> getPlayersXZ() {
         List<Player> players = new ArrayList<Player>();
         for (Player player : Bukkit.getOnlinePlayers())
+            // TODO: DEBUKKITIZE Get online players
             if (this.intersectsXZ(player.getLocation()))
                 players.add(player);
         return players;

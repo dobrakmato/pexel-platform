@@ -31,9 +31,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import eu.matejkormuth.pexel.commons.ChatColor;
 import eu.matejkormuth.pexel.commons.Location;
 import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.text.ChatColor;
 import eu.matejkormuth.pexel.slave.bukkit.Pexel;
 import eu.matejkormuth.pexel.slave.bukkit.arenas.AbstractArena;
 

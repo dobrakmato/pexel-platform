@@ -23,14 +23,14 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import eu.matejkormuth.pexel.commons.ChatColor;
 import eu.matejkormuth.pexel.commons.GameMode;
 import eu.matejkormuth.pexel.commons.MapData;
 import eu.matejkormuth.pexel.commons.Player;
-import eu.matejkormuth.pexel.commons.TextTable;
 import eu.matejkormuth.pexel.commons.bans.Bannable;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
 import eu.matejkormuth.pexel.commons.minigame.Minigame;
+import eu.matejkormuth.pexel.commons.text.ChatColor;
+import eu.matejkormuth.pexel.commons.text.TextTable;
 
 /**
  * Represents minigame arena, that is participating in matchmaking,
@@ -94,6 +94,8 @@ public abstract class Arena extends ProtectedArea implements MatchmakingGame, Ba
             player.sendMessage("You left competitive match before it's end! You will be penaized for that!");
             // TODO: Penalize player.
         }
+        
+        // TODO: Teleport player to his last lobby.
         
         if (this.empty()) {
             // Update waiting state.
