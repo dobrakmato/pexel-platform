@@ -21,6 +21,7 @@ package eu.matejkormuth.pexel.commons;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -34,9 +35,6 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.bukkit.Location;
-import org.bukkit.World;
-
 /**
  * Class that represents data of playable map (not block data).
  */
@@ -48,44 +46,44 @@ public class MapData {
     /**
      * Minimum number of players required to start arena.
      */
-    public static transient final String              KEY_MINIMAL_PLAYERS  = "minimalplayers";
+    public static transient final String      KEY_MINIMAL_PLAYERS  = "minimalplayers";
     /**
      * Length of countdown in seconds, when minimal amount of players joined arena.
      */
-    public static transient final String              KEY_COUNTDOWN_LENGHT = "countdownlength";
+    public static transient final String      KEY_COUNTDOWN_LENGHT = "countdownlength";
     /**
      * Length of countdown in seconds, when minimal amount of players joined arena.
      */
-    public static transient final String              KEY_ARENA_SPAWN      = "spawn";
+    public static transient final String      KEY_ARENA_SPAWN      = "spawn";
     
     @XmlAttribute(name = "name")
-    protected String                                  name;
+    protected String                          name;
     @XmlAttribute(name = "minigameName")
-    protected String                                  minigameName;
+    protected String                          minigameName;
     @XmlAttribute(name = "author")
-    protected String                                  author;
+    protected String                          author;
     
     @XmlElementWrapper(name = "options_text")
-    protected final Map<String, String>               options_string       = new HashMap<String, String>();
+    protected final Map<String, String>       options_string       = new HashMap<String, String>();
     @XmlElementWrapper(name = "options_number")
-    protected final Map<String, Integer>              options_int          = new HashMap<String, Integer>();
+    protected final Map<String, Integer>      options_int          = new HashMap<String, Integer>();
     @XmlElementWrapper(name = "locations")
-    protected final Map<String, SerializableLocation> locations            = new HashMap<String, SerializableLocation>();
+    protected final Map<String, Location>     locations            = new HashMap<String, Location>();
     @XmlElementWrapper(name = "regions")
-    protected final Map<String, CuboidRegion>               regions              = new HashMap<String, CuboidRegion>();
+    protected final Map<String, CuboidRegion> regions              = new HashMap<String, CuboidRegion>();
     
     @XmlAttribute(name = "locationsType")
-    protected LocationsType                           locationsType        = LocationsType.ABSOLUTE;
+    protected LocationsType                   locationsType        = LocationsType.ABSOLUTE;
     
     @XmlAttribute(name = "maxPlayers")
-    protected int                                     maxPlayers           = 16;                                         // Default value of 16.
-                                                                                                                          
+    protected int                             maxPlayers           = 16;                                 // Default value of 16.
+                                                                                                          
     @XmlAttribute(name = "protectedRegion")
-    protected CuboidRegion                                  protectedRegion;
+    protected CuboidRegion                    protectedRegion;
     
     @XmlElement(name = "anchor")
     // Used only if locationsType is RELATIVE.
-    protected SerializableLocation                    anchor               = null;
+    protected Location                        anchor               = null;
     
     /**
      * Creates a new MapData with specified author and name.
@@ -109,8 +107,7 @@ public class MapData {
         this.maxPlayers = maxPlayers;
         this.options_int.put(MapData.KEY_COUNTDOWN_LENGHT, countdownLength);
         this.options_int.put(MapData.KEY_MINIMAL_PLAYERS, minPlayers);
-        this.locations.put(MapData.KEY_ARENA_SPAWN, new SerializableLocation(
-                spawnLocation));
+        this.locations.put(MapData.KEY_ARENA_SPAWN, spawnLocation);
         this.protectedRegion = protectedRegion;
     }
     
@@ -153,12 +150,11 @@ public class MapData {
     
     public Location getLocation(final String key) {
         if (this.locationsType == LocationsType.ABSOLUTE) {
-            return this.locations.get(key).getLocation();
+            return this.locations.get(key);
         }
         else {
             if (this.anchor != null) {
-                return this.anchor.getLocation().add(
-                        this.locations.get(key).getLocation());
+                return this.anchor.add(this.locations.get(key));
             }
             else {
                 throw new InvalidMapDataException(
@@ -172,8 +168,7 @@ public class MapData {
             return this.regions.get(key);
         }
         else {
-            return RegionTransformer.toAbsolute(this.regions.get(key),
-                    this.anchor.getLocation());
+            return RegionTransformer.toAbsolute(this.regions.get(key), this.anchor);
         }
     }
     
@@ -185,7 +180,7 @@ public class MapData {
         return this.options_int;
     }
     
-    public Map<String, SerializableLocation> getLocations() {
+    public Map<String, Location> getLocations() {
         return this.locations;
     }
     
@@ -197,8 +192,7 @@ public class MapData {
         return this.protectedRegion;
     }
     
-    // Bukkit impl; will take care of it later.
-    public World getWorld() {
+    public UUID getWorld() {
         return this.protectedRegion.getWorld();
     }
     

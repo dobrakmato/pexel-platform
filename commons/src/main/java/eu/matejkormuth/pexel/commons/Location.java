@@ -23,6 +23,7 @@ import java.util.UUID;
 import javax.xml.bind.annotation.XmlType;
 
 import eu.matejkormuth.pexel.commons.annotations.JsonType;
+import eu.matejkormuth.pexel.commons.math.Vector3d;
 
 /**
  * Class that represents location.
@@ -30,40 +31,43 @@ import eu.matejkormuth.pexel.commons.annotations.JsonType;
 @XmlType
 @JsonType
 public class Location {
-    private double x;
-    private double y;
-    private double z;
-    private float  yaw;
-    private float  pitch;
-    private UUID   world;
+    private Vector3d   location;
+    private float      yaw;
+    private float      pitch;
+    private final UUID world;
     
     public Location(final UUID world) {
         this.world = world;
     }
     
+    public Location(final Vector3d vector, final UUID world) {
+        this.location = vector;
+        this.world = world;
+    }
+    
     public Location(final double x, final double y, final double z, final UUID world) {
         this.world = world;
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.location = new Vector3d(x, y, z);
     }
     
     public Location(final double x, final double y, final double z, final float yaw,
             final float pitch, final UUID world) {
         this.world = world;
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.location = new Vector3d(x, y, z);
         this.yaw = yaw;
         this.pitch = pitch;
     }
     
     @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return new Location(this.location.getX(), this.location.getY(),
+                this.location.getZ(), this.yaw, this.pitch, this.world);
+    }
+    
+    @Override
     public int hashCode() {
         int hash = 7;
-        hash = (int) (31 * hash + this.x);
-        hash = (int) (31 * hash + this.y);
-        hash = (int) (31 * hash + this.z);
+        hash = 31 * hash + this.location.hashCode();
         hash = (int) (31 * hash + this.yaw);
         hash = (int) (31 * hash + this.pitch);
         hash = 31 * hash + this.world.hashCode();
@@ -72,10 +76,11 @@ public class Location {
     
     @Override
     public boolean equals(final Object obj) {
+        if (this == obj) { return true; }
+        
         if (obj == null) { return false; }
         
-        if (obj instanceof Location) { return this.x == ((Location) obj).x
-                && this.y == ((Location) obj).y && this.z == ((Location) obj).z
+        if (obj instanceof Location) { return this.location.equals(((Location) obj).location)
                 && this.yaw == ((Location) obj).yaw
                 && this.pitch == ((Location) obj).pitch
                 && this.world == ((Location) obj).world; }
@@ -83,51 +88,76 @@ public class Location {
     }
     
     public double getX() {
-        return this.x;
-    }
-    
-    public void setX(final double x) {
-        this.x = x;
+        return this.location.getX();
     }
     
     public double getY() {
-        return this.y;
-    }
-    
-    public void setY(final double y) {
-        this.y = y;
+        return this.location.getY();
     }
     
     public double getZ() {
-        return this.z;
+        return this.location.getZ();
     }
     
-    public void setZ(final double z) {
-        this.z = z;
+    public Vector3d toVector() {
+        return this.location;
     }
     
     public float getYaw() {
         return this.yaw;
     }
     
-    public void setYaw(final float yaw) {
-        this.yaw = yaw;
-    }
-    
     public float getPitch() {
         return this.pitch;
-    }
-    
-    public void setPitch(final float pitch) {
-        this.pitch = pitch;
     }
     
     public UUID getWorld() {
         return this.world;
     }
     
-    public void setWorld(final UUID world) {
-        this.world = world;
+    @Override
+    public String toString() {
+        return "Location [location=" + this.location + ", yaw=" + this.yaw + ", pitch="
+                + this.pitch + ", world=" + this.world + "]";
     }
     
+    public Location add(final Location location) {
+        if (this.world != location.getWorld()) { throw new RuntimeException(
+                "Can't add two locations of different worlds!"); }
+        return new Location(this.location.add(location.toVector()), this.world);
+    }
+    
+    public Location subtract(final Location location) {
+        if (this.world != location.getWorld()) { throw new RuntimeException(
+                "Can't add two locations of different worlds!"); }
+        return new Location(this.location.subtract(location.toVector()), this.world);
+    }
+    
+    public Location multiply(final Location location) {
+        if (this.world != location.getWorld()) { throw new RuntimeException(
+                "Can't add two locations of different worlds!"); }
+        return new Location(this.location.multiply(location.toVector()), this.world);
+    }
+    
+    public Location divide(final Location location) {
+        if (this.world != location.getWorld()) { throw new RuntimeException(
+                "Can't add two locations of different worlds!"); }
+        return new Location(this.location.divide(location.toVector()), this.world);
+    }
+    
+    public Location add(final double d) {
+        return new Location(this.location.add(d), this.world);
+    }
+    
+    public Location subtract(final double d) {
+        return new Location(this.location.subtract(d), this.world);
+    }
+    
+    public Location multiply(final double d) {
+        return new Location(this.location.multiply(d), this.world);
+    }
+    
+    public Location divide(final double d) {
+        return new Location(this.location.divide(d), this.world);
+    }
 }

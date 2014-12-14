@@ -18,21 +18,17 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons;
 
-public class RegionTransformer {
+import java.util.UUID;
+
+import org.bukkit.World;
+
+/**
+ * Interface that represents class that provides access to worlds.
+ */
+public interface WorldProvider {
     
-    /**
-     * Transforms relative region to absolute with specified anchor.
-     * 
-     * @param relative
-     *            relative region
-     * @param anchor
-     *            absolute anchor
-     * @return absoluted region
-     */
-    public static CuboidRegion toAbsolute(final CuboidRegion relative,
-            final Location anchor) {
-        return new CuboidRegion(anchor.toVector().add(relative.v1), anchor.toVector()
-                .add(relative.v2), anchor.getWorld());
-    }
+    public World getWorld(String name);
+    
+    public World getWorld(UUID uuid);
     
 }

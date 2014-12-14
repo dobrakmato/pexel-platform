@@ -19,33 +19,23 @@
 package eu.matejkormuth.pexel.slave.bukkit;
 
 import java.io.File;
-import java.util.UUID;
 
 import javax.xml.bind.JAXBException;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import eu.matejkormuth.pexel.commons.CuboidRegion;
+import eu.matejkormuth.pexel.commons.Location;
 import eu.matejkormuth.pexel.commons.MapData;
-import eu.matejkormuth.pexel.commons.SerializableLocation;
-import eu.matejkormuth.pexel.slave.bukkit.actions.CommandAction;
-import eu.matejkormuth.pexel.slave.bukkit.actions.TeleportAction;
-import eu.matejkormuth.pexel.slave.bukkit.areas.AreaFlag;
-import eu.matejkormuth.pexel.slave.bukkit.areas.Lobby;
+import eu.matejkormuth.pexel.commons.math.Vector3d;
 import eu.matejkormuth.pexel.slave.bukkit.core.Achievement;
-import eu.matejkormuth.pexel.slave.bukkit.core.StorageEngine;
-import eu.matejkormuth.pexel.slave.bukkit.core.TeleportGate;
 
 /**
  * Class where is all hard coded stuff stored. This class IS NETWORK DEPENDENT.
  * 
  */
 public class HardCoded {
-    public static Vector antigravity = new Vector(0, 0.2F, 0);
+    public static Vector3d antigravity = new Vector3d(0, 0.2F, 0);
     
     /**
      * Main method called from Plugin.onEnable()
@@ -78,10 +68,9 @@ public class HardCoded {
                 this.minigameName = "sampleMinigame";
                 
                 this.locations.put("loc1",
-                        new SerializableLocation(Pexel.getHubLocation()));
+                        new Location(16, 32, 64, Bukkit.getWorld("world").getUID()));
                 this.locations.put("testloc",
-                        SerializableLocation.fromLocation(new Location(
-                                Bukkit.getWorld("world"), 16, 32, 64)));
+                        new Location(16, 32, 64, Bukkit.getWorld("world").getUID()));
                 
                 this.options_string.put("option1", "yes");
                 this.options_string.put("option2", "yes");
@@ -89,11 +78,11 @@ public class HardCoded {
                 
                 this.options_int.put("option4", 225);
                 
-                this.regions.put("region_one", new CuboidRegion(new Vector(5, 10, 88),
-                        new Vector(50, 50, 70), Bukkit.getWorld("world")));
+                this.regions.put("region_one", new CuboidRegion(new Vector3d(5, 10, 88),
+                        new Vector3d(50, 50, 70), Bukkit.getWorld("world").getUID()));
                 
-                this.init(16, 4, 60, new Location(Bukkit.getWorld("world"), 11, 22, 33),
-                        this.regions.get("region_one"));
+                this.init(16, 4, 60, new Location(11, 22, 33, Bukkit.getWorld("world")
+                        .getUID()), this.regions.get("region_one"));
             }
         }
         
@@ -119,16 +108,11 @@ public class HardCoded {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(Pexel.getCore(), new Runnable() {
             @Override
             public void run() {
-                for (Entity e : Bukkit.getWorld("space").getEntities()) {
-                    if (!e.isOnGround()) {
-                        if (e instanceof Player) {
-                            if (!((Player) e).isFlying()) {
-                                e.setVelocity(e.getVelocity().add(HardCoded.antigravity));
-                            }
-                        }
-                        e.setVelocity(e.getVelocity().add(HardCoded.antigravity));
-                    }
-                }
+                /*
+                 * for (Entity e : Bukkit.getWorld("space").getEntities()) { if (!e.isOnGround()) { if (e instanceof
+                 * Player) { if (!((Player) e).isFlying()) { e.setVelocity(e.getVelocity().add(HardCoded.antigravity));
+                 * } } e.setVelocity(e.getVelocity().add(HardCoded.antigravity)); } }
+                 */
             }
         }, 0L, 1L);
     }
@@ -140,53 +124,47 @@ public class HardCoded {
     }
     
     private static void initLobbies() {
-        StorageEngine.addLobby(new Lobby("hub", new CuboidRegion(
-                new Vector(52, 107, 226), new Vector(-30, 1, 303),
-                Bukkit.getWorld("world"))));
-        
-        StorageEngine.getLobby("hub").setThresholdY(10);
-        
-        //dobrakmato - block interactions
-        StorageEngine.getLobby("hub").setPlayerFlag(AreaFlag.BLOCK_BREAK, true,
-                UUID.fromString("966ad920-d45e-3fe5-8956-bf7a7a877ab4"));
-        StorageEngine.getLobby("hub").setPlayerFlag(AreaFlag.BLOCK_PLACE, true,
-                UUID.fromString("966ad920-d45e-3fe5-8956-bf7a7a877ab4"));
-        
-        StorageEngine.addLobby(new Lobby("minigamelobby", new CuboidRegion(new Vector(
-                2038, 0, 2571), new Vector(1910, 255, 2437), Bukkit.getWorld("world"))));
-        
-        StorageEngine.getLobby("minigamelobby").setSpawn(
-                new Location(Bukkit.getWorld("world"), 1972.5, 148, 2492.5));
-        
-        StorageEngine.getLobby("minigamelobby").setPlayerFlag(AreaFlag.BLOCK_BREAK,
-                true, UUID.fromString("966ad920-d45e-3fe5-8956-bf7a7a877ab4"));
-        StorageEngine.getLobby("minigamelobby").setPlayerFlag(AreaFlag.BLOCK_PLACE,
-                true, UUID.fromString("966ad920-d45e-3fe5-8956-bf7a7a877ab4"));
+        /*
+         * StorageEngine.addLobby(new Lobby("hub", new CuboidRegion( new Vector(52, 107, 226), new Vector(-30, 1, 303),
+         * Bukkit.getWorld("world"))));
+         * 
+         * StorageEngine.getLobby("hub").setThresholdY(10);
+         * 
+         * //dobrakmato - block interactions StorageEngine.getLobby("hub").setPlayerFlag(AreaFlag.BLOCK_BREAK, true,
+         * UUID.fromString("966ad920-d45e-3fe5-8956-bf7a7a877ab4"));
+         * StorageEngine.getLobby("hub").setPlayerFlag(AreaFlag.BLOCK_PLACE, true,
+         * UUID.fromString("966ad920-d45e-3fe5-8956-bf7a7a877ab4"));
+         * 
+         * StorageEngine.addLobby(new Lobby("minigamelobby", new CuboidRegion(new Vector( 2038, 0, 2571), new
+         * Vector(1910, 255, 2437), Bukkit.getWorld("world"))));
+         * 
+         * StorageEngine.getLobby("minigamelobby").setSpawn( new Location(Bukkit.getWorld("world"), 1972.5, 148,
+         * 2492.5));
+         * 
+         * StorageEngine.getLobby("minigamelobby").setPlayerFlag(AreaFlag.BLOCK_BREAK, true,
+         * UUID.fromString("966ad920-d45e-3fe5-8956-bf7a7a877ab4"));
+         * StorageEngine.getLobby("minigamelobby").setPlayerFlag(AreaFlag.BLOCK_PLACE, true,
+         * UUID.fromString("966ad920-d45e-3fe5-8956-bf7a7a877ab4"));
+         */
     }
     
     private static void initGates() {
-        StorageEngine.addGate("Lsurvival", new TeleportGate(new CuboidRegion(new Vector(
-                -7, 50, 258), new Vector(-9, 54, 264), Bukkit.getWorld("world")),
-                new TeleportAction(null, null)));
-        
-        StorageEngine.addGate("Lstarving", new TeleportGate(new CuboidRegion(new Vector(
-                26, 50, 266), new Vector(28, 55, 260), Bukkit.getWorld("world")),
-                new TeleportAction(null, null)));
-        
-        // StorageEngine.addGate("Lminigame", new TeleportGate(new CuboidRegion(new Vector(
-        //        7, 50, 280), new Vector(13, 55, 282), Bukkit.getWorld("world")),
-        ///        new TeleportAction(new Location(Bukkit.getWorld("world"), 1972.5, 147.5,
-        //               2492.5), ServerInfo.localServer())));
-        
-        //Initialize gates
-        StorageEngine.addGate("mg_colorwar",
-                new TeleportGate(new CuboidRegion(new Vector(1976, 147, 2532),
-                        new Vector(1972, 153, 2534), Bukkit.getWorld("world")),
-                        new CommandAction("pcmd cwtest")));
-        
-        StorageEngine.addGate("mg_tnttag", new TeleportGate(
-                new CuboidRegion(new Vector(1962, 147, 2532),
-                        new Vector(1967, 153, 2534), Bukkit.getWorld("world")),
-                new CommandAction("pcmd tnttest")));
+        /*
+         * StorageEngine.addGate("Lsurvival", new TeleportGate(new CuboidRegion(new Vector( -7, 50, 258), new Vector(-9,
+         * 54, 264), Bukkit.getWorld("world")), new TeleportAction(null, null)));
+         * 
+         * StorageEngine.addGate("Lstarving", new TeleportGate(new CuboidRegion(new Vector( 26, 50, 266), new Vector(28,
+         * 55, 260), Bukkit.getWorld("world")), new TeleportAction(null, null)));
+         * 
+         * // StorageEngine.addGate("Lminigame", new TeleportGate(new CuboidRegion(new Vector( // 7, 50, 280), new
+         * Vector(13, 55, 282), Bukkit.getWorld("world")), /// new TeleportAction(new Location(Bukkit.getWorld("world"),
+         * 1972.5, 147.5, // 2492.5), ServerInfo.localServer())));
+         * 
+         * //Initialize gates StorageEngine.addGate("mg_colorwar", new TeleportGate(new CuboidRegion(new Vector(1976,
+         * 147, 2532), new Vector(1972, 153, 2534), Bukkit.getWorld("world")), new CommandAction("pcmd cwtest")));
+         * 
+         * StorageEngine.addGate("mg_tnttag", new TeleportGate( new CuboidRegion(new Vector(1962, 147, 2532), new
+         * Vector(1967, 153, 2534), Bukkit.getWorld("world")), new CommandAction("pcmd tnttest")));
+         */
     }
 }

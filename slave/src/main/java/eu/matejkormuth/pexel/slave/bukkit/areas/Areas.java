@@ -18,8 +18,7 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave.bukkit.areas;
 
-import org.bukkit.Location;
-
+import eu.matejkormuth.pexel.commons.Location;
 import eu.matejkormuth.pexel.slave.bukkit.core.StorageEngine;
 
 /**

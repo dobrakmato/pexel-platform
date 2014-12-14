@@ -32,8 +32,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.util.Vector;
 
+import eu.matejkormuth.pexel.commons.math.Vector3d;
 import eu.matejkormuth.pexel.slave.PexelSlave;
 import eu.matejkormuth.pexel.slave.boot.PexelSlaveBukkitPlugin;
 import eu.matejkormuth.pexel.slave.bukkit.HardCoded;
@@ -41,7 +41,6 @@ import eu.matejkormuth.pexel.slave.bukkit.Pexel;
 import eu.matejkormuth.pexel.slave.bukkit.actions.JavaArbitraryAction;
 import eu.matejkormuth.pexel.slave.bukkit.actions.OpenInventoryMenuAction;
 import eu.matejkormuth.pexel.slave.bukkit.arenas.AbstractArena;
-import eu.matejkormuth.pexel.slave.bukkit.arenas.AdvancedArena;
 import eu.matejkormuth.pexel.slave.bukkit.arenas.DisconnectReason;
 import eu.matejkormuth.pexel.slave.bukkit.chat.ChatManager;
 import eu.matejkormuth.pexel.slave.bukkit.core.Log;
@@ -160,28 +159,13 @@ public class AlternativeCommands implements Listener {
             sender.getInventory().addItem(Pexel.getMagicClock().getClock());
         }
         else if (command.contains("/gravity")) {
-            HardCoded.antigravity = new Vector(0, Float.parseFloat(args.get(0)), 0);
+            HardCoded.antigravity = new Vector3d(0, Float.parseFloat(args.get(0)), 0);
         }
         else if (command.contains("/forcestart")) {
-            for (AbstractArena arena : StorageEngine.getArenas().values()) {
-                if (arena instanceof AdvancedArena) {
-                    if (arena.contains(sender)) {
-                        sender.sendMessage(ChatColor.LIGHT_PURPLE
-                                + "Forcing onGameStart()...");
-                        ((AdvancedArena) arena).onGameStart();
-                    }
-                }
-            }
+            
         }
         else if (command.contains("/forcereset")) {
-            for (AbstractArena arena : StorageEngine.getArenas().values()) {
-                if (arena instanceof AdvancedArena) {
-                    if (arena.contains(sender)) {
-                        sender.sendMessage(ChatColor.LIGHT_PURPLE + "Forcing reset()...");
-                        ((AdvancedArena) arena).reset();
-                    }
-                }
-            }
+            
         }
         else if (command.equalsIgnoreCase("/leave")
                 || command.equalsIgnoreCase("/lobby")) {

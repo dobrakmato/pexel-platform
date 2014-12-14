@@ -20,75 +20,51 @@ package eu.matejkormuth.pexel.commons;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.commons.lang.math.RandomUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
+import eu.matejkormuth.pexel.commons.math.Vector3d;
 
 /**
  * Class that represents cuboid region.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CuboidRegion implements Region {
+    // Random for getRandomLocation calls.
+    private static Random    random = new Random();
+    
     /**
      * First vector.
      */
     @XmlElement(name = "vector1")
-    protected final SerializableVector v1;
+    protected final Vector3d v1;
     /**
      * Second vector.
      */
     @XmlElement(name = "vector2")
-    protected final SerializableVector v2;
-    /**
-     * World of region.
-     */
-    @XmlTransient
-    protected final World              w;
+    protected final Vector3d v2;
     
     @XmlElement(name = "world")
-    protected final String             w_name;
+    protected final UUID     world;
     
     /**
-     * Creates a new region from two locations.
-     * 
-     * @param loc1
-     *            first location
-     * @param loc2
-     *            second location
-     */
-    public CuboidRegion(final Location loc1, final Location loc2) {
-        this.v1 = new SerializableVector(loc1.toVector());
-        this.v2 = new SerializableVector(loc2.toVector());
-        this.w = loc1.getWorld();
-        this.w_name = loc1.getWorld().getName();
-    }
-    
-    /**
-     * Creates a new region from two vectors and one world. Similar to {@link CuboidRegion#Region(Location, Location)}
+     * Creates a new region from two vectors and one world.
      * 
      * @param v1
      *            minimum point
      * @param v2
      *            maximum point
-     * @param w
+     * @param world
      *            world
      */
-    public CuboidRegion(final Vector v1, final Vector v2, final World w) {
-        this.v1 = new SerializableVector(v1);
-        this.v2 = new SerializableVector(v2);
-        this.w = w;
-        this.w_name = w.getName();
+    public CuboidRegion(final Vector3d v1, final Vector3d v2, final UUID world) {
+        this.v1 = v1;
+        this.v2 = v2;
+        this.world = world;
     }
     
     /**
@@ -101,13 +77,10 @@ public class CuboidRegion implements Region {
      * @param size
      *            size
      */
-    public CuboidRegion(final Vector center, final World w, final int size) {
-        this.v1 = new SerializableVector(center.clone()
-                .add(new Vector(size, size, size)));
-        this.v2 = new SerializableVector(center.clone().add(
-                new Vector(-size, -size, -size)));
-        this.w = w;
-        this.w_name = w.getName();
+    public CuboidRegion(final Vector3d center, final int size, final UUID world) {
+        this.v1 = center.add(new Vector3d(size, size, size));
+        this.v2 = center.add(new Vector3d(-size, -size, -size));
+        this.world = world;
     }
     
     /**
@@ -118,7 +91,7 @@ public class CuboidRegion implements Region {
      * @return
      */
     public boolean intersects(final Location loc) {
-        if (this.w.getName().equals(loc.getWorld().getName()))
+        if (this.world.equals(loc.getWorld()))
             return this.intersects(loc.toVector());
         else
             return false;
@@ -132,7 +105,7 @@ public class CuboidRegion implements Region {
      * @return
      */
     public boolean intersectsXZ(final Location loc) {
-        if (this.w.getName().equals(loc.getWorld().getName()))
+        if (this.world.equals(loc.getWorld()))
             return this.intersectsXZ(loc.toVector());
         else
             return false;
@@ -145,13 +118,13 @@ public class CuboidRegion implements Region {
      *            vector to check
      * @return
      */
-    public boolean intersects(final Vector v) {
+    public boolean intersects(final Vector3d v) {
         return CuboidRegion.range(this.v1.getX(), this.v2.getX(), v.getX())
                 && CuboidRegion.range(this.v1.getY(), this.v2.getY(), v.getY())
                 && CuboidRegion.range(this.v1.getZ(), this.v2.getZ(), v.getZ());
     }
     
-    public boolean intersectsXZ(final Vector v) {
+    public boolean intersectsXZ(final Vector3d v) {
         return CuboidRegion.range(this.v1.getX(), this.v2.getX(), v.getX())
                 && CuboidRegion.range(this.v1.getZ(), this.v2.getZ(), v.getZ());
     }
@@ -159,26 +132,18 @@ public class CuboidRegion implements Region {
     /**
      * Returns players in region.
      * 
+     * @param players
+     *            list of players to search for
      * @return list of players
      */
-    public List<Player> getPlayersXYZ() {
-        List<Player> players = new ArrayList<Player>();
-        for (Player player : Bukkit.getOnlinePlayers())
-            if (this.intersects(player.getLocation()))
-                players.add(player);
-        return players;
-    }
-    
-    public void serialize(final YamlConfiguration yaml, final String string) {
-        yaml.set(string + ".v1.x", this.v1.getBlockX());
-        yaml.set(string + ".v1.y", this.v1.getBlockY());
-        yaml.set(string + ".v1.z", this.v1.getBlockZ());
-        
-        yaml.set(string + ".v2.x", this.v2.getBlockX());
-        yaml.set(string + ".v2.y", this.v2.getBlockY());
-        yaml.set(string + ".v2.z", this.v2.getBlockZ());
-        
-        yaml.set(string + ".world", this.w.getName());
+    public List<Player> getPlayersXYZ(final List<Player> players) {
+        List<Player> vplayers = new ArrayList<Player>();
+        for (Player player : players) {
+            if (this.intersects(player.getLocation())) {
+                vplayers.add(player);
+            }
+        }
+        return vplayers;
     }
     
     private final static boolean range(final double min, final double max,
@@ -195,7 +160,7 @@ public class CuboidRegion implements Region {
      * @return vector
      */
     public Location getV1Loaction() {
-        return new Location(this.w, this.v1.getX(), this.v1.getY(), this.v1.getZ());
+        return new Location(this.v1.getX(), this.v1.getY(), this.v1.getZ(), this.world);
     }
     
     /**
@@ -204,29 +169,30 @@ public class CuboidRegion implements Region {
      * @return vector
      */
     public Location getV2Location() {
-        return new Location(this.w, this.v2.getX(), this.v2.getY(), this.v2.getZ());
+        return new Location(this.v2.getX(), this.v2.getY(), this.v2.getZ(), this.world);
     }
     
     @Override
     public String toString() {
-        return "CuboidRegion{x1:" + this.v1.getBlockX() + ",y1:" + this.v1.getBlockY()
-                + ",z1:" + this.v1.getBlockZ() + ",x2:" + this.v2.getBlockX() + ",y2:"
-                + this.v2.getBlockY() + ",z2:" + this.v2.getBlockZ() + ",world:"
-                + this.w.getName() + "}";
+        return "CuboidRegion [v1=" + this.v1 + ", v2=" + this.v2 + ", world="
+                + this.world + "]";
     }
     
     /**
      * Returns players in XZ region.
      * 
+     * @param players
+     *            list of players to search for
      * @return list of players.
      */
-    public List<Player> getPlayersXZ() {
-        List<Player> players = new ArrayList<Player>();
-        for (Player player : Bukkit.getOnlinePlayers())
-            // TODO: DEBUKKITIZE Get online players
-            if (this.intersectsXZ(player.getLocation()))
-                players.add(player);
-        return players;
+    public List<Player> getPlayersXZ(final List<Player> players) {
+        List<Player> vplayers = new ArrayList<Player>();
+        for (Player player : players) {
+            if (this.intersectsXZ(player.getLocation())) {
+                vplayers.add(player);
+            }
+        }
+        return vplayers;
     }
     
     /**
@@ -301,8 +267,8 @@ public class CuboidRegion implements Region {
             return this.v1.getZ();
     }
     
-    public World getWorld() {
-        return this.w;
+    public UUID getWorld() {
+        return this.world;
     }
     
     /**
@@ -314,8 +280,8 @@ public class CuboidRegion implements Region {
         int a = this.rnd((int) (this.getMaxX() - this.getMinX()));
         int b = this.rnd((int) (this.getMaxY() - this.getMinY()));
         int c = this.rnd((int) (this.getMaxZ() - this.getMinZ()));
-        return new Location(this.w, this.getMinX() + a, this.getMinY() + b,
-                this.getMinZ() + c);
+        return new Location(this.getMinX() + a, this.getMinY() + b, this.getMinZ() + c,
+                this.world);
     }
     
     private int rnd(final int max) {
@@ -323,28 +289,8 @@ public class CuboidRegion implements Region {
             return 0;
         }
         else {
-            return RandomUtils.nextInt(max);
+            return CuboidRegion.random.nextInt(max);
         }
-    }
-    
-    /**
-     * Returns list of blocks in this region. <b>Notice: can be slow on big regions.</b>
-     * 
-     * @return list of region's blocks
-     */
-    public List<Block> getBlocks() {
-        List<Block> blocks = new ArrayList<Block>(500);
-        int maxX = (int) this.getMaxX();
-        int maxY = (int) this.getMaxY();
-        int maxZ = (int) this.getMaxZ();
-        for (int x = (int) this.getMinX(); x <= maxX; x++) {
-            for (int y = (int) this.getMinY(); y <= maxY; y++) {
-                for (int z = (int) this.getMinZ(); z <= maxZ; z++) {
-                    blocks.add(this.w.getBlockAt(x, y, z));
-                }
-            }
-        }
-        return blocks;
     }
     
     /**
@@ -357,8 +303,8 @@ public class CuboidRegion implements Region {
      * @return region
      */
     public static CuboidRegion createAround(final Location center, final int size) {
-        return new CuboidRegion(center.toVector().add(new Vector(size, size, size)),
-                center.toVector().subtract(new Vector(size, size, size)),
+        return new CuboidRegion(center.toVector().add(new Vector3d(size, size, size)),
+                center.toVector().subtract(new Vector3d(size, size, size)),
                 center.getWorld());
     }
     

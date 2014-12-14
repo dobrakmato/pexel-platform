@@ -56,8 +56,6 @@ import eu.matejkormuth.pexel.slave.bukkit.animations.EntityAnimationPlayer;
 import eu.matejkormuth.pexel.slave.bukkit.animations.ParticleAnimation;
 import eu.matejkormuth.pexel.slave.bukkit.animations.ParticleFrame;
 import eu.matejkormuth.pexel.slave.bukkit.areas.AreaFlag;
-import eu.matejkormuth.pexel.slave.bukkit.areas.Areas;
-import eu.matejkormuth.pexel.slave.bukkit.areas.ProtectedArea;
 import eu.matejkormuth.pexel.slave.bukkit.chat.ChatManager;
 import eu.matejkormuth.pexel.slave.bukkit.chat.SubscribeMode;
 import eu.matejkormuth.pexel.slave.bukkit.core.Log;
@@ -251,7 +249,7 @@ public class EventProcessor implements Listener {
     @EventHandler
     private void onPlayerPortal(final PlayerPortalEvent event) {
         // Pass the event further...
-        StorageEngine.gateEnter(event.getPlayer(), event.getPlayer().getLocation());
+        //StorageEngine.gateEnter(event.getPlayer(), event.getPlayer().getLocation());
     }
     
     @EventHandler
@@ -345,18 +343,13 @@ public class EventProcessor implements Listener {
     
     private boolean hasPermission(final Location location, final Player player,
             final AreaFlag flag) {
-        ProtectedArea area = Areas.findArea(location);
-        if (area != null) {
-            if (!area.getPlayerFlag(flag, player.getUniqueId())) {
-                // if (area.getPlayerFlag(AreaFlag.AREA_CHAT_PERMISSIONDENIED,
-                // player.getUniqueId()))
-                player.getPlayer().sendMessage(
-                        ChatManager.error("You don't have permission for '"
-                                + flag.toString() + "' in this area!"));
-                return false;
-            }
-            return true;
-        }
+        //ProtectedArea area = Areas.findArea(location);
+        /*
+         * if (area != null) { if (!area.getPlayerFlag(flag, player.getUniqueId())) { // if
+         * (area.getPlayerFlag(AreaFlag.AREA_CHAT_PERMISSIONDENIED, // player.getUniqueId()))
+         * player.getPlayer().sendMessage( ChatManager.error("You don't have permission for '" + flag.toString() +
+         * "' in this area!")); return false; } return true; } return true;
+         */
         return true;
     }
 }

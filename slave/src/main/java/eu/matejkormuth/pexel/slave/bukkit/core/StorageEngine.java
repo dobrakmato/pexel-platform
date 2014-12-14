@@ -27,18 +27,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import eu.matejkormuth.pexel.commons.Location;
 import eu.matejkormuth.pexel.commons.MapData;
 import eu.matejkormuth.pexel.commons.minigame.Minigame;
 import eu.matejkormuth.pexel.slave.PexelSlave;
 import eu.matejkormuth.pexel.slave.bukkit.PexelCore;
 import eu.matejkormuth.pexel.slave.bukkit.areas.AreaFlag;
-import eu.matejkormuth.pexel.slave.bukkit.areas.Lobby;
 import eu.matejkormuth.pexel.slave.bukkit.areas.ProtectedArea;
 import eu.matejkormuth.pexel.slave.bukkit.arenas.AbstractArena;
 import eu.matejkormuth.pexel.slave.bukkit.arenas.ArenaOption;
@@ -58,7 +57,6 @@ public class StorageEngine {
     private static final Map<String, ProtectedArea> areas       = new HashMap<String, ProtectedArea>();
     private static final Map<String, AbstractArena> arenas      = new HashMap<String, AbstractArena>();
     private static final Map<String, Class<?>>      aliases     = new HashMap<String, Class<?>>();
-    private static final Map<String, Lobby>         lobbies     = new HashMap<String, Lobby>();
     private static final Map<String, TeleportGate>  gates       = new HashMap<String, TeleportGate>();
     private static boolean                          initialized = false;
     
@@ -199,15 +197,6 @@ public class StorageEngine {
         return StorageEngine.aliases;
     }
     
-    public static void addLobby(final Lobby lobby) {
-        StorageEngine.lobbies.put(lobby.getName(), lobby);
-        StorageEngine.areas.put(lobby.getName(), lobby);
-    }
-    
-    public static Lobby getLobby(final String lobbyName) {
-        return StorageEngine.lobbies.get(lobbyName);
-    }
-    
     /**
      * Saves player's profile to file.
      * 
@@ -242,33 +231,6 @@ public class StorageEngine {
     @Deprecated
     public static void saveData() {
         Log.info("Saving data...");
-        // Save lobbies.
-        YamlConfiguration yaml_lobbies = new YamlConfiguration();
-        int i_lobbies = 0;
-        for (Lobby l : StorageEngine.lobbies.values()) {
-            yaml_lobbies.set("lobbies.lobby" + i_lobbies + ".name", l.getName());
-            yaml_lobbies.set("lobbies.lobby" + i_lobbies + ".checkinterval",
-                    l.getCheckInterval());
-            
-            // Save global flags
-            for (AreaFlag flag : AreaFlag.values())
-                if (l.getGlobalFlag(flag) != ProtectedArea.defaultFlags.get(flag))
-                    yaml_lobbies.set(
-                            "lobbies.lobby" + i_lobbies + ".gflags." + flag.toString(),
-                            l.getGlobalFlag(flag));
-            
-            yaml_lobbies.set("lobbies.lobby" + i_lobbies + ".thresholdY",
-                    l.getThresholdY());
-            l.getRegion().serialize(yaml_lobbies,
-                    "lobbies.lobby" + i_lobbies + ".region");
-            i_lobbies++;
-        }
-        try {
-            yaml_lobbies.save(new File(Paths.lobbiesPath()));
-            Log.info("Saved " + i_lobbies + " lobbies!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         
         // Save arenas
         YamlConfiguration yaml_arenas = new YamlConfiguration();
@@ -307,9 +269,7 @@ public class StorageEngine {
                             a.getGlobalFlag(flag));
             
             yaml_arenas.set("arenas.arena" + i_arenas + ".owner", a.getOwner());
-            if (a.getRegion() != null)
-                a.getRegion().serialize(yaml_arenas,
-                        "arenas.arena" + i_arenas + ".region");
+            
             i_arenas++;
         }
         try {
@@ -328,8 +288,7 @@ public class StorageEngine {
             yaml_gates.set("gates.gate" + i_gates + ".action.type", tg.getAction()
                     .getClass()
                     .getSimpleName());
-            if (tg.getRegion() != null)
-                tg.getRegion().serialize(yaml_gates, "gates.gate" + i_gates + ".region");
+            
             i_gates++;
         }
         try {

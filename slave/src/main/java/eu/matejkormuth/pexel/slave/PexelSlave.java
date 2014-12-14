@@ -24,11 +24,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
+
+import com.google.common.base.Optional;
 
 import eu.matejkormuth.pexel.commons.AbstractObjectFactory;
 import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.commons.LoggerHolder;
+import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.PluginLoader;
 import eu.matejkormuth.pexel.commons.Providers;
 import eu.matejkormuth.pexel.commons.ServerComponent;
@@ -71,6 +75,8 @@ public class PexelSlave implements LoggerHolder {
     
     protected List<ServerComponent> components        = new ArrayList<ServerComponent>();
     protected boolean               componentsEnabled = false;
+    
+    private final List<Player>      onlinePlayers;
     
     public PexelSlave(final File dataFolder, final SlaveMinecraftServerType software) {
         this.log = new Logger("PexelSlave");
@@ -125,6 +131,9 @@ public class PexelSlave implements LoggerHolder {
                 throw new RuntimeException(
                         "What the hell? You are running unsupported server software!");
         }
+        
+        // Initialize online players list.
+        this.onlinePlayers = new ArrayList<Player>(this.serverSoftware.getSlots());
         
         // TODO: Load all plugins.
         this.pluginLoader.loadAll();
@@ -181,6 +190,32 @@ public class PexelSlave implements LoggerHolder {
         
         // Close logger.
         this.log.close();
+    }
+    
+    public void addPlayer(final Player player) {
+        this.onlinePlayers.add(player);
+        // Fire player join events.
+        
+    }
+    
+    public void removePlayer(final Player player) {
+        this.onlinePlayers.remove(player);
+        // Fire player left events.
+        
+    }
+    
+    public Optional<Player> getPlayer(final UUID uuid) {
+        for (Player p : this.onlinePlayers) {
+            if (p.getUniqueId().equals(uuid)) { return Optional.of(p); }
+        }
+        return Optional.absent();
+    }
+    
+    public Optional<Player> getPlayer(final String name) {
+        for (Player p : this.onlinePlayers) {
+            if (p.getName().equals(name)) { return Optional.of(p); }
+        }
+        return Optional.absent();
     }
     
     /**
@@ -267,5 +302,14 @@ public class PexelSlave implements LoggerHolder {
     
     public AbstractObjectFactory getObjectFactory() {
         return this.objectFactory;
+    }
+    
+    /**
+     * Returns list of online players.
+     * 
+     * @return list of online players
+     */
+    public List<Player> getOnlinePlayers() {
+        return this.onlinePlayers;
     }
 }
