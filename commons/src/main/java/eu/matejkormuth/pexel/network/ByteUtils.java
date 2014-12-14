@@ -32,8 +32,8 @@ public class ByteUtils {
     }
     
     public static void writeInt(final int i, final byte[] array, final int index) {
-        Preconditions.checkArgument(array.length > i + 4,
-                "Array is too small for int at " + i);
+        Preconditions.checkArgument(array.length >= index + 4,
+                "Array is too small for int at " + index);
         
         array[index + 0] = (byte) (i >> 24);
         array[index + 1] = (byte) (i >> 16);
@@ -42,8 +42,8 @@ public class ByteUtils {
     }
     
     public static void writeLong(final long i, final byte[] array, final int index) {
-        Preconditions.checkArgument(array.length > i + 8,
-                "Array is too small for long at " + i);
+        Preconditions.checkArgument(array.length >= index + 8,
+                "Array is too small for long at " + index);
         
         array[index + 0] = (byte) (i >> 56);
         array[index + 1] = (byte) (i >> 48);
@@ -81,7 +81,7 @@ public class ByteUtils {
     }
     
     public static long readLong(final byte[] payload, final int i) {
-        Preconditions.checkArgument(payload.length > i + 8,
+        Preconditions.checkArgument(payload.length >= i + 8,
                 "Array is too small for long at " + i);
         long num = 0;
         
@@ -98,7 +98,7 @@ public class ByteUtils {
     }
     
     public static int readInt(final byte[] payload, final int i) {
-        Preconditions.checkArgument(payload.length > i + 4,
+        Preconditions.checkArgument(payload.length >= i + 4,
                 "Array is too small for int at " + i);
         int num = 0;
         

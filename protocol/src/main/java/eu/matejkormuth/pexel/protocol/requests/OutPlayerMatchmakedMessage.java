@@ -46,7 +46,7 @@ public class OutPlayerMatchmakedMessage extends Request {
     @Override
     public ByteBuffer toByteBuffer() {
         return ByteUtils.writeUUID(
-                ByteUtils.writeUUID(ByteBuffer.allocate(8 * 2), this.playerId),
+                ByteUtils.writeUUID(ByteBuffer.allocate(16 * 2), this.playerId),
                 this.gameId);
     }
     
