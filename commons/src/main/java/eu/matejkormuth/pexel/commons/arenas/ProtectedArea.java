@@ -18,15 +18,136 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons.arenas;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import eu.matejkormuth.pexel.commons.CuboidRegion;
+import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.permissions.Permission;
 
 /**
  * Area that is protected.
  */
 public abstract class ProtectedArea {
-    private CuboidRegion region;
+    private String                                          tag;
+    private CuboidRegion                                    region;
     
+    /**
+     * Map of default values for flags.
+     */
+    public static final Map<Permission, Boolean>            defaultFlags = new HashMap<Permission, Boolean>();
+    
+    //Initialization of static values.
+    static {
+        ProtectedArea.defaultFlags.put(AreaPermissions.BLOCK_BREAK, false);
+        ProtectedArea.defaultFlags.put(AreaPermissions.BLOCK_PLACE, false);
+        ProtectedArea.defaultFlags.put(AreaPermissions.PLAYER_GETDAMAGE, false);
+        ProtectedArea.defaultFlags.put(AreaPermissions.PLAYER_DODAMAGE, false);
+        ProtectedArea.defaultFlags.put(AreaPermissions.PLAYER_DROPITEM, false);
+        ProtectedArea.defaultFlags.put(AreaPermissions.PLAYER_STARVATION, false);
+        ProtectedArea.defaultFlags.put(AreaPermissions.AREA_CHAT_GOODBYE, true);
+        ProtectedArea.defaultFlags.put(AreaPermissions.AREA_CHAT_PERMISSIONDENIED, true);
+        ProtectedArea.defaultFlags.put(AreaPermissions.AREA_CHAT_WELCOME, true);
+    }
+    
+    /**
+     * Global area flags.
+     */
+    protected final Map<Permission, Boolean>                globalFlags  = new HashMap<Permission, Boolean>();
+    /**
+     * Player area flags.
+     */
+    protected final Map<UUID, HashMap<Permission, Boolean>> playerFlags  = new HashMap<UUID, HashMap<Permission, Boolean>>();
+    
+    /**
+     * Returns value of global flag. If not specified uses parent's flag (default).
+     * 
+     * @param flag
+     */
+    public boolean getGlobalFlag(final Permission permission) {
+        if (this.globalFlags.get(permission) == null)
+            if (ProtectedArea.defaultFlags.get(permission) == null)
+                return false;
+            else
+                return ProtectedArea.defaultFlags.get(permission);
+        else
+            return this.globalFlags.get(permission);
+        
+    }
+    
+    /**
+     * Sets player permission.
+     * 
+     * @param flag
+     * @param value
+     * @param player
+     */
+    public void setPlayerFlag(final Permission permission, final boolean value,
+            final Player player) {
+        if (this.playerFlags.containsKey(player.getUniqueId()))
+            this.playerFlags.get(player.getUniqueId()).put(permission, value);
+        else {
+            this.playerFlags.put(player.getUniqueId(),
+                    new HashMap<Permission, Boolean>());
+            this.playerFlags.get(player.getUniqueId()).put(permission, value);
+        }
+    }
+    
+    /**
+     * Returns whether thisplayer has specified Permission in this area.
+     * 
+     * @see AreaPermissions
+     * @param permission
+     *            permission to check
+     * @param player
+     *            player to check
+     * @return true if player has permission, else otherwise
+     */
+    public boolean hasPermission(final Permission permission, final Player player) {
+        if (this.playerFlags.containsKey(player.getUniqueId()))
+            if (this.playerFlags.get(player).get(permission) == null)
+                if (this.globalFlags.get(permission) == null)
+                    if (ProtectedArea.defaultFlags.get(permission) == null)
+                        return false;
+                    else
+                        return ProtectedArea.defaultFlags.get(permission);
+                else
+                    return this.globalFlags.get(permission);
+            else
+                return this.playerFlags.get(player).get(permission);
+        else {
+            if (this.globalFlags.get(permission) == null)
+                if (ProtectedArea.defaultFlags.get(permission) == null)
+                    return false;
+                else
+                    return ProtectedArea.defaultFlags.get(permission);
+            else
+                return this.globalFlags.get(permission);
+        }
+    }
+    
+    /**
+     * Returns region of this protected area.
+     * 
+     * @return protected region
+     */
     public CuboidRegion getRegion() {
         return this.region;
+    }
+    
+    /**
+     * @return the tag
+     */
+    public String getTag() {
+        return this.tag;
+    }
+    
+    /**
+     * @param tag
+     *            the tag to set
+     */
+    public void setTag(final String tag) {
+        this.tag = tag;
     }
 }
