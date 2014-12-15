@@ -16,33 +16,47 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.slave.bukkit.chat;
+package eu.matejkormuth.pexel.commons.chat;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 
-import eu.matejkormuth.pexel.slave.bukkit.core.Settings;
+import com.google.common.collect.Maps;
+
+import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.text.ChatColor;
 
 /**
  * Class specifing chat channel.
- * 
- * @author Mato Kormuth
- * 
  */
 public class ChatChannel {
-    public static final String            UNSUBCRIBE_MSG = ChatColor.LIGHT_PURPLE
-                                                                 + "You have left '%name%' chat channel!";
-    public static final String            SUBCRIBE_MSG   = ChatColor.LIGHT_PURPLE
-                                                                 + "You have joined '%name%' chat channel with mode %mode% !";
+    public static final String              UNSUBCRIBE_MSG = ChatColor.LIGHT_PURPLE
+                                                                   + "You have left '%name%' chat channel!";
+    public static final String              SUBCRIBE_MSG   = ChatColor.LIGHT_PURPLE
+                                                                   + "You have joined '%name%' chat channel with mode %mode%!";
+    public static final ChatChannel         CHANNEL_LOG    = null;
+    public static final ChatChannel         CHANNEL_GLOBAL = null;
+    public static final ChatChannel         CHANNEL_LOBBY  = null;
     
     //Last "random" channel ID.
-    private static AtomicLong             randomId       = new AtomicLong(0L);
+    private static AtomicLong               randomId       = new AtomicLong(0L);
+    private static Map<String, ChatChannel> mapping        = Maps.newHashMap();
+    
+    /**
+     * Returns channel by name or null if channel not found.
+     * 
+     * @param name
+     *            name of channel
+     * @return channel object
+     */
+    public static ChatChannel getByName(final String name) {
+        return ChatChannel.mapping.get(name);
+    }
     
     /**
      * Name of channel.
@@ -51,19 +65,19 @@ public class ChatChannel {
     /**
      * List of subscribers.
      */
-    private final List<ChannelSubscriber> subscribers    = new ArrayList<ChannelSubscriber>();
+    private final List<ChannelSubscriber> subscribers  = new ArrayList<ChannelSubscriber>();
     /**
      * Prefix of this channel.
      */
-    private String                        prefix         = "";
+    private String                        prefix       = "";
     /**
      * Date of last activity in this channel.
      */
-    private long                          lastActivity   = Long.MAX_VALUE;
+    private long                          lastActivity = Long.MAX_VALUE;
     /**
      * Specifies if channel is visible to everyone.
      */
-    private boolean                       isPublic       = true;
+    private boolean                       isPublic     = true;
     
     /**
      * Creates new chat channel with specified name.
@@ -73,24 +87,24 @@ public class ChatChannel {
      */
     public ChatChannel(final String name) {
         this.name = name;
-        ChatManager.registerChannel(this);
+        ChatChannel.mapping.put(name, this);
     }
     
     public ChatChannel(final String name, final String prefix) {
         this.name = name;
         this.prefix = prefix;
-        ChatManager.registerChannel(this);
+        ChatChannel.mapping.put(name, this);
     }
     
     public ChatChannel(final String name, final String prefix, final boolean writable) {
         this.name = name;
         this.prefix = prefix;
-        ChatManager.registerChannel(this);
+        ChatChannel.mapping.put(name, this);
     }
     
     public ChatChannel(final String name, final boolean writable) {
         this.name = name;
-        ChatManager.registerChannel(this);
+        ChatChannel.mapping.put(name, this);
     }
     
     /**
@@ -102,8 +116,8 @@ public class ChatChannel {
     public void subscribe(final Player player, final SubscribeMode mode) {
         this.subscribers.add(new PlayerChannelSubscriber(player, mode));
         
-        player.sendMessage(ChatChannel.SUBCRIBE_MSG.replace("%name%", this.getName()).replace(
-                "%mode%", mode.toString()));
+        player.sendMessage(ChatChannel.SUBCRIBE_MSG.replace("%name%", this.getName())
+                .replace("%mode%", mode.toString()));
     }
     
     /**
@@ -115,8 +129,8 @@ public class ChatChannel {
     public void subscribe(final ChannelSubscriber subscriber) {
         this.subscribers.add(subscriber);
         
-        subscriber.sendMessage(ChatChannel.SUBCRIBE_MSG.replace("%name%", this.getName()).replace(
-                "%mode%", subscriber.getMode().toString()));
+        subscriber.sendMessage(ChatChannel.SUBCRIBE_MSG.replace("%name%", this.getName())
+                .replace("%mode%", subscriber.getMode().toString()));
     }
     
     /**
@@ -202,11 +216,11 @@ public class ChatChannel {
                 if (message.toLowerCase().contains(p.getName().toLowerCase())
                         && !message.startsWith(p.getName().toLowerCase())) {
                     p.sendMessage(this.prefix + ChatColor.BLUE + message);
-                    if (p instanceof PlayerChannelSubscriber)
-                        if (Settings.CHAT_SOUNDS.hasEnabled(((PlayerChannelSubscriber) p).getPlayer()))
-                            ((PlayerChannelSubscriber) p).getPlayer().playSound(
-                                    ((PlayerChannelSubscriber) p).getPlayer().getLocation(),
-                                    Sound.NOTE_STICKS, 0.5F, 1);
+                    if (p instanceof PlayerChannelSubscriber) {
+                        ((PlayerChannelSubscriber) p).getPlayer().playSound(
+                                ((PlayerChannelSubscriber) p).getPlayer().getLocation(),
+                                Sound.LEVEL_UP, 0.5F, 1);
+                    }
                 }
                 else {
                     p.sendMessage(this.prefix + message);

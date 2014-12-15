@@ -24,7 +24,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import eu.matejkormuth.pexel.slave.bukkit.chat.ChatManager;
+import eu.matejkormuth.pexel.commons.text.ChatColor;
 import eu.matejkormuth.pexel.slave.bukkit.core.StorageEngine;
 
 /**
@@ -46,7 +46,8 @@ public class UnfriendCommand implements CommandExecutor {
                 }
             }
             else {
-                sender.sendMessage(ChatManager.error("This command is only avaiable for players!"));
+                sender.sendMessage(ChatColor.RED
+                        + "This command is only avaiable for players!");
             }
             return true;
         }
@@ -64,22 +65,23 @@ public class UnfriendCommand implements CommandExecutor {
                             p.getUniqueId())) {
                         StorageEngine.getProfile(sender.getUniqueId()).removeFriend(
                                 p.getUniqueId());
-                        sender.sendMessage(ChatManager.success("Player '" + p.getName()
-                                + "' has been REMOVED from your friends!"));
+                        sender.sendMessage(ChatColor.GREEN + "Player '" + p.getName()
+                                + "' has been REMOVED from your friends!");
                         success = true;
                     }
                     else {
-                        sender.sendMessage(ChatManager.error("Player '" + p.getName()
-                                + "' is not in your friends list!"));
+                        sender.sendMessage(ChatColor.RED + "Player '" + p.getName()
+                                + "' is not in your friends list!");
                         
                     }
                 }
             }
             if (!success)
-                sender.sendMessage(ChatManager.error("Player not found! Player must be online!"));
+                sender.sendMessage(ChatColor.RED
+                        + "Player not found! Player must be online!");
         }
         else {
-            sender.sendMessage(ChatManager.error("You must provide player name!"));
+            sender.sendMessage(ChatColor.RED + "You must provide player name!");
         }
     }
     

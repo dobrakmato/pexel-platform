@@ -27,7 +27,6 @@ import java.util.Map;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import eu.matejkormuth.pexel.slave.bukkit.chat.ChatManager;
 import eu.matejkormuth.pexel.slave.bukkit.core.Log;
 
 /**
@@ -117,7 +116,8 @@ public class CommandManager {
                             }
                         }
                         else {
-                            sender.sendMessage(ChatManager.error("You don't have permission!"));
+                            sender.sendMessage(ChatColor.RED
+                                    + "You don't have permission!");
                             return true;
                         }
                     }
@@ -154,7 +154,8 @@ public class CommandManager {
                                 return true;
                             }
                             else {
-                                sender.sendMessage(ChatManager.error("You don't have permission!"));
+                                sender.sendMessage(ChatColor.RED
+                                        + "You don't have permission!");
                                 return true;
                             }
                         }
@@ -162,7 +163,7 @@ public class CommandManager {
                 }
             }
             else {
-                sender.sendMessage(ChatManager.error("You don't have permission!"));
+                sender.sendMessage(ChatColor.RED + "You don't have permission!");
                 return true;
             }
         }
@@ -232,17 +233,19 @@ public class CommandManager {
                     subcommand.invoke(command, objs);
                 }
                 else
-                    invoker.sendMessage(ChatManager.error("Unknown command: invalid params"));
+                    invoker.sendMessage(ChatColor.RED
+                            + "Unknown command: invalid params");
             }
             
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            invoker.sendMessage(ChatManager.error("Unknown command: " + e.getMessage()));
+            invoker.sendMessage(ChatColor.RED + "Unknown command: " + e.getMessage());
             if (invoker.isOp())
-                invoker.sendMessage(ChatManager.error(e.toString()));
+                invoker.sendMessage(ChatColor.RED + e.toString());
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
-            invoker.sendMessage(ChatManager.error("Internal server error occured while attempting to execute this command!"));
+            invoker.sendMessage(ChatColor.RED
+                    + "Internal server error occured while attempting to execute this command!");
             throw new RuntimeException(e);
         }
     }

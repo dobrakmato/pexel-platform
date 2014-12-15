@@ -29,6 +29,7 @@ import eu.matejkormuth.pexel.protocol.requests.InGameStateChangedMessage;
 import eu.matejkormuth.pexel.protocol.requests.InIsBannedFromRequest;
 import eu.matejkormuth.pexel.protocol.requests.InMatchmakingRegisterGameMessage;
 import eu.matejkormuth.pexel.protocol.requests.InMatchmakingRequest;
+import eu.matejkormuth.pexel.protocol.requests.InPlayerUnresolvableError;
 import eu.matejkormuth.pexel.protocol.requests.InServerMetaDataMessage;
 import eu.matejkormuth.pexel.protocol.requests.OutMatchmakingGameStatusRequest;
 import eu.matejkormuth.pexel.protocol.requests.OutPlayerMatchmakedMessage;
@@ -58,6 +59,8 @@ public class PexelProtocol extends Protocol {
         this.registerRequest(7, InGameStateChangedMessage.class);
         // Sends matchmaking request to master server.
         this.registerRequest(8, InMatchmakingRequest.class);
+        // Sent by slave when master should take care of misplaced player.
+        this.registerRequest(9, InPlayerUnresolvableError.class);
         
         // When matchmaking on this player is done. This is sent to server that player will be connected to.
         this.registerRequest(101, OutPlayerMatchmakedMessage.class);

@@ -18,11 +18,11 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave.bukkit.commands;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import eu.matejkormuth.pexel.commons.text.ChatColor;
+import eu.matejkormuth.pexel.slave.PexelSlave;
 import eu.matejkormuth.pexel.slave.bukkit.chat.ChatChannel;
-import eu.matejkormuth.pexel.slave.bukkit.chat.ChatManager;
 import eu.matejkormuth.pexel.slave.bukkit.chat.PlayerChannelSubscriber;
 import eu.matejkormuth.pexel.slave.bukkit.chat.SubscribeMode;
 
@@ -35,39 +35,46 @@ public class ChannelCommand {
     @SubCommand(description = "Displays information about channels you are in.")
     public void main(final Player sender) {
         sender.sendMessage(ChatColor.GOLD + "Your channels: ");
-        for (ChatChannel channel : ChatManager.getChannelsByPlayer(sender)) {
-            sender.sendMessage(channel.getName());
-        }
+        //for (ChatChannel channel : ChatChannel.getChannelsByPlayer(sender)) {
+        //    sender.sendMessage(channel.getName());
+        //}
         sender.sendMessage(ChatColor.AQUA + "/channel help - Displays help information.");
     }
     
     @SubCommand(description = "Lists all avaiable chat channels.")
     public void list(final Player sender) {
         sender.sendMessage(ChatColor.GREEN + "Avaiable channels: ");
-        for (ChatChannel channel : ChatManager.getChannelsByPlayer(sender)) {
-            if (channel.isPublic())
+        for (ChatChannel channel : ChatChannel.allChannels()) {
+            if (!channel.isHidden()) {
                 sender.sendMessage(channel.getName());
+            }
         }
     }
     
     @SubCommand(description = "Joins specified chat channel.")
     public void join(final Player sender, final String channelName) {
-        if (ChatManager.getChannel(channelName) != null)
-            if (!ChatManager.getChannel(channelName).isSubscribed(sender))
+        eu.matejkormuth.pexel.commons.Player p = PexelSlave.getInstance()
+                .getObjectFactory()
+                .getPlayer(sender);
+        if (ChatChannel.getByName(channelName) != null)
+            if (!ChatChannel.getByName(channelName).isSubscribed(p))
                 
-                ChatManager.getChannel(channelName).subscribe(
-                        new PlayerChannelSubscriber(sender, SubscribeMode.READ));
+                ChatChannel.getByName(channelName).subscribe(
+                        new PlayerChannelSubscriber(p, SubscribeMode.READ));
             else
-                sender.sendMessage(ChatManager.error("You are already in that channel!"));
+                sender.sendMessage(ChatColor.RED + "You are already in that channel!");
         else
-            sender.sendMessage(ChatManager.error("That channel does not exists!"));
+            sender.sendMessage(ChatColor.RED + "That channel does not exists!");
     }
     
     @SubCommand(description = "Lefts specified chat channel.")
     public void leave(final Player sender, final String channelName) {
-        if (ChatManager.getChannel(channelName).isSubscribed(sender))
-            ChatManager.getChannel(channelName).unsubscribe(sender);
+        eu.matejkormuth.pexel.commons.Player p = PexelSlave.getInstance()
+                .getObjectFactory()
+                .getPlayer(sender);
+        if (ChatChannel.getByName(channelName).isSubscribed(p))
+            ChatChannel.getByName(channelName).unsubscribe(p);
         else
-            sender.sendMessage(ChatManager.error("You are not in that channel!"));
+            sender.sendMessage(ChatColor.RED + "You are not in that channel!");
     }
 }

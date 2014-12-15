@@ -16,32 +16,19 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.slave.bukkit.animations;
+package eu.matejkormuth.pexel.commons.animations;
+
+import eu.matejkormuth.pexel.commons.Location;
 
 /**
- * Class that specifies animation.
+ * Frame in {@link Animation}.
  */
-public interface Animation {
+public interface Frame {
     /**
-     * Get frame by number.
+     * Play this frame at specified base location.
      * 
-     * @param number
-     *            id of frame
-     * @return frame
+     * @param loc
+     *            base/anchor location
      */
-    public Frame getFrame(int number);
-    
-    /**
-     * Number of frames per second.
-     * 
-     * @return fps
-     */
-    public int getFramerate();
-    
-    /**
-     * Returns total amount of frames in this animation.
-     * 
-     * @return num of frames
-     */
-    public int getFrameCount();
+    public void play(Location baseLoc);
 }

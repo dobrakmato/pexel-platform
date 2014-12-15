@@ -16,16 +16,15 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.slave.bukkit.util;
+package eu.matejkormuth.pexel.commons;
 
-import org.bukkit.Location;
-import org.bukkit.util.Vector;
+import eu.matejkormuth.pexel.commons.math.Vector3d;
 
 /**
  * Class that represents moving object.
  */
 public abstract class MovingObject {
-    protected Location location;
+    protected MutableLocation location;
     
     /**
      * Moves object by specified amount.
@@ -34,7 +33,7 @@ public abstract class MovingObject {
      *            amount
      */
     public void move(final Location amount) {
-        this.move(amount.toVector());
+        this.location.add(amount);
     }
     
     /**
@@ -43,8 +42,8 @@ public abstract class MovingObject {
      * @param amount
      *            amount
      */
-    public void move(final Vector amount) {
-        this.move(amount.getX(), amount.getY(), amount.getZ());
+    public void move(final Vector3d amount) {
+        this.location.add(amount);
     }
     
     /**
@@ -68,7 +67,7 @@ public abstract class MovingObject {
      *            location to set
      */
     protected void setLocation(final Location location) {
-        this.location = location;
+        this.location = location.toMutable();
     }
     
     /**
@@ -76,7 +75,7 @@ public abstract class MovingObject {
      * 
      * @return current location
      */
-    public Location getLocation() {
+    public MutableLocation getLocation() {
         return this.location;
     }
 }

@@ -27,7 +27,7 @@ import eu.matejkormuth.pexel.commons.PlayerHolder;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingRequest;
 import eu.matejkormuth.pexel.commons.minigame.Minigame;
-import eu.matejkormuth.pexel.slave.bukkit.chat.ChatManager;
+import eu.matejkormuth.pexel.commons.text.ChatColor;
 
 /**
  * Class used for party.
@@ -46,7 +46,7 @@ public class Party implements PlayerHolder {
         this.players = new ArrayList<Player>();
         this.owner = owner;
         
-        owner.sendMessage(ChatManager.success("Created new party!"));
+        owner.sendMessage(ChatColor.GREEN + "Created new party!");
     }
     
     /**
@@ -68,8 +68,8 @@ public class Party implements PlayerHolder {
      */
     public void addPlayer(final Player player) {
         this.players.add(player);
-        player.sendMessage(ChatManager.success("You have joined "
-                + this.owner.getDisplayName() + "'s party!"));
+        player.sendMessage(ChatColor.GREEN + "You have joined "
+                + this.owner.getDisplayName() + "'s party!");
     }
     
     /**

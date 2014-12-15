@@ -23,6 +23,8 @@ import java.util.UUID;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 
+import com.google.common.base.Optional;
+
 /**
  * Class that executes {@link Proxy} functions on BungeeCord server.
  */
@@ -54,5 +56,13 @@ public class BungeeProxy implements Proxy {
     @Override
     public void broadcast(final String message) {
         ProxyServer.getInstance().broadcast(new TextComponent(message));
+    }
+    
+    @Override
+    public Optional<ServerInfo> getServer(final String name) {
+        net.md_5.bungee.api.config.ServerInfo si = ProxyServer.getInstance()
+                .getServerInfo(name);
+        if (si != null) { return Optional.of(new ServerInfo(si.getName())); }
+        return Optional.absent();
     }
 }

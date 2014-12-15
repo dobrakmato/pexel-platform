@@ -48,6 +48,8 @@ import eu.matejkormuth.pexel.protocol.requests.InServerMetaDataMessage;
 import eu.matejkormuth.pexel.slave.bukkit.BukkitObjectFactory;
 import eu.matejkormuth.pexel.slave.bukkit.BukkitSlaveMinecraftSoftware;
 import eu.matejkormuth.pexel.slave.bukkit.BukkitTeleporter;
+import eu.matejkormuth.pexel.slave.components.TPSChecker;
+import eu.matejkormuth.pexel.slave.components.chat.ChatEventHandler;
 import eu.matejkormuth.pexel.slave.events.SlaveEventBus;
 import eu.matejkormuth.pexel.slave.events.player.PlayerJoinEvent;
 import eu.matejkormuth.pexel.slave.events.player.PlayerLeaveEvent;
@@ -160,7 +162,13 @@ public class PexelSlave implements LoggerHolder {
         // Initialize whole shit from PexelCore.
         
         // Legacy PexelCore <https://github.com/dobrakmato/PexelCore> code.
-        //this.addComponent(new LegacyCoreComponent());
+        // this.addComponent(new LegacyCoreComponent());
+        
+        // Register standart event handlers.
+        this.eventBus.register(new ChatEventHandler());
+        
+        // Add standart TPS checker.
+        this.addComponent(new TPSChecker());
         
         // Create sync object.
         this.sync = new Sync();
@@ -168,6 +176,7 @@ public class PexelSlave implements LoggerHolder {
         // Create scheduler and attach it to sync.
         this.scheduler = new Scheduler();
         this.sync.addTickHandler(this.scheduler);
+        this.sync.addTickHandler(this.getComponent(TPSChecker.class));
         
         // Connect to master - other thread.
         this.server = new SlaveServer(this.config.getSection(PexelSlave.class)
@@ -196,7 +205,7 @@ public class PexelSlave implements LoggerHolder {
         this.server.shutdown();
         
         this.log.info("Disabling scheduler...");
-        //this.scheduler.shutdownNow(); // TODO: Too
+        this.scheduler.shutdownNow();
         
         this.log.info("Disabling all components...");
         this.disableComponents();
@@ -338,5 +347,12 @@ public class PexelSlave implements LoggerHolder {
     
     public SlaveServer getServer() {
         return this.server;
+    }
+    
+    public boolean isGameOnlyServer() {
+        return this.getConfiguration()
+                .getSection(PexelSlave.class)
+                .get("gameOnlyServer", false)
+                .asBoolean();
     }
 }

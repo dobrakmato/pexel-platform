@@ -52,7 +52,6 @@ import eu.matejkormuth.pexel.commons.bans.Bannable;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
 import eu.matejkormuth.pexel.commons.minigame.Minigame;
 import eu.matejkormuth.pexel.slave.bukkit.areas.ProtectedArea;
-import eu.matejkormuth.pexel.slave.bukkit.chat.ChatManager;
 import eu.matejkormuth.pexel.slave.bukkit.core.Log;
 import eu.matejkormuth.pexel.slave.bukkit.core.StorageEngine;
 import eu.matejkormuth.pexel.slave.bukkit.core.ValidityChecker;
@@ -193,7 +192,7 @@ public abstract class AbstractArena extends ProtectedArea implements Matchmaking
     public void setSpectating(final Player player, final boolean spectating) {
         if (spectating) {
             if (!StorageEngine.getProfile(player.getUniqueId()).isSpectating()) {
-                player.sendMessage(ChatManager.success("You are now spectating!"));
+                player.sendMessage("You are now spectating!");
                 StorageEngine.getProfile(player.getUniqueId()).setSpectating(true);
                 player.getInventory().clear();
                 player.getInventory().addItem(
@@ -218,7 +217,7 @@ public abstract class AbstractArena extends ProtectedArea implements Matchmaking
         }
         else {
             if (StorageEngine.getProfile(player.getUniqueId()).isSpectating()) {
-                player.sendMessage(ChatManager.success("You are no longer spectating!"));
+                player.sendMessage("You are no longer spectating!");
                 StorageEngine.getProfile(player.getUniqueId()).setSpectating(false);
                 player.getInventory().clear();
                 player.setGameMode(eu.matejkormuth.pexel.commons.GameMode.valueOf(this.defaultGameMode.name()));

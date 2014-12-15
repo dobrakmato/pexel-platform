@@ -56,8 +56,6 @@ import eu.matejkormuth.pexel.slave.bukkit.animations.EntityAnimationPlayer;
 import eu.matejkormuth.pexel.slave.bukkit.animations.ParticleAnimation;
 import eu.matejkormuth.pexel.slave.bukkit.animations.ParticleFrame;
 import eu.matejkormuth.pexel.slave.bukkit.areas.AreaFlag;
-import eu.matejkormuth.pexel.slave.bukkit.chat.ChatManager;
-import eu.matejkormuth.pexel.slave.bukkit.chat.SubscribeMode;
 import eu.matejkormuth.pexel.slave.bukkit.core.Log;
 import eu.matejkormuth.pexel.slave.bukkit.core.StorageEngine;
 import eu.matejkormuth.pexel.slave.bukkit.menu.InventoryMenu;
@@ -183,8 +181,7 @@ public class EventProcessor implements Listener {
                         else if (command.equalsIgnoreCase("[World]")) {
                             World w = Bukkit.getWorld(lines[1]);
                             if (w == null) {
-                                event.getPlayer().sendMessage(
-                                        ChatManager.error("e/worldnotfound"));
+                                event.getPlayer().sendMessage("e/worldnotfound");
                             }
                             else
                                 event.getPlayer().teleport(w.getSpawnLocation());
@@ -254,7 +251,7 @@ public class EventProcessor implements Listener {
     
     @EventHandler
     private void onChat(final AsyncPlayerChatEvent event) {
-        ChatManager.__processChatEvent(event);
+        //ChatManager.__processChatEvent(event);
         /*
          * if (event.getPlayer().isOp()) event.setFormat(ChatManager.chatPlayerOp(event.getMessage(),
          * event.getPlayer())); else event.setFormat(ChatManager.chatPlayer(event.getMessage(), event.getPlayer()));
@@ -313,9 +310,6 @@ public class EventProcessor implements Listener {
     private void onPlayerJoin(final PlayerJoinEvent event) {
         // Load profile to memory or create empty profile.
         StorageEngine.loadProfile(event.getPlayer().getUniqueId());
-        // Register chat channels.
-        ChatManager.CHANNEL_GLOBAL.subscribe(event.getPlayer(), SubscribeMode.READ);
-        ChatManager.CHANNEL_LOBBY.subscribe(event.getPlayer(), SubscribeMode.READ_WRITE);
     }
     
     @EventHandler
@@ -330,10 +324,6 @@ public class EventProcessor implements Listener {
                                     .getPlayer(event.getPlayer().getUniqueId()));
             StorageEngine.getProfile(event.getPlayer().getUniqueId()).setParty(null);
         }
-        
-        // Leave chat channels.
-        ChatManager.CHANNEL_GLOBAL.unsubscribe(event.getPlayer());
-        ChatManager.CHANNEL_LOBBY.unsubscribe(event.getPlayer());
         
         StorageEngine.__redirectEvent("PlayerQuitEvent", event);
         

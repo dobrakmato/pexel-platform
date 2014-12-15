@@ -42,7 +42,6 @@ import eu.matejkormuth.pexel.slave.bukkit.actions.JavaArbitraryAction;
 import eu.matejkormuth.pexel.slave.bukkit.actions.OpenInventoryMenuAction;
 import eu.matejkormuth.pexel.slave.bukkit.arenas.AbstractArena;
 import eu.matejkormuth.pexel.slave.bukkit.arenas.DisconnectReason;
-import eu.matejkormuth.pexel.slave.bukkit.chat.ChatManager;
 import eu.matejkormuth.pexel.slave.bukkit.core.Log;
 import eu.matejkormuth.pexel.slave.bukkit.core.StorageEngine;
 import eu.matejkormuth.pexel.slave.bukkit.menu.InventoryMenu;
@@ -176,8 +175,8 @@ public class AlternativeCommands implements Listener {
                 
                 if (arena.contains(p)) {
                     arena.onPlayerLeft(p, DisconnectReason.PLAYER_LEAVE);
-                    sender.sendMessage(ChatManager.error("Left "
-                            + arena.getMinigame().getDisplayName() + " arena!"));
+                    sender.sendMessage("Left " + arena.getMinigame().getDisplayName()
+                            + " arena!");
                 }
             }
             

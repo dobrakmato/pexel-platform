@@ -18,11 +18,11 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave.bukkit.animations;
 
-import org.bukkit.Location;
-
+import eu.matejkormuth.pexel.commons.Location;
+import eu.matejkormuth.pexel.commons.MovingObject;
+import eu.matejkormuth.pexel.commons.animations.Animation;
 import eu.matejkormuth.pexel.slave.bukkit.Pexel;
 import eu.matejkormuth.pexel.slave.bukkit.core.Scheduler.ScheduledTask;
-import eu.matejkormuth.pexel.slave.bukkit.util.MovingObject;
 
 public class MovingAnimationPlayer extends MovingObject implements Runnable {
     protected Animation     animation;
@@ -35,7 +35,7 @@ public class MovingAnimationPlayer extends MovingObject implements Runnable {
             final boolean repeating) {
         this.repeating = repeating;
         this.animation = animation;
-        this.location = startLoc;
+        this.location = startLoc.toMutable();
         this.frameCount = animation.getFrameCount();
     }
     

@@ -28,6 +28,19 @@ import com.google.common.base.Preconditions;
  * Byte utilities.
  */
 public class ByteUtils {
+    /**
+     * Number of bytes {@link UUID} take.
+     */
+    public static final int UUID_SIZE = 16;
+    /**
+     * Number of byte {@link Integer} take.
+     */
+    public static final int INT_SIZE  = 4;
+    /**
+     * Number of byte {@link Long} take.
+     */
+    public static final int LONG_SIZE = 8;
+    
     private ByteUtils() {
     }
     

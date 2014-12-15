@@ -16,20 +16,32 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.slave;
-
-import eu.matejkormuth.pexel.commons.Player;
-import eu.matejkormuth.pexel.protocol.requests.InPlayerUnresolvableError;
+package eu.matejkormuth.pexel.commons.animations;
 
 /**
- * Class that handles errors by teleporting players to safe server.
+ * Class that specifies animation.
  */
-public class LimboHandler {
-    public static void handle(final Player player, final String reason) {
-        player.sendMessage("Something broke! Taking you to limbo.");
-        PexelSlave.getInstance()
-                .getServer()
-                .getMasterServerInfo()
-                .sendRequest(new InPlayerUnresolvableError(player, reason));
-    }
+public interface Animation {
+    /**
+     * Get frame by number.
+     * 
+     * @param number
+     *            id of frame
+     * @return frame
+     */
+    public Frame getFrame(int number);
+    
+    /**
+     * Number of frames per second.
+     * 
+     * @return fps
+     */
+    public int getFramerate();
+    
+    /**
+     * Returns total amount of frames in this animation.
+     * 
+     * @return num of frames
+     */
+    public int getFrameCount();
 }

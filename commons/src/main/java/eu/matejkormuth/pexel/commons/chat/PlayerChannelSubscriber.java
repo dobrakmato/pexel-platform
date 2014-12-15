@@ -1,15 +1,15 @@
-package eu.matejkormuth.pexel.slave.bukkit.chat;
+package eu.matejkormuth.pexel.commons.chat;
 
 import eu.matejkormuth.pexel.commons.Player;
 
 /**
  * Channel subscriber implementation for pexel {@link Player} object.
  */
-public class PexelPlayerChannelSubscriber implements ChannelSubscriber {
+public class PlayerChannelSubscriber implements ChannelSubscriber {
     private final SubscribeMode mode;
     private final Player        player;
     
-    public PexelPlayerChannelSubscriber(final Player player, final SubscribeMode mode) {
+    public PlayerChannelSubscriber(final Player player, final SubscribeMode mode) {
         this.mode = mode;
         this.player = player;
     }
@@ -32,6 +32,10 @@ public class PexelPlayerChannelSubscriber implements ChannelSubscriber {
     @Override
     public String getName() {
         return this.player.getName();
+    }
+    
+    public Player getPlayer() {
+        return this.player;
     }
     
 }

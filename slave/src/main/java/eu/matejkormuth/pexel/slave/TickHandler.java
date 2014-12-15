@@ -6,6 +6,9 @@ package eu.matejkormuth.pexel.slave;
 public interface TickHandler {
     /**
      * Fired when server tick occurs.
+     * 
+     * @param number
+     *            of tick currently executed
      */
-    public void tick();
+    public void tick(long number);
 }

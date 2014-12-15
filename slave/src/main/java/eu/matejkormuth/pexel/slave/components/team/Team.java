@@ -28,7 +28,7 @@ import eu.matejkormuth.pexel.commons.PlayerHolder;
 import eu.matejkormuth.pexel.commons.text.ChatColor;
 import eu.matejkormuth.pexel.slave.PexelSlave;
 import eu.matejkormuth.pexel.slave.bukkit.chat.ChatChannel;
-import eu.matejkormuth.pexel.slave.bukkit.chat.PexelPlayerChannelSubscriber;
+import eu.matejkormuth.pexel.slave.bukkit.chat.PlayerChannelSubscriber;
 import eu.matejkormuth.pexel.slave.bukkit.chat.SubscribeMode;
 
 /**
@@ -101,11 +101,9 @@ public class Team implements PlayerHolder {
     public void addPlayer(final Player p) {
         p.sendMessage(ChatColor.GREEN + "You have joined team '" + this.name + "'!");
         this.players.add(p);
-        // DEBUKKITIZE: Unsafe, will be replace in future, when debukkitizing will be completed.
-        this.teamchat.subscribe(new PexelPlayerChannelSubscriber(
-                PexelSlave.getInstance().getObjectFactory().getPlayer(p),
-                SubscribeMode.READ_WRITE));
-        //this.teamchat.subscribe((org.bukkit.entity.Player) p, SubscribeMode.READ_WRITE);
+        this.teamchat.subscribe(new PlayerChannelSubscriber(PexelSlave.getInstance()
+                .getObjectFactory()
+                .getPlayer(p), SubscribeMode.READ_WRITE));
     }
     
     /**
@@ -128,9 +126,7 @@ public class Team implements PlayerHolder {
     public void removePlayer(final Player p) {
         p.sendMessage(ChatColor.GREEN + "You have left team '" + this.name + "'!");
         this.players.remove(p);
-        // DEBUKKITIZE: Unsafe, will be replace in future, when debukkitizing will be completed.
-        // TODO: Complete inplementation. this.teamchat.unsubscribe(subscriber);
-        this.teamchat.unsubscribe((org.bukkit.entity.Player) p);
+        this.teamchat.unsubscribe(p);
     }
     
     /**
@@ -158,6 +154,7 @@ public class Team implements PlayerHolder {
      *            player to apply armor to
      */
     public void applyArmor(final Player player) {
+        // TODO: Apply armor
         //player.getInventory().setHelmet(
         //        ItemUtils.coloredLetherArmor(Material.LEATHER_HELMET, this.color));
         //player.getInventory().setChestplate(

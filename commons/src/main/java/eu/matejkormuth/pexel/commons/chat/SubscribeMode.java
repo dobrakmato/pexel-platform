@@ -16,20 +16,21 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.slave;
-
-import eu.matejkormuth.pexel.commons.Player;
-import eu.matejkormuth.pexel.protocol.requests.InPlayerUnresolvableError;
+package eu.matejkormuth.pexel.commons.chat;
 
 /**
- * Class that handles errors by teleporting players to safe server.
+ * Chat channel subscription mode.
+ * 
+ * @author Mato Kormuth
+ * 
  */
-public class LimboHandler {
-    public static void handle(final Player player, final String reason) {
-        player.sendMessage("Something broke! Taking you to limbo.");
-        PexelSlave.getInstance()
-                .getServer()
-                .getMasterServerInfo()
-                .sendRequest(new InPlayerUnresolvableError(player, reason));
-    }
+public enum SubscribeMode {
+    /**
+     * Player can only read (receive) messages from channel. (default)
+     */
+    READ,
+    /**
+     * Player can read (receive) and write (send) messages to channel.
+     */
+    READ_WRITE;
 }

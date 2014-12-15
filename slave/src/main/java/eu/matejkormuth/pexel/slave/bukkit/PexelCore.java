@@ -187,8 +187,6 @@ public class PexelCore {
         StorageEngine.initialize(this);
         StorageEngine.loadData();
         
-        Log.___prblm_stp();
-        
         new AlternativeCommands();
         
         HardCoded.main();

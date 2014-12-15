@@ -20,6 +20,7 @@ package eu.matejkormuth.pexel.slave.bukkit.animations;
 
 import org.bukkit.entity.Entity;
 
+import eu.matejkormuth.pexel.commons.animations.Animation;
 import eu.matejkormuth.pexel.slave.bukkit.util.BukkitTimer;
 
 public class EntityAnimationPlayer implements Runnable {
@@ -49,7 +50,7 @@ public class EntityAnimationPlayer implements Runnable {
         }
         
         if (this.currentFrame < this.frameCount) {
-            this.animation.getFrame(this.currentFrame).play(this.entity.getLocation());
+            //this.animation.getFrame(this.currentFrame).play(this.entity.getLocation());
             this.currentFrame++;
         }
         else {

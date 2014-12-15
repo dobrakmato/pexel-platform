@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import com.google.common.base.Optional;
+
 import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.commons.LoggerHolder;
@@ -36,6 +38,7 @@ import eu.matejkormuth.pexel.master.db.Database;
 import eu.matejkormuth.pexel.master.matchmaking.Matchmaking;
 import eu.matejkormuth.pexel.master.matchmaking.MatchmakingProviderImpl;
 import eu.matejkormuth.pexel.master.responders.BansResponder;
+import eu.matejkormuth.pexel.master.responders.ErrorResponder;
 import eu.matejkormuth.pexel.master.responders.MatchmakingResponder;
 import eu.matejkormuth.pexel.master.responders.ServerStatusResponder;
 import eu.matejkormuth.pexel.master.responders.TeleportationResponder;
@@ -43,6 +46,7 @@ import eu.matejkormuth.pexel.master.restapi.ApiServer;
 import eu.matejkormuth.pexel.network.Callback;
 import eu.matejkormuth.pexel.network.MasterServer;
 import eu.matejkormuth.pexel.network.Proxy;
+import eu.matejkormuth.pexel.network.ServerInfo;
 import eu.matejkormuth.pexel.network.SlaveServer;
 import eu.matejkormuth.pexel.protocol.PexelProtocol;
 import eu.matejkormuth.pexel.protocol.requests.ServerStatusRequest;
@@ -119,11 +123,12 @@ public final class PexelMaster implements LoggerHolder {
                 this.config.getSection(MasterServer.class), this.log,
                 new PexelProtocol());
         
-        // Set up responders. TODO
+        // Set up responders.
         this.master.getMessenger().addResponder(new ServerStatusResponder());
         this.master.getMessenger().addResponder(new TeleportationResponder());
         this.master.getMessenger().addResponder(new BansResponder());
         this.master.getMessenger().addResponder(new MatchmakingResponder());
+        this.master.getMessenger().addResponder(new ErrorResponder());
         
         // Set up Database.
         // this.addComponent(new Database());
@@ -282,5 +287,24 @@ public final class PexelMaster implements LoggerHolder {
     
     public Caches getCaches() {
         return this.caches;
+    }
+    
+    /**
+     * Returns instance of {@link ServerInfo} of server that is used to take care of players that broke something.
+     * 
+     * @return limbo server info
+     */
+    public Optional<ServerInfo> getLimboServer() {
+        // Connect directly trough proxy.
+        Optional<ServerInfo> limbo = this.getProxy().getServer(
+                this.getConfiguration()
+                        .getSection(PexelMaster.class)
+                        .get("limboServerName", "limbo")
+                        .asString());
+        if (!limbo.isPresent()) {
+            this.getLogger().error(
+                    "Limbo server not properly configured! Please fix it!");
+        }
+        return limbo;
     }
 }

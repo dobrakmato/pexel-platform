@@ -20,6 +20,8 @@ package eu.matejkormuth.pexel.network;
 
 import java.util.UUID;
 
+import com.google.common.base.Optional;
+
 /**
  * Interface that represents proxy.
  */
@@ -67,4 +69,12 @@ public interface Proxy {
      *            message to broadcast
      */
     public void broadcast(String message);
+    
+    /**
+     * Returns {@link ServerInfo} of specified server name or absent value if server not found.
+     * 
+     * @param name
+     *            name of server
+     */
+    public Optional<ServerInfo> getServer(String name);
 }

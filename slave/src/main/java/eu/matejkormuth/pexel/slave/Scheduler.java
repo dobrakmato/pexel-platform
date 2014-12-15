@@ -28,6 +28,11 @@ import java.util.List;
 public class Scheduler implements TickHandler {
     private final List<ScheduledTask> tasks = new ArrayList<Scheduler.ScheduledTask>();
     
+    public void shutdownNow() {
+        // Remove all tasks
+        this.tasks.clear();
+    }
+    
     public ScheduledTask delay(final long delay, final Runnable runnable) {
         ScheduledTask task = new ScheduledTask(runnable, -1, delay);
         this.tasks.add(task);
@@ -48,7 +53,7 @@ public class Scheduler implements TickHandler {
     }
     
     @Override
-    public void tick() {
+    public void tick(final long n) {
         long time = System.currentTimeMillis();
         for (Iterator<ScheduledTask> iterator = this.tasks.iterator(); iterator.hasNext();) {
             ScheduledTask task = iterator.next();

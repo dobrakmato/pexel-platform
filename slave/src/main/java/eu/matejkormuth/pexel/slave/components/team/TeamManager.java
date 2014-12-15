@@ -34,10 +34,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import eu.matejkormuth.pexel.commons.Location;
 import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.text.ChatColor;
 import eu.matejkormuth.pexel.slave.PexelSlave;
 import eu.matejkormuth.pexel.slave.boot.PexelSlaveBukkitPlugin;
 import eu.matejkormuth.pexel.slave.bukkit.arenas.AbstractArena;
-import eu.matejkormuth.pexel.slave.bukkit.chat.ChatManager;
 
 /**
  * Class used for managing teams.
@@ -159,7 +159,7 @@ public class TeamManager implements Listener {
                 throw new RuntimeException("Team not found in TeamManager: " + teamName);
             
             if (team.getPlayerCount() == team.getMaximumPlayers())
-                player.sendMessage(ChatManager.error("This team is full!"));
+                player.sendMessage(ChatColor.RED + "This team is full!");
             else {
                 if (team.canJoin()) {
                     if (this.playerInTeam(player)) {
@@ -173,7 +173,8 @@ public class TeamManager implements Listener {
                     //this.updateSign(clickedBlock.getLocation(), team);
                 }
                 else {
-                    player.sendMessage(ChatManager.error("You can't join this team at this time!"));
+                    player.sendMessage(ChatColor.RED
+                            + "You can't join this team at this time!");
                 }
             }
         }

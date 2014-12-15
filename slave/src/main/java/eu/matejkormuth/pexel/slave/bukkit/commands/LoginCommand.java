@@ -23,8 +23,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import eu.matejkormuth.pexel.commons.text.ChatColor;
 import eu.matejkormuth.pexel.slave.bukkit.Pexel;
-import eu.matejkormuth.pexel.slave.bukkit.chat.ChatManager;
 
 public class LoginCommand implements CommandExecutor {
     
@@ -41,17 +41,18 @@ public class LoginCommand implements CommandExecutor {
                 }
             }
             else {
-                sender.sendMessage(ChatManager.error("This command is only avaiable for players!"));
+                sender.sendMessage(ChatColor.RED
+                        + "This command is only avaiable for players!");
             }
             return true;
         }
-        sender.sendMessage(ChatManager.error("Wrong use!"));
+        sender.sendMessage(ChatColor.RED + "Wrong use!");
         return true;
     }
     
     private void processCommand(final Player sender, final String[] args) {
         if (args.length != 1)
-            sender.sendMessage(ChatManager.error("Wrong use! Syntax: /login <password>"));
+            sender.sendMessage(ChatColor.RED + "Wrong use! Syntax: /login <password>");
         else
             Pexel.getAuth().authenticateCommand(sender, args[0]);
     }

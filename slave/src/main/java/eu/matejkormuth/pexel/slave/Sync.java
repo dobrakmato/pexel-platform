@@ -52,10 +52,22 @@ public class Sync {
         return this.onTick;
     }
     
+    /**
+     * Add task that should be executed synchronously with main server thread.
+     * 
+     * @param runnable
+     *            task to execute
+     */
     public void addTask(final Runnable runnable) {
         this.tasks.add(runnable);
     }
     
+    /**
+     * Register specified {@link TickHandler} on this sync object.
+     * 
+     * @param handler
+     *            tick handler to register
+     */
     public void addTickHandler(final TickHandler handler) {
         this.handlers.add(handler);
     }
@@ -64,7 +76,7 @@ public class Sync {
         // First make sync handlers happy.
         for (TickHandler th : this.handlers) {
             try {
-                th.tick();
+                th.tick(tick);
             } catch (Exception e) {
                 e.printStackTrace();
             }

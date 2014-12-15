@@ -22,12 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
-import eu.matejkormuth.pexel.slave.bukkit.Pexel;
-import eu.matejkormuth.pexel.slave.bukkit.chat.ChatManager;
+import eu.matejkormuth.pexel.commons.chat.ChatChannel;
+import eu.matejkormuth.pexel.commons.text.ChatColor;
 
 /**
  * Logger for pexel.
@@ -54,7 +50,7 @@ public class Log {
      */
     public final static void info(final String msg) {
         Log.log.info("[PEXEL] " + msg);
-        ChatManager.CHANNEL_LOG.broadcastMessage(ChatColor.GRAY + "[INFO] " + msg);
+        ChatChannel.CHANNEL_LOG.broadcastMessage(ChatColor.GRAY + "[INFO] " + msg);
     }
     
     /**
@@ -65,7 +61,7 @@ public class Log {
      */
     public final static void warn(final String msg) {
         Log.log.warning("[PEXEL] " + msg);
-        ChatManager.CHANNEL_LOG.broadcastMessage(ChatColor.GOLD + "[WARN] " + msg);
+        ChatChannel.CHANNEL_LOG.broadcastMessage(ChatColor.GOLD + "[WARN] " + msg);
     }
     
     /**
@@ -76,7 +72,7 @@ public class Log {
      */
     public final static void severe(final String msg) {
         Log.log.severe("[PEXEL] " + msg);
-        ChatManager.CHANNEL_LOG.broadcastMessage(ChatColor.RED + "[ERROR] " + msg);
+        ChatChannel.CHANNEL_LOG.broadcastMessage(ChatColor.RED + "[ERROR] " + msg);
     }
     
     /**
@@ -87,7 +83,7 @@ public class Log {
      */
     public final static void partEnable(final String partName) {
         Log.log.info("[PEXEL] " + "Enabling Pexel-" + partName + "...");
-        ChatManager.CHANNEL_LOG.broadcastMessage(ChatColor.GRAY + "[PARTENABLE] "
+        ChatChannel.CHANNEL_LOG.broadcastMessage(ChatColor.GRAY + "[PARTENABLE] "
                 + partName);
     }
     
@@ -99,7 +95,7 @@ public class Log {
      */
     public final static void partDisable(final String partName) {
         Log.log.info("[PEXEL] " + "Disabling Pexel-" + partName + "...");
-        ChatManager.CHANNEL_LOG.broadcastMessage(ChatColor.GRAY + "[PARTDISABLE] "
+        ChatChannel.CHANNEL_LOG.broadcastMessage(ChatColor.GRAY + "[PARTDISABLE] "
                 + partName);
     }
     
@@ -130,10 +126,6 @@ public class Log {
      */
     public final static void addProblem(final String message) {
         Log.problems.add(message);
-        
-        for (Player p : Bukkit.getOnlinePlayers())
-            if (p.isOp())
-                p.sendMessage(ChatColor.RED + "[Problem]" + message);
     }
     
     /**
@@ -147,21 +139,5 @@ public class Log {
     
     public static void chat(final String msg) {
         Log.log.info("[CHAT] " + msg);
-    }
-    
-    private static void prblm_rpt_msg() {
-        for (String message : Log.getProblems())
-            for (Player p : Bukkit.getOnlinePlayers())
-                if (p.isOp())
-                    p.sendMessage(ChatColor.RED + "[Problem]" + message);
-    }
-    
-    public static void ___prblm_stp() {
-        Pexel.getScheduler().scheduleSyncDelayedTask(new Runnable() {
-            @Override
-            public void run() {
-                Log.prblm_rpt_msg();
-            }
-        }, 200L);
     }
 }

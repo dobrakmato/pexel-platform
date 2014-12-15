@@ -21,7 +21,6 @@ package eu.matejkormuth.pexel.slave.bukkit.core;
 import org.bukkit.entity.Player;
 
 import eu.matejkormuth.pexel.slave.bukkit.Pexel;
-import eu.matejkormuth.pexel.slave.bukkit.chat.ChatManager;
 
 /**
  * Class used for offline mode authentication.
@@ -33,7 +32,7 @@ public class Auth {
         // Unfreeze player.
         Pexel.getPlayerFreezer().unfreeze(player);
         
-        player.sendMessage(ChatManager.success("Successfully logged in!"));
+        player.sendMessage("Successfully logged in!");
     }
     
     public void authenticateIp(final Player player, final String hostname) {

@@ -38,7 +38,6 @@ import eu.matejkormuth.pexel.slave.bukkit.Pexel;
 import eu.matejkormuth.pexel.slave.bukkit.actions.CommandAction;
 import eu.matejkormuth.pexel.slave.bukkit.actions.JavaArbitraryAction;
 import eu.matejkormuth.pexel.slave.bukkit.actions.TeleportAction;
-import eu.matejkormuth.pexel.slave.bukkit.chat.ChatManager;
 import eu.matejkormuth.pexel.slave.bukkit.menu.InventoryMenu;
 import eu.matejkormuth.pexel.slave.bukkit.menu.InventoryMenuItem;
 import eu.matejkormuth.pexel.slave.bukkit.util.ItemUtils;
@@ -62,7 +61,7 @@ public class MagicClock implements Listener {
                         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                             ((Player) args[0]).showPlayer(onlinePlayer);
                         }
-                        ((Player) args[0]).sendMessage(ChatManager.success("Now you can see everybody!"));
+                        ((Player) args[0]).sendMessage("Now you can see everybody!");
                     }
                 }), 0, true);
         
@@ -72,14 +71,9 @@ public class MagicClock implements Listener {
                     @Override
                     public void run(final Object... args) {
                         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                            //if (StorageEngine.getProfile(
-                            //		((Player) args[0]).getUniqueId()).isFriend(
-                            //		onlinePlayer.getUniqueId()))
-                            //	((Player) args[0]).showPlayer(onlinePlayer);
-                            //else
                             ((Player) args[0]).hidePlayer(onlinePlayer);
                         }
-                        ((Player) args[0]).sendMessage(ChatManager.success("All players have been vanished!"));
+                        ((Player) args[0]).sendMessage("All players have been vanished!");
                     }
                 }), 1, true);
         

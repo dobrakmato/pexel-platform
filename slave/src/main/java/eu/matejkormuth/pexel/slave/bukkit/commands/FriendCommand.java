@@ -24,7 +24,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import eu.matejkormuth.pexel.slave.bukkit.chat.ChatManager;
+import eu.matejkormuth.pexel.commons.text.ChatColor;
 import eu.matejkormuth.pexel.slave.bukkit.core.StorageEngine;
 
 /**
@@ -47,7 +47,8 @@ public class FriendCommand implements CommandExecutor {
                 }
             }
             else {
-                sender.sendMessage(ChatManager.error("This command is only avaiable for players!"));
+                sender.sendMessage(ChatColor.RED
+                        + "This command is only avaiable for players!");
             }
             return true;
         }
@@ -62,20 +63,21 @@ public class FriendCommand implements CommandExecutor {
                 if (p.getName().equalsIgnoreCase(playerName)) {
                     StorageEngine.getProfile(sender.getUniqueId()).addFriend(
                             p.getUniqueId());
-                    sender.sendMessage(ChatManager.success("Player '" + p.getName()
-                            + "' has been ADDED to your friends!"));
-                    p.sendMessage(ChatManager.success("Player '" + sender.getName()
+                    sender.sendMessage(ChatColor.GREEN + "Player '" + p.getName()
+                            + "' has been ADDED to your friends!");
+                    p.sendMessage(ChatColor.GREEN + "Player '" + sender.getName()
                             + "' added you to his/her friends! Add him too! /friend "
-                            + sender.getName()));
+                            + sender.getName());
                     
                     success = true;
                 }
             }
             if (!success)
-                sender.sendMessage(ChatManager.error("Player not found! Player must be online!"));
+                sender.sendMessage(ChatColor.RED
+                        + "Player not found! Player must be online!");
         }
         else {
-            sender.sendMessage(ChatManager.error("You must provide player name!"));
+            sender.sendMessage(ChatColor.RED + "You must provide player name!");
         }
     }
     

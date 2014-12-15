@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import eu.matejkormuth.pexel.commons.annotations.JsonType;
 
 /**
- * Vector that is serializable.
+ * Immutable vector that is serializable.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonType
@@ -94,6 +94,10 @@ public class Vector3d implements Serializable {
         return new Vector3d(this.x * d, this.y * d, this.z * d);
     }
     
+    public Vector3d multiply(final double x, final double y, final double z) {
+        return new Vector3d(this.x * x, this.y * y, this.z * z);
+    }
+    
     public Vector3d multiply(final Vector3d vector) {
         return new Vector3d(this.x * vector.x, this.y * vector.y, this.z * vector.z);
     }
@@ -106,6 +110,10 @@ public class Vector3d implements Serializable {
         return new Vector3d(this.x / vector.x, this.y / vector.y, this.z / vector.z);
     }
     
+    public Vector3d divide(final double x, final double y, final double z) {
+        return new Vector3d(this.x / x, this.y / y, this.z / z);
+    }
+    
     public Vector3d add(final double d) {
         return new Vector3d(this.x + d, this.y + d, this.z + d);
     }
@@ -114,12 +122,20 @@ public class Vector3d implements Serializable {
         return new Vector3d(this.x + vector.x, this.y + vector.y, this.z + vector.z);
     }
     
+    public Vector3d add(final double x, final double y, final double z) {
+        return new Vector3d(this.x + x, this.y + y, this.z + z);
+    }
+    
     public Vector3d subtract(final double d) {
         return new Vector3d(this.x - d, this.y - d, this.z - d);
     }
     
     public Vector3d subtract(final Vector3d vector) {
         return new Vector3d(this.x - vector.x, this.y - vector.y, this.z - vector.z);
+    }
+    
+    public Vector3d subtract(final double x, final double y, final double z) {
+        return new Vector3d(this.x - x, this.y - y, this.z - z);
     }
     
     public double getX() {

@@ -24,7 +24,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import eu.matejkormuth.pexel.slave.bukkit.chat.ChatManager;
 import eu.matejkormuth.pexel.slave.bukkit.core.Settings;
 import eu.matejkormuth.pexel.slave.bukkit.core.StorageEngine;
 
@@ -44,15 +43,15 @@ public class SettingsCommand implements CommandExecutor {
                     Settings setting = Settings.valueOf(args[0]);
                     Boolean value = Boolean.parseBoolean(args[1]);
                     
-                    StorageEngine.getProfile(((Player) sender).getUniqueId()).setSetting(
-                            setting, value);
+                    StorageEngine.getProfile(((Player) sender).getUniqueId())
+                            .setSetting(setting, value);
                     
                 } catch (Exception ex) {
-                    sender.sendMessage(ChatManager.error(ex.toString()));
+                    sender.sendMessage(ex.toString());
                 }
             }
             else {
-                sender.sendMessage(ChatManager.error("/settings <setting> <false/true>"));
+                sender.sendMessage("/settings <setting> <false/true>");
                 String avaiable = ChatColor.GOLD + "Avaiable settings: "
                         + ChatColor.YELLOW;
                 for (Settings s : Settings.values()) {

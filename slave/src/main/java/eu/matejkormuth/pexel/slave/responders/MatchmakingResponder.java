@@ -38,6 +38,7 @@ public class MatchmakingResponder {
     private final Map<UUID, OutPlayerMatchmakedMessage> matchmaked = new HashMap<UUID, OutPlayerMatchmakedMessage>();
     
     public MatchmakingResponder() {
+        // Register events.
         PexelSlave.getInstance().getEventBus().register(this);
     }
     
@@ -69,8 +70,21 @@ public class MatchmakingResponder {
             }
             else {
                 // Timeout -> limbo
-                LimboHandler.handle(event.getPlayer());
+                LimboHandler.handle(event.getPlayer(), "matchmaking.timeout{p="
+                        + event.getPlayer().getUniqueId().toString() + ",gameId="
+                        + this.matchmaked.get(event.getPlayer().getUniqueId()).gameId
+                        + "}");
             }
         }
+        else {
+            if (PexelSlave.getInstance().isGameOnlyServer()) {
+                // Non OP players can't walk around on game servers.
+                if (!event.getPlayer().isOp()) {
+                    LimboHandler.handle(event.getPlayer(), "access.permissiondenied{p="
+                            + event.getPlayer().getUniqueId().toString() + "}");
+                }
+            }
+        }
+        this.matchmaked.remove(event.getPlayer().getUniqueId());
     }
 }

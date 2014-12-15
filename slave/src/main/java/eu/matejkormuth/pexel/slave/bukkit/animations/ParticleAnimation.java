@@ -22,6 +22,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import eu.matejkormuth.pexel.commons.animations.Animation;
+
 public class ParticleAnimation implements Animation, Serializable {
     private static final long              serialVersionUID = 5147694021142531376L;
     
