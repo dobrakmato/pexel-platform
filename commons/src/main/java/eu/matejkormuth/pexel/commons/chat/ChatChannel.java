@@ -19,6 +19,7 @@
 package eu.matejkormuth.pexel.commons.chat;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -39,9 +40,9 @@ public class ChatChannel {
                                                                    + "You have left '%name%' chat channel!";
     public static final String              SUBCRIBE_MSG   = ChatColor.LIGHT_PURPLE
                                                                    + "You have joined '%name%' chat channel with mode %mode%!";
-    public static final ChatChannel         CHANNEL_LOG    = null;
-    public static final ChatChannel         CHANNEL_GLOBAL = null;
-    public static final ChatChannel         CHANNEL_LOBBY  = null;
+    public static final ChatChannel         CHANNEL_LOG    = new ChatChannel("_log");
+    public static final ChatChannel         CHANNEL_GLOBAL = new ChatChannel("_global");
+    public static final ChatChannel         CHANNEL_LOBBY  = new ChatChannel("_lobby");
     
     //Last "random" channel ID.
     private static AtomicLong               randomId       = new AtomicLong(0L);
@@ -56,6 +57,10 @@ public class ChatChannel {
      */
     public static ChatChannel getByName(final String name) {
         return ChatChannel.mapping.get(name);
+    }
+    
+    public static Collection<ChatChannel> allChannels() {
+        return ChatChannel.mapping.values();
     }
     
     /**
@@ -77,7 +82,7 @@ public class ChatChannel {
     /**
      * Specifies if channel is visible to everyone.
      */
-    private boolean                       isPublic     = true;
+    private boolean                       isHidden     = false;
     
     /**
      * Creates new chat channel with specified name.
@@ -212,7 +217,7 @@ public class ChatChannel {
         message = ChatColor.translateAlternateColorCodes("&".toCharArray()[0], message);
         for (Iterator<ChannelSubscriber> iterator = this.subscribers.iterator(); iterator.hasNext();) {
             ChannelSubscriber p = iterator.next();
-            if (p.isOnline())
+            if (p.isOnline()) {
                 if (message.toLowerCase().contains(p.getName().toLowerCase())
                         && !message.startsWith(p.getName().toLowerCase())) {
                     p.sendMessage(this.prefix + ChatColor.BLUE + message);
@@ -225,8 +230,10 @@ public class ChatChannel {
                 else {
                     p.sendMessage(this.prefix + message);
                 }
-            else
+            }
+            else {
                 iterator.remove();
+            }
         }
     }
     
@@ -303,17 +310,17 @@ public class ChatChannel {
     }
     
     /**
-     * Returns whether this channel is public.
+     * Returns whether this channel is hidden.
      */
-    public boolean isPublic() {
-        return this.isPublic;
+    public boolean isHidden() {
+        return this.isHidden;
     }
     
     /**
-     * @param isPublic
-     *            the isPublic to set
+     * @param isHidden
+     *            the isHidden to set
      */
     public void setPublic(final boolean isPublic) {
-        this.isPublic = isPublic;
+        this.isHidden = isPublic;
     }
 }

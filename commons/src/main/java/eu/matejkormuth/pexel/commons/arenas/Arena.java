@@ -43,13 +43,13 @@ public abstract class Arena extends ProtectedArea implements MatchmakingGame, Ba
     // State of arena.
     private ArenaState        state;
     // Maximum amount of players in this arena.
-    private final int         maxPlayers             = 16;
+    private int               maxPlayers             = 16;
     
-    private final long        countdownLenght        = 60;
+    private long              countdownLenght        = 60;
     // Current remaining time of countdown.
     private long              countdownRemaining     = this.countdownLenght;
     // Whether to use boss bar for countdown.
-    private final boolean     useBossBar             = true;
+    private boolean           useBossBar             = true;
     // Whether the game has started or not.
     private boolean           gameStarted            = false;
     
@@ -323,5 +323,17 @@ public abstract class Arena extends ProtectedArea implements MatchmakingGame, Ba
         else {
             this.broadcast("Competitive mode is now disabled.");
         }
+    }
+    
+    public void setCountdownLenght(final long countdownLenght) {
+        this.countdownLenght = countdownLenght;
+    }
+    
+    public void setMaxPlayers(final int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+    
+    public void setUseBossBar(final boolean useBossBar) {
+        this.useBossBar = useBossBar;
     }
 }

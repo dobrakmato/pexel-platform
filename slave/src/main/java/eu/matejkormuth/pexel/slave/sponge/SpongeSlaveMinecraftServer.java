@@ -29,12 +29,12 @@ public class SpongeSlaveMinecraftServer implements SlaveMinecraftServer {
     
     @Override
     public String getVersion() {
-        return PexelSlaveSpongePlugin.game.getAPIVersion();
+        return PexelSlaveSpongePlugin.getGame().getAPIVersion();
     }
     
     @Override
     public int getSlots() {
-        return PexelSlaveSpongePlugin.game.getMaxPlayers();
+        return PexelSlaveSpongePlugin.getGame().getMaxPlayers();
     }
     
     @Override

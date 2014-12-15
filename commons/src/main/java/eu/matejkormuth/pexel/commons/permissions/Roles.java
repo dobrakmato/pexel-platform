@@ -32,25 +32,27 @@ public class Roles {
     /**
      * Default player role that have permission to chat.
      */
-    public static final Role           DEFAULT = new Role("pexel.default",
-                                                       Permissions.CHAT);
+    public static final Role                 DEFAULT = new Role("pexel.default",
+                                                             Permissions.CHAT);
     /**
      * Default admin role that have permissions to kick, ban, broadcast and basically moderate server.
      */
-    public static final Role           ADMIN   = new Role("pexel.admin", Roles.DEFAULT,
-                                                       Permissions.KICK,
-                                                       Permissions.BAN_IP,
-                                                       Permissions.BAN_PARDON,
-                                                       Permissions.BAN_PERMANENT,
-                                                       Permissions.BAN_TEMPORARY,
-                                                       Permissions.BROADCAST);
+    public static final Role                 ADMIN   = new Role("pexel.admin",
+                                                             Roles.DEFAULT,
+                                                             Permissions.KICK,
+                                                             Permissions.BAN_IP,
+                                                             Permissions.BAN_PARDON,
+                                                             Permissions.BAN_PERMANENT,
+                                                             Permissions.BAN_TEMPORARY,
+                                                             Permissions.BROADCAST);
     /**
      * Default owner role that have all permissions.
      */
-    public static final Role           OWNER   = new Role("pexel.owner", Roles.ADMIN,
-                                                       Permissions.SPECIAL_ALL);
+    public static final Role                 OWNER   = new Role("pexel.owner",
+                                                             Roles.ADMIN,
+                                                             Permissions.SPECIAL_ALL);
     
-    protected static Map<String, Role> mapping = Maps.newHashMap();
+    protected static final Map<String, Role> mapping = Maps.newHashMap();
     
     /**
      * Returns {@link Role} by its name.

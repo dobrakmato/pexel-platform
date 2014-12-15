@@ -32,16 +32,19 @@ import eu.matejkormuth.pexel.commons.annotations.JsonType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonType
 public class Vector3d implements Serializable {
-    private static final long serialVersionUID = -5438305359697297397L;
+    private static final long    serialVersionUID = -5438305359697297397L;
     
-    public static Vector3d    ZERO             = new Vector3d(0, 0, 0);
+    /**
+     * Zero vector constant.
+     */
+    public static final Vector3d ZERO             = new Vector3d(0, 0, 0);
     
     @XmlAttribute(name = "x")
-    private final double      x;
+    private final double         x;
     @XmlAttribute(name = "y")
-    private final double      y;
+    private final double         y;
     @XmlAttribute(name = "z")
-    private final double      z;
+    private final double         z;
     
     /**
      * Constructs new 3 dimensional vector using 3 double co-ordinates.

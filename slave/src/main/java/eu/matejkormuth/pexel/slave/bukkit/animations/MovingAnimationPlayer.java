@@ -33,6 +33,7 @@ public class MovingAnimationPlayer extends MovingObject implements Runnable {
     
     public MovingAnimationPlayer(final Animation animation, final Location startLoc,
             final boolean repeating) {
+        super(startLoc);
         this.repeating = repeating;
         this.animation = animation;
         this.location = startLoc.toMutable();

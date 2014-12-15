@@ -181,14 +181,8 @@ public final class PexelMaster implements LoggerHolder {
     protected void updateSlaves() {
         // Updates slaves.
         for (final SlaveServer slave : this.master.getSlaveServers()) {
-            slave.sendRequest(new ServerStatusRequest(
-                    new Callback<ServerStatusResponse>() {
-                        @Override
-                        public void onResponse(final ServerStatusResponse response) {
-                            slave.setCustom("maxMem", Long.toString(response.maxMem));
-                            slave.setCustom("usedMem", Long.toString(response.usedMem));
-                        }
-                    }));
+            slave.sendRequest(new ServerStatusRequest(new SlaveStatusCallbackHander(
+                    slave)));
         }
     }
     
@@ -222,9 +216,7 @@ public final class PexelMaster implements LoggerHolder {
     protected void enableComponent(final MasterComponent e) {
         this.log.info("Enabling [" + e.getClass().getSimpleName() + "] ...");
         try {
-            if (e instanceof MasterComponent) {
-                e.master = this;
-            }
+            e.master = this;
             e.__initLogger(this);
             e.__initConfig(this.getConfiguration());
             e.onEnable();
@@ -306,5 +298,19 @@ public final class PexelMaster implements LoggerHolder {
                     "Limbo server not properly configured! Please fix it!");
         }
         return limbo;
+    }
+    
+    public static class SlaveStatusCallbackHander extends Callback<ServerStatusResponse> {
+        private final SlaveServer slave;
+        
+        public SlaveStatusCallbackHander(final SlaveServer slave) {
+            this.slave = slave;
+        }
+        
+        @Override
+        public void onResponse(final ServerStatusResponse response) {
+            this.slave.setCustom("maxMem", Long.toString(response.maxMem));
+            this.slave.setCustom("usedMem", Long.toString(response.usedMem));
+        }
     }
 }

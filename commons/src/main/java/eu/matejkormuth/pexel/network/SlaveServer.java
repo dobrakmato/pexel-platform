@@ -31,16 +31,16 @@ import eu.matejkormuth.pexel.commons.annotations.JsonType;
 public class SlaveServer extends ServerInfo implements Requestable {
     
     // Requestable interface
-    protected transient AtomicLong             lastRequestID = new AtomicLong();
-    protected transient Map<Long, Callback<?>> callbacks     = new HashMap<Long, Callback<?>>(
-                                                                     255);
+    private transient AtomicLong             lastRequestID = new AtomicLong();
+    private transient Map<Long, Callback<?>> callbacks     = new HashMap<Long, Callback<?>>(
+                                                                   255);
     
-    protected transient Messenger              messenger;
-    protected transient MessageComunicator     comunicator;
-    protected transient ServerInfo             masterServerInfo;
-    protected transient Protocol               protocol;
-    protected transient ConfigurationSection   config;
-    protected transient Logger                 log;
+    private transient Messenger              messenger;
+    private transient MessageComunicator     comunicator;
+    private transient ServerInfo             masterServerInfo;
+    private transient Protocol               protocol;
+    private transient ConfigurationSection   config;
+    private transient Logger                 log;
     
     public SlaveServer(final String name, final ConfigurationSection config,
             final Logger logger, final Protocol protocol) {

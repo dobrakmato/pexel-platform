@@ -22,10 +22,19 @@ package eu.matejkormuth.pexel.commons;
  * Class that represents an item stack.
  */
 public class ItemStack {
-    private Material type;
-    private short    durability;
-    private int      amount;
-    private byte     data;
+    private final Material type;
+    private short          durability;
+    private int            amount;
+    private byte           data;
+    
+    public ItemStack(final Material type) {
+        this(type, 1);
+    }
+    
+    public ItemStack(final Material type, final int amount) {
+        this.type = type;
+        this.amount = amount;
+    }
     
     public short getDurability() {
         return this.durability;

@@ -24,6 +24,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.google.common.base.Preconditions;
+
 import eu.matejkormuth.pexel.commons.SlaveMinecraftServerType;
 import eu.matejkormuth.pexel.slave.PexelSlave;
 import eu.matejkormuth.pexel.slave.components.managers.CommandManager;
@@ -39,8 +41,12 @@ public class PexelSlaveBukkitPlugin extends JavaPlugin implements Listener {
         return PexelSlaveBukkitPlugin.instance;
     }
     
+    public static void setInstance(final PexelSlaveBukkitPlugin plugin) {
+        Preconditions.checkArgument(PexelSlaveBukkitPlugin.instance == null);
+        PexelSlaveBukkitPlugin.instance = plugin;
+    }
+    
     public PexelSlaveBukkitPlugin() {
-        instance = this;
     }
     
     @Override
@@ -51,7 +57,7 @@ public class PexelSlaveBukkitPlugin extends JavaPlugin implements Listener {
         // Start sync.
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this,
                 PexelSlave.getInstance().getSync().getOnTick(), 0L, 1L);
-        PexelSlaveBukkitPlugin.instance = this;
+        setInstance(this);
         this.commandManager = PexelSlave.getInstance()
                 .getComponent(CommandManager.class);
     }

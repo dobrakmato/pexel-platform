@@ -53,7 +53,7 @@ public class MatchmakingResponder {
         try {
             gameId = UUID.fromString(parts1.iterator().next());
         } catch (Exception ex) {
-            // Nothing...
+            // Catch silently...
         }
         
         List<Player> players = Lists.newArrayList();

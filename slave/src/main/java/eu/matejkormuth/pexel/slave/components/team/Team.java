@@ -25,11 +25,11 @@ import java.util.List;
 import eu.matejkormuth.pexel.commons.Location;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.PlayerHolder;
+import eu.matejkormuth.pexel.commons.chat.ChatChannel;
+import eu.matejkormuth.pexel.commons.chat.PlayerChannelSubscriber;
+import eu.matejkormuth.pexel.commons.chat.SubscribeMode;
 import eu.matejkormuth.pexel.commons.text.ChatColor;
 import eu.matejkormuth.pexel.slave.PexelSlave;
-import eu.matejkormuth.pexel.slave.bukkit.chat.ChatChannel;
-import eu.matejkormuth.pexel.slave.bukkit.chat.PlayerChannelSubscriber;
-import eu.matejkormuth.pexel.slave.bukkit.chat.SubscribeMode;
 
 /**
  * Class that represetns a team.

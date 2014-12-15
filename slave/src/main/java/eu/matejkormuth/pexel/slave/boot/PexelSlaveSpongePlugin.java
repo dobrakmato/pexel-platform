@@ -34,13 +34,21 @@ import eu.matejkormuth.pexel.slave.PexelSlave;
  */
 @Plugin(id = "pexelslave", name = "Pexel Slave Agent", version = "1.0")
 public class PexelSlaveSpongePlugin {
-    public static Game game;
+    private static Game game;
+    
+    public static Game getGame() {
+        return game;
+    }
+    
+    public static void setGame(final Game game) {
+        PexelSlaveSpongePlugin.game = game;
+    }
     
     @Subscribe
     public void onEnabled(final ServerStartedEvent event) {
         System.out.println("[BOOT] Bootstrapping PexelSlave throught PexelSlaveSpongePlugin...");
         PexelSlave.init(new File("."), SlaveMinecraftServerType.CRAFTBUKKIT);
-        PexelSlaveSpongePlugin.game = event.getGame();
+        PexelSlaveSpongePlugin.setGame(event.getGame());
         // Start sync.
         event.getGame()
                 .getScheduler()

@@ -130,8 +130,9 @@ public class CommandManager extends SlaveComponent {
                                 SubCommand annotation = m.getAnnotation(SubCommand.class);
                                 
                                 String scArgs = "";
-                                for (Class<?> param : m.getParameterTypes())
+                                for (Class<?> param : m.getParameterTypes()) {
                                     scArgs += "<[" + param.getSimpleName() + "]> ";
+                                }
                                 
                                 String scName = m.getName();
                                 if (!annotation.name().equals(""))

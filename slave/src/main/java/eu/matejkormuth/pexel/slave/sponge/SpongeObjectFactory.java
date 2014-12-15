@@ -34,15 +34,16 @@ public class SpongeObjectFactory extends AbstractObjectFactory {
     @Override
     public Player getPlayer(final Object platformType) {
         if (platformType instanceof org.spongepowered.api.entity.player.Player) { return new SpongePlayer(
-                PexelSlaveSpongePlugin.game.getPlayer(
-                        ((org.spongepowered.api.entity.player.Player) platformType).getUniqueId())
+                PexelSlaveSpongePlugin.getGame()
+                        .getPlayer(
+                                ((org.spongepowered.api.entity.player.Player) platformType).getUniqueId())
                         .get()); }
         return null;
     }
     
     @Override
     public Player getPlayer(final UUID uuid) {
-        return new SpongePlayer(PexelSlaveSpongePlugin.game.getPlayer(uuid).get());
+        return new SpongePlayer(PexelSlaveSpongePlugin.getGame().getPlayer(uuid).get());
     }
     
     @Override

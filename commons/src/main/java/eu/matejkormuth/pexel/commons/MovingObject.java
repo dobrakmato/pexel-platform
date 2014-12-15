@@ -26,6 +26,15 @@ import eu.matejkormuth.pexel.commons.math.Vector3d;
 public abstract class MovingObject {
     protected MutableLocation location;
     
+    public MovingObject(final Location location) {
+        if (location instanceof MutableLocation) {
+            this.location = (MutableLocation) location;
+        }
+        else {
+            this.location = location.toMutable();
+        }
+    }
+    
     /**
      * Moves object by specified amount.
      * 

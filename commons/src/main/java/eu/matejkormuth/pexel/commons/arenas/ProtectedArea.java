@@ -127,7 +127,7 @@ public abstract class ProtectedArea {
      */
     public boolean hasPermission(final Permission permission, final Player player) {
         if (this.playerFlags.containsKey(player.getUniqueId()))
-            if (this.playerFlags.get(player).get(permission) == null)
+            if (this.playerFlags.get(player.getUniqueId()).get(permission) == null)
                 if (this.globalFlags.get(permission) == null)
                     if (ProtectedArea.defaultFlags.get(permission) == null)
                         return false;

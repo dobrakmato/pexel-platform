@@ -54,7 +54,7 @@ public class TeamManager implements Listener {
      * Caching of sign locations.
      */
     private final Map<Location, Team> signs    = new HashMap<Location, Team>();
-    private final int                 varience = 1;
+    private int                       varience = 1;
     private final AbstractArena       arena;
     
     /**
@@ -261,6 +261,14 @@ public class TeamManager implements Listener {
         if (this.playerInTeam(player)) {
             this.getTeam(player).removePlayer(player);
         }
+    }
+    
+    public void setVarience(final int varience) {
+        this.varience = varience;
+    }
+    
+    public int getVarience() {
+        return this.varience;
     }
     
     /**

@@ -21,10 +21,10 @@ package eu.matejkormuth.pexel.slave.commands;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.annotations.commands.CommandHandler;
 import eu.matejkormuth.pexel.commons.annotations.commands.SubCommand;
+import eu.matejkormuth.pexel.commons.chat.ChatChannel;
+import eu.matejkormuth.pexel.commons.chat.PlayerChannelSubscriber;
+import eu.matejkormuth.pexel.commons.chat.SubscribeMode;
 import eu.matejkormuth.pexel.commons.text.ChatColor;
-import eu.matejkormuth.pexel.slave.bukkit.chat.ChatChannel;
-import eu.matejkormuth.pexel.slave.bukkit.chat.PlayerChannelSubscriber;
-import eu.matejkormuth.pexel.slave.bukkit.chat.SubscribeMode;
 
 /**
  * Class that handles execution of /channel commands.

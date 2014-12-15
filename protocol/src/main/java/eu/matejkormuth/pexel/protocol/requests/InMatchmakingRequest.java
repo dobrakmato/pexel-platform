@@ -42,9 +42,9 @@ public class InMatchmakingRequest extends Request {
         else {
             this.msg += "|";
         }
-        String uuids = "";
+        StringBuilder uuids = new StringBuilder();
         for (Player p : request.getPlayers()) {
-            uuids += p.getUniqueId().toString();
+            uuids.append(p.getUniqueId().toString());
         }
         // Append, trimming last comma.
         this.msg += uuids.substring(0, uuids.length() - 2);
