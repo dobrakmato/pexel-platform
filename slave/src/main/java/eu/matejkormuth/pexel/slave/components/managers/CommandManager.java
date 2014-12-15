@@ -16,7 +16,7 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.slave.bukkit.commands;
+package eu.matejkormuth.pexel.slave.components.managers;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -24,17 +24,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
+import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.annotations.commands.CommandHandler;
 import eu.matejkormuth.pexel.commons.annotations.commands.SubCommand;
-import eu.matejkormuth.pexel.slave.bukkit.core.Log;
+import eu.matejkormuth.pexel.commons.text.ChatColor;
+import eu.matejkormuth.pexel.slave.SlaveComponent;
 
 /**
  * Class that is used for dynamic command registration.
  */
-public class CommandManager {
+public class CommandManager extends SlaveComponent {
     /**
      * Map of subcommands.
      */
@@ -49,7 +48,6 @@ public class CommandManager {
     private final Map<String, String>              aliases     = new HashMap<String, String>();
     
     public CommandManager() {
-        
     }
     
     /**
@@ -59,8 +57,9 @@ public class CommandManager {
      *            command handler
      */
     public void registerCommands(final Object command) {
-        Log.info("Register command on object: " + command.getClass().getSimpleName()
-                + "#" + command.hashCode());
+        this.getLogger().info(
+                "Register command on object: " + command.getClass().getSimpleName()
+                        + "#" + command.hashCode());
         Class<?> clazz = command.getClass();
         if (clazz.isAnnotationPresent(CommandHandler.class)) {
             this.registerCommand(command);
@@ -73,7 +72,7 @@ public class CommandManager {
         }
         else {
             throw new RuntimeException(
-                    "Anootation not present! Annotation: Command; Class: clazz");
+                    "Anotation not present! Annotation: Command; Class: clazz");
         }
     }
     
@@ -211,24 +210,15 @@ public class CommandManager {
             if (argsString.length() > 1)
                 argsString = argsString.substring(0, argsString.length() - 1);
             
-            String name = command.getClass().getAnnotation(CommandHandler.class).name();
-            
-            Log.info("Invoking command '" + name + "("
-                    + command.getClass().getSimpleName() + ") -> "
-                    + subcommand.getAnnotation(SubCommand.class).name() + " ("
-                    + subcommand.getName() + ")' on player '" + invoker.getName()
-                    + "' with args: " + argsString + "]");
-            
             if (!Arrays.asList(command.getClass().getDeclaredMethods()).contains(
                     subcommand))
-                Log.warn("Subcommand is not method of command class.");
+                this.getLogger().warn(" Subcommand is not method of command class.");
             
             if (args.length == 0) {
                 subcommand.invoke(command, invoker);
             }
             else {
                 if (this.validParams(subcommand, args)) {
-                    Log.info(" Invoking: Player, " + args.length);
                     Object[] objs = new Object[args.length + 1];
                     objs[0] = invoker;
                     System.arraycopy(args, 0, objs, 1, args.length);
@@ -258,8 +248,6 @@ public class CommandManager {
             return false;
         for (int i = 1; i < parameterTypes.length; i++) {
             Class<?> parameterType = parameterTypes[i];
-            Log.info(" Validating param #" + i + ": " + parameterType.getSimpleName()
-                    + " == " + args[i - 1].getClass().getSimpleName());
             if (!args[i - 1].getClass().equals(parameterType))
                 return false;
         }
@@ -276,8 +264,9 @@ public class CommandManager {
         if (!method.getAnnotation(SubCommand.class).name().equalsIgnoreCase(""))
             subCommand = method.getAnnotation(SubCommand.class).name().toLowerCase();
         
-        Log.info("  Register subcommand: " + baseCommand + " -> " + subCommand + "#"
-                + method.hashCode());
+        this.getLogger().info(
+                "  Register subcommand: " + baseCommand + " -> " + subCommand + "#"
+                        + method.hashCode());
         
         if (!method.isAccessible())
             method.setAccessible(true);
@@ -291,7 +280,7 @@ public class CommandManager {
                 .name()
                 .toLowerCase();
         
-        Log.info(" Register command: " + baseCommand);
+        this.getLogger().info(" Register command: " + baseCommand);
         this.commands.put(baseCommand, object);
         this.subcommands.put(baseCommand, new HashMap<String, Method>());
     }

@@ -16,12 +16,12 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.slave.bukkit.commands;
+package eu.matejkormuth.pexel.slave.commands;
 
-import org.bukkit.entity.Player;
-
+import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.annotations.commands.CommandHandler;
+import eu.matejkormuth.pexel.commons.annotations.commands.SubCommand;
 import eu.matejkormuth.pexel.commons.text.ChatColor;
-import eu.matejkormuth.pexel.slave.PexelSlave;
 import eu.matejkormuth.pexel.slave.bukkit.chat.ChatChannel;
 import eu.matejkormuth.pexel.slave.bukkit.chat.PlayerChannelSubscriber;
 import eu.matejkormuth.pexel.slave.bukkit.chat.SubscribeMode;
@@ -53,14 +53,11 @@ public class ChannelCommand {
     
     @SubCommand(description = "Joins specified chat channel.")
     public void join(final Player sender, final String channelName) {
-        eu.matejkormuth.pexel.commons.Player p = PexelSlave.getInstance()
-                .getObjectFactory()
-                .getPlayer(sender);
         if (ChatChannel.getByName(channelName) != null)
-            if (!ChatChannel.getByName(channelName).isSubscribed(p))
+            if (!ChatChannel.getByName(channelName).isSubscribed(sender))
                 
                 ChatChannel.getByName(channelName).subscribe(
-                        new PlayerChannelSubscriber(p, SubscribeMode.READ));
+                        new PlayerChannelSubscriber(sender, SubscribeMode.READ));
             else
                 sender.sendMessage(ChatColor.RED + "You are already in that channel!");
         else
@@ -69,11 +66,8 @@ public class ChannelCommand {
     
     @SubCommand(description = "Lefts specified chat channel.")
     public void leave(final Player sender, final String channelName) {
-        eu.matejkormuth.pexel.commons.Player p = PexelSlave.getInstance()
-                .getObjectFactory()
-                .getPlayer(sender);
-        if (ChatChannel.getByName(channelName).isSubscribed(p))
-            ChatChannel.getByName(channelName).unsubscribe(p);
+        if (ChatChannel.getByName(channelName).isSubscribed(sender))
+            ChatChannel.getByName(channelName).unsubscribe(sender);
         else
             sender.sendMessage(ChatColor.RED + "You are not in that channel!");
     }

@@ -16,32 +16,36 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.slave.bukkit.commands;
+package eu.matejkormuth.pexel.commons.annotations.commands;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation used for marking subcomamnds. Must be used in class, that have annotation of {@link CommandHandler}.
- * 
- * @author Mato Kormuth
- * 
+ * Annotation used for marking class as command handler.
  */
-@Target({ java.lang.annotation.ElementType.METHOD })
+@Target({ java.lang.annotation.ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SubCommand {
+public @interface CommandHandler {
     /**
-     * Name of subcommand.
+     * The name of command that this handler handles.
      * 
      * @return the name
      */
-    String name() default "";
+    String name();
     
     /**
-     * Description of command.
+     * Descrption of command.
      * 
      * @return description
      */
     String description() default "";
+    
+    /**
+     * Aliases of command
+     * 
+     * @return aliases
+     */
+    String[] aliases() default "";
 }

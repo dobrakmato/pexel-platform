@@ -28,7 +28,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import eu.matejkormuth.pexel.slave.bukkit.commands.AlternativeCommands;
 import eu.matejkormuth.pexel.slave.bukkit.commands.BukkitCommandManager;
-import eu.matejkormuth.pexel.slave.bukkit.commands.ChannelCommand;
 import eu.matejkormuth.pexel.slave.bukkit.commands.CommandManager;
 import eu.matejkormuth.pexel.slave.bukkit.commands.FriendCommand;
 import eu.matejkormuth.pexel.slave.bukkit.commands.PCMDCommand;
@@ -181,7 +180,7 @@ public class PexelCore {
         // Pexel way
         this.commandManager = new BukkitCommandManager();
         //this.commandManager.registerCommands(new PartyCommand());
-        this.commandManager.registerCommands(new ChannelCommand());
+        //this.commandManager.registerCommands(new ChannelCommand());
         //this.commandManager.registerCommands(new MatchmakingCommand());
         
         StorageEngine.initialize(this);

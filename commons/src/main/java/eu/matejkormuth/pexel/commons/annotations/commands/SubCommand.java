@@ -16,36 +16,29 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.slave.components;
+package eu.matejkormuth.pexel.commons.annotations.commands;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import eu.matejkormuth.pexel.slave.Lobby;
-import eu.matejkormuth.pexel.slave.SlaveComponent;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Class that manages lobbies.
+ * Annotation used for marking subcomamnds. Must be used in class, that have annotation of {@link CommandHandler}.
  */
-public class LobbyManager extends SlaveComponent implements Runnable {
-    private final Set<Lobby> lobbies = new HashSet<Lobby>();
+@Target({ java.lang.annotation.ElementType.METHOD })
+@Retention(RetentionPolicy.RUNTIME)
+public @interface SubCommand {
+    /**
+     * Name of subcommand.
+     * 
+     * @return the name
+     */
+    String name() default "";
     
-    public void addLobby(final Lobby lobby) {
-        this.lobbies.add(lobby);
-    }
-    
-    @Override
-    public void onEnable() {
-        this.getSlave()
-                .getScheduler()
-                .each(this.getConfiguration().get("teleportInterval", 20L).asLong(),
-                        this);
-    }
-    
-    @Override
-    public void run() {
-        for (Lobby lobby : this.lobbies) {
-            lobby.teleportPlayers();
-        }
-    }
+    /**
+     * Description of command.
+     * 
+     * @return description
+     */
+    String description() default "";
 }

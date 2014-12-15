@@ -19,24 +19,26 @@
 package eu.matejkormuth.pexel.slave.boot;
 
 import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import eu.matejkormuth.pexel.commons.SlaveMinecraftServerType;
 import eu.matejkormuth.pexel.slave.PexelSlave;
+import eu.matejkormuth.pexel.slave.components.managers.CommandManager;
 
 /**
  * Bukkit (spigot compactibile) bootloader.
  */
-public class PexelSlaveBukkitPlugin extends JavaPlugin {
+public class PexelSlaveBukkitPlugin extends JavaPlugin implements Listener {
     private static PexelSlaveBukkitPlugin instance;
+    private CommandManager                commandManager;
     
     public static PexelSlaveBukkitPlugin getInstance() {
         return PexelSlaveBukkitPlugin.instance;
     }
     
-    /**
-     * 
-     */
     public PexelSlaveBukkitPlugin() {
         instance = this;
     }
@@ -50,6 +52,8 @@ public class PexelSlaveBukkitPlugin extends JavaPlugin {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this,
                 PexelSlave.getInstance().getSync().getOnTick(), 0L, 1L);
         PexelSlaveBukkitPlugin.instance = this;
+        this.commandManager = PexelSlave.getInstance()
+                .getComponent(CommandManager.class);
     }
     
     @Override
@@ -58,5 +62,23 @@ public class PexelSlaveBukkitPlugin extends JavaPlugin {
                 "[BOOT] Disabling PexelSlave throught PexelSlaveBukkitPlugin...");
         // TODO: Maybe implement some safe-shutdown, so tasks in Sync wont be lost.
         PexelSlave.getInstance().shutdown();
+    }
+    
+    @EventHandler
+    public void onCommnadPreprocess(final PlayerCommandPreprocessEvent event) {
+        eu.matejkormuth.pexel.commons.Player p = PexelSlave.getInstance()
+                .getObjectFactory()
+                .getPlayer(event.getPlayer());
+        if (event.getMessage().startsWith("/")) {
+            boolean success = this.commandManager.parseCommand(p, event.getMessage()
+                    .substring(1));
+            if (success)
+                event.setCancelled(true);
+        }
+        else {
+            boolean success = this.commandManager.parseCommand(p, event.getMessage());
+            if (success)
+                event.setCancelled(true);
+        }
     }
 }

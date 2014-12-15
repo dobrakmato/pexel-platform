@@ -50,6 +50,8 @@ import eu.matejkormuth.pexel.slave.bukkit.BukkitSlaveMinecraftSoftware;
 import eu.matejkormuth.pexel.slave.bukkit.BukkitTeleporter;
 import eu.matejkormuth.pexel.slave.components.TPSChecker;
 import eu.matejkormuth.pexel.slave.components.chat.ChatEventHandler;
+import eu.matejkormuth.pexel.slave.components.managers.CommandManager;
+import eu.matejkormuth.pexel.slave.components.managers.LobbyManager;
 import eu.matejkormuth.pexel.slave.events.SlaveEventBus;
 import eu.matejkormuth.pexel.slave.events.player.PlayerJoinEvent;
 import eu.matejkormuth.pexel.slave.events.player.PlayerLeaveEvent;
@@ -161,14 +163,15 @@ public class PexelSlave implements LoggerHolder {
         
         // Initialize whole shit from PexelCore.
         
-        // Legacy PexelCore <https://github.com/dobrakmato/PexelCore> code.
-        // this.addComponent(new LegacyCoreComponent());
-        
         // Register standart event handlers.
         this.eventBus.register(new ChatEventHandler());
         
         // Add standart TPS checker.
         this.addComponent(new TPSChecker());
+        
+        // Add managers.
+        this.addComponent(new LobbyManager());
+        this.addComponent(new CommandManager());
         
         // Create sync object.
         this.sync = new Sync();
@@ -176,6 +179,7 @@ public class PexelSlave implements LoggerHolder {
         // Create scheduler and attach it to sync.
         this.scheduler = new Scheduler();
         this.sync.addTickHandler(this.scheduler);
+        // TPS Checker has direct connection to sync.
         this.sync.addTickHandler(this.getComponent(TPSChecker.class));
         
         // Connect to master - other thread.

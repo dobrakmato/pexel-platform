@@ -16,39 +16,36 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.slave.bukkit.commands;
+package eu.matejkormuth.pexel.slave.components.managers;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.HashSet;
+import java.util.Set;
+
+import eu.matejkormuth.pexel.slave.Lobby;
+import eu.matejkormuth.pexel.slave.SlaveComponent;
 
 /**
- * Annotation used for marking class as command handler.
- * 
- * @author Mato Kormuth
- * 
+ * Class that manages lobbies.
  */
-@Target({ java.lang.annotation.ElementType.TYPE })
-@Retention(RetentionPolicy.RUNTIME)
-public @interface CommandHandler {
-    /**
-     * The name of command that this handler handles.
-     * 
-     * @return the name
-     */
-    String name();
+public class LobbyManager extends SlaveComponent implements Runnable {
+    private final Set<Lobby> lobbies = new HashSet<Lobby>();
     
-    /**
-     * Descrption of command.
-     * 
-     * @return description
-     */
-    String description() default "";
+    public void addLobby(final Lobby lobby) {
+        this.lobbies.add(lobby);
+    }
     
-    /**
-     * Aliases of command
-     * 
-     * @return aliases
-     */
-    String[] aliases() default "";
+    @Override
+    public void onEnable() {
+        this.getSlave()
+                .getScheduler()
+                .each(this.getConfiguration().get("teleportInterval", 20L).asLong(),
+                        this);
+    }
+    
+    @Override
+    public void run() {
+        for (Lobby lobby : this.lobbies) {
+            lobby.teleportPlayers();
+        }
+    }
 }
