@@ -18,13 +18,15 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave.components;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.CuboidRegion;
+import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.arenas.Arena;
 import eu.matejkormuth.pexel.commons.arenas.ArenaState;
-import eu.matejkormuth.pexel.protocol.requests.InGameStateChangedMessage;
-import eu.matejkormuth.pexel.protocol.requests.InMatchmakingRegisterGameMessage;
+import eu.matejkormuth.pexel.protocol.requests.InArenaUpdateMessage;
 import eu.matejkormuth.pexel.slave.PexelSlave;
 import eu.matejkormuth.pexel.slave.Scheduler.ScheduledTask;
 
@@ -42,14 +44,6 @@ public abstract class SlaveArena extends Arena {
         
         // Register events in this arena.
         PexelSlave.getInstance().getEventBus().register(this);
-        
-        // Register this game on master.
-        PexelSlave.getInstance()
-                .getServer()
-                .getMasterServerInfo()
-                .sendRequest(
-                        new InMatchmakingRegisterGameMessage(this.getGameUUID(),
-                                minigame));
     }
     
     public SlaveArena(final CuboidRegion region, final String minigame, final String tag) {
@@ -74,17 +68,32 @@ public abstract class SlaveArena extends Arena {
     
     @Override
     public void setState(final ArenaState state) {
+        super.setState(state);
+        
         // Listen for changes and redirect them to master.
+        this.sendUpdateRequest();
+    }
+    
+    /**
+     * Sends update packet to master server's matchmaking.
+     */
+    protected void sendUpdateRequest() {
+        Set<UUID> players = new HashSet<UUID>(this.getPlayerCount());
+        for (Player p : this.getPlayers()) {
+            players.add(p.getUniqueId());
+        }
+        
         PexelSlave.getInstance()
                 .getServer()
                 .getMasterServerInfo()
-                .sendRequest(new InGameStateChangedMessage(this.getGameUUID(), state));
-        
-        super.setState(state);
+                .sendRequest(
+                        new InArenaUpdateMessage(this.getGameUUID(),
+                                this.getMaximumSlots(), this.getState(), players));
     }
     
     @Override
     public UUID getGameUUID() {
         return this.uuid;
     }
+    
 }

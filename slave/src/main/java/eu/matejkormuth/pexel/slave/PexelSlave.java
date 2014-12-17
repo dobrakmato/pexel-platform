@@ -83,14 +83,19 @@ public class PexelSlave implements LoggerHolder {
     
     protected ServerMode            mode;
     
-    protected List<SlaveComponent>  components        = new ArrayList<SlaveComponent>();
+    protected ComponentList         components        = new ComponentList();
     protected boolean               componentsEnabled = false;
     
     private final List<Player>      onlinePlayers;
     
-    public PexelSlave(final File dataFolder, final SlaveMinecraftServerType software) {
+    private final ClassLoader       classLoader;
+    
+    public PexelSlave(final File dataFolder, final SlaveMinecraftServerType software,
+            final ClassLoader classLoader) {
         this.log = new Logger("PexelSlave");
         this.log.displayTimestamps = true;
+        
+        this.classLoader = classLoader;
         
         try {
             this.log.setOutput(new FileWriter(dataFolder.getAbsolutePath()
@@ -112,6 +117,9 @@ public class PexelSlave implements LoggerHolder {
             this.config = Configuration.load(f);
         }
         
+        // To allow PexelSlave static calls from components.
+        PexelSlave.instance = this;
+        
         // Initialize event bus.
         this.eventBus = new SlaveEventBus();
         
@@ -121,7 +129,7 @@ public class PexelSlave implements LoggerHolder {
                 this.serverSoftware = new BukkitSlaveMinecraftSoftware();
                 this.pluginLoader = new BukkitPluginLoader();
                 this.objectFactory = new BukkitObjectFactory();
-                this.addComponent(new BukkitTeleporter());
+                this.addComponentSystem(new BukkitTeleporter());
                 break;
             case FORGE:
                 throw new RuntimeException(
@@ -150,13 +158,13 @@ public class PexelSlave implements LoggerHolder {
         
         // Add local matchmaking.
         Matchmaking matchmaking = new Matchmaking();
-        this.addComponent(matchmaking);
+        this.addComponentSystem(matchmaking);
         
         // Load all components.
         this.log.info("Loading all components...");
         File libsFolder = new File(dataFolder.getAbsoluteFile() + "/libs/");
         libsFolder.mkdirs();
-        new SlaveComponentLoader(this.log).loadAll(libsFolder);
+        new SlaveComponentLoader(this.log, this).loadAll(libsFolder);
         
         // TODO: Load all plugins.
         this.pluginLoader.loadAll();
@@ -172,11 +180,11 @@ public class PexelSlave implements LoggerHolder {
         
         // Add standart TPS checker.
         TPSChecker tpsChecker = new TPSChecker();
-        this.addComponent(tpsChecker);
+        this.addComponentSystem(tpsChecker);
         
         // Add managers.
-        this.addComponent(new LobbyManager());
-        this.addComponent(new CommandManager());
+        this.addComponentSystem(new LobbyManager());
+        this.addComponentSystem(new CommandManager());
         
         // Create sync object.
         this.sync = new Sync();
@@ -197,6 +205,9 @@ public class PexelSlave implements LoggerHolder {
         this.server.getMessenger().addResponder(
                 new MatchmakingResponder(this.getEventBus()));
         
+        // Enable all components before registering on master. Buisness logic (minigames) can be registered trough components.
+        this.enableComponents();
+        
         // Register myself on master.
         this.server.getMasterServerInfo()
                 .sendRequest(
@@ -205,8 +216,6 @@ public class PexelSlave implements LoggerHolder {
                                 this.serverSoftware.getType(),
                                 this.serverSoftware.getVersion(),
                                 this.serverSoftware.getSlots()));
-        
-        this.enableComponents();
         
         // Register all games on master matchmaking.
         matchmaking.registerGamesOnMaster();
@@ -265,8 +274,16 @@ public class PexelSlave implements LoggerHolder {
      * @param component
      *            component to add
      */
-    public void addComponent(final SlaveComponent component) {
-        this.components.add(component);
+    public void addComponentSystem(final SlaveComponent component) {
+        this.components.addSystem(component);
+        
+        if (this.componentsEnabled) {
+            component.onEnable();
+        }
+    }
+    
+    public void addComponentUser(final SlaveComponent component) {
+        this.components.addUser(component);
         
         if (this.componentsEnabled) {
             component.onEnable();
@@ -280,16 +297,14 @@ public class PexelSlave implements LoggerHolder {
     }
     
     protected void disableComponents() {
-        for (ServerComponent c : this.components) {
+        for (SlaveComponent c : this.components) {
             this.disableComponent(c);
         }
     }
     
     protected void enableComponent(final SlaveComponent e) {
-        this.log.info("Enabling [" + e.getClass().getSimpleName() + "] ...");
-        if (e instanceof SlaveComponent) {
-            e.slave = this;
-        }
+        this.log.info("Enabling [" + e.getClass().getSimpleName() + "]...");
+        e.slave = this;
         e.__initLogger(this);
         e.__initConfig(this.getConfiguration());
         try {
@@ -300,20 +315,25 @@ public class PexelSlave implements LoggerHolder {
     }
     
     protected void disableComponent(final ServerComponent e) {
-        this.log.info("Disabling [" + e.getClass().getSimpleName() + "] ...");
+        this.log.info("Disabling [" + e.getClass().getSimpleName() + "]...");
         e.onDisable();
     }
     
-    public <T extends ServerComponent> T getComponent(final Class<T> type) {
-        for (ServerComponent c : this.components) {
-            if (type.isInstance(c.getClass())) { return type.cast(c); }
+    public <T extends SlaveComponent> T getComponent(final Class<T> type) {
+        for (SlaveComponent c : this.components) {
+            if (type.isInstance(c)) { return type.cast(c); }
         }
         return null;
     }
     
     public static void init(final File dataFolder,
             final SlaveMinecraftServerType software) {
-        PexelSlave.instance = new PexelSlave(dataFolder, software);
+        new PexelSlave(dataFolder, software, PexelSlave.class.getClassLoader());
+    }
+    
+    public static void init(final File dataFolder,
+            final SlaveMinecraftServerType software, final ClassLoader classLoader) {
+        new PexelSlave(dataFolder, software, classLoader);
     }
     
     public static final PexelSlave getInstance() {
@@ -371,5 +391,9 @@ public class PexelSlave implements LoggerHolder {
                 .getSection(PexelSlave.class)
                 .get("gameOnlyServer", false)
                 .asBoolean();
+    }
+    
+    public ClassLoader getClassLoader() {
+        return this.classLoader;
     }
 }

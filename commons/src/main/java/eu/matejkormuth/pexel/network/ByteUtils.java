@@ -31,15 +31,19 @@ public class ByteUtils {
     /**
      * Number of bytes {@link UUID} take.
      */
-    public static final int UUID_SIZE = 16;
+    public static final int UUID_SIZE         = 16;
     /**
-     * Number of byte {@link Integer} take.
+     * Number of bytes {@link Integer} take.
      */
-    public static final int INT_SIZE  = 4;
+    public static final int INT_SIZE          = 4;
     /**
-     * Number of byte {@link Long} take.
+     * Number of bytes {@link Long} take.
      */
-    public static final int LONG_SIZE = 8;
+    public static final int LONG_SIZE         = 8;
+    /**
+     * Number of bytes variabile length string header takes.
+     */
+    public static final int VAR_STRING_HEADER = 2;
     
     private ByteUtils() {
     }
@@ -83,6 +87,29 @@ public class ByteUtils {
         System.arraycopy(array1, 0, result, 0, array1.length);
         System.arraycopy(array2, 0, result, array1.length, array2.length);
         return result;
+    }
+    
+    public static ByteBuffer writeVarString(final ByteBuffer buffer,
+            final Charset charset, final String string) {
+        Preconditions.checkArgument(string.length() < 32768, "string length < 32768");
+        Preconditions.checkNotNull(charset, "charset");
+        Preconditions.checkNotNull(buffer, "buffer");
+        
+        return buffer.putShort((short) string.length()).put(string.getBytes(charset));
+    }
+    
+    public static String readVarString(final ByteBuffer buffer, final Charset charset) {
+        Preconditions.checkNotNull(charset, "charset");
+        Preconditions.checkNotNull(buffer, "buffer");
+        
+        short length = buffer.getShort();
+        byte[] data = new byte[length];
+        buffer.get(data);
+        return new String(data, charset);
+    }
+    
+    public static int varStringLength(final String string) {
+        return string.length() + ByteUtils.VAR_STRING_HEADER;
     }
     
     public static byte[] toByteArray(final String string) {

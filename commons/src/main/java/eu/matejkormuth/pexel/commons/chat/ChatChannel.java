@@ -20,14 +20,13 @@ package eu.matejkormuth.pexel.commons.chat;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.bukkit.Sound;
-
-import com.google.common.collect.Maps;
 
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.text.ChatColor;
@@ -40,13 +39,13 @@ public class ChatChannel {
                                                                    + "You have left '%name%' chat channel!";
     public static final String              SUBCRIBE_MSG   = ChatColor.LIGHT_PURPLE
                                                                    + "You have joined '%name%' chat channel with mode %mode%!";
-    public static final ChatChannel         CHANNEL_LOG    = new ChatChannel("_log");
-    public static final ChatChannel         CHANNEL_GLOBAL = new ChatChannel("_global");
-    public static final ChatChannel         CHANNEL_LOBBY  = new ChatChannel("_lobby");
+    public static ChatChannel               CHANNEL_LOG    = new ChatChannel("_log");
+    public static ChatChannel               CHANNEL_GLOBAL = new ChatChannel("_global");
+    public static ChatChannel               CHANNEL_LOBBY  = new ChatChannel("_lobby");
     
     //Last "random" channel ID.
     private static AtomicLong               randomId       = new AtomicLong(0L);
-    private static Map<String, ChatChannel> mapping        = Maps.newHashMap();
+    private static Map<String, ChatChannel> mapping        = new HashMap<String, ChatChannel>();
     
     /**
      * Returns channel by name or null if channel not found.

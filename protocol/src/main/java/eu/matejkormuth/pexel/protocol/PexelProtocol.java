@@ -25,10 +25,10 @@ import com.google.common.base.Charsets;
 import eu.matejkormuth.pexel.network.Protocol;
 import eu.matejkormuth.pexel.protocol.requests.DebugMessageRequest;
 import eu.matejkormuth.pexel.protocol.requests.FileTransferRequest;
-import eu.matejkormuth.pexel.protocol.requests.InGameStateChangedMessage;
 import eu.matejkormuth.pexel.protocol.requests.InIsBannedFromRequest;
 import eu.matejkormuth.pexel.protocol.requests.InMatchmakingRegisterGameMessage;
 import eu.matejkormuth.pexel.protocol.requests.InMatchmakingRequest;
+import eu.matejkormuth.pexel.protocol.requests.InArenaUpdateMessage;
 import eu.matejkormuth.pexel.protocol.requests.InPlayerUnresolvableError;
 import eu.matejkormuth.pexel.protocol.requests.InServerMetaDataMessage;
 import eu.matejkormuth.pexel.protocol.requests.OutMatchmakingGameStatusRequest;
@@ -36,7 +36,6 @@ import eu.matejkormuth.pexel.protocol.requests.OutPlayerMatchmakedMessage;
 import eu.matejkormuth.pexel.protocol.requests.PlayerTeleportRequest;
 import eu.matejkormuth.pexel.protocol.requests.ServerStatusRequest;
 import eu.matejkormuth.pexel.protocol.requests.SlaveServerSetModeRequest;
-import eu.matejkormuth.pexel.protocol.responses.InMatchmakingStatusResponse;
 import eu.matejkormuth.pexel.protocol.responses.OutIsBannedFromResponse;
 import eu.matejkormuth.pexel.protocol.responses.ServerStatusResponse;
 
@@ -58,7 +57,8 @@ public class PexelProtocol extends Protocol {
         // Messages
         this.registerRequest(4, InServerMetaDataMessage.class);
         this.registerRequest(6, InMatchmakingRegisterGameMessage.class);
-        this.registerRequest(7, InGameStateChangedMessage.class);
+        // Sent from slave each time matchmaking game status changes.
+        this.registerRequest(7, InArenaUpdateMessage.class);
         // Sends matchmaking request to master server.
         this.registerRequest(8, InMatchmakingRequest.class);
         // Sent by slave when master should take care of misplaced player.
@@ -75,7 +75,6 @@ public class PexelProtocol extends Protocol {
         this.registerRequest(11, InIsBannedFromRequest.class);
         
         // Responses to requests
-        this.registerResponse(10, InMatchmakingStatusResponse.class); //nezmysel
         this.registerResponse(11, OutIsBannedFromResponse.class);
     }
 }

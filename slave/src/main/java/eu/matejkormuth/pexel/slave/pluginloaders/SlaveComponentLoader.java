@@ -42,13 +42,20 @@ import eu.matejkormuth.pexel.slave.SlaveComponent;
  * Standart slave component type plugin loader.
  */
 public class SlaveComponentLoader {
-    private final Logger log;
+    private final Logger     log;
+    private final PexelSlave slave;
     
-    public SlaveComponentLoader(final Logger log) {
+    public SlaveComponentLoader(final Logger log, final PexelSlave slave) {
         this.log = log.getChild("ComponentLoader");
+        this.slave = slave;
     }
     
     public void loadAll(final File folder) {
+        try {
+            Class.forName(SlaveComponent.class.getCanonicalName());
+        } catch (ClassNotFoundException e1) {
+            e1.printStackTrace();
+        }
         for (File file : folder.listFiles()) {
             if (file.getName().endsWith(".jar")) {
                 try {
@@ -81,7 +88,7 @@ public class SlaveComponentLoader {
             if (SlaveComponent.class.isAssignableFrom(clazz)) {
                 try {
                     Object component = clazz.getConstructor().newInstance();
-                    PexelSlave.getInstance().addComponent((SlaveComponent) component);
+                    this.slave.addComponentUser((SlaveComponent) component);
                 } catch (InstantiationException | IllegalAccessException
                         | IllegalArgumentException | InvocationTargetException
                         | NoSuchMethodException | SecurityException e) {
@@ -93,7 +100,7 @@ public class SlaveComponentLoader {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private void addURL(final URL u) throws IOException {
-        URLClassLoader sysloader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+        URLClassLoader sysloader = (URLClassLoader) this.slave.getClassLoader(); //ClassLoader.getSystemClassLoader();
         Class sysclass = URLClassLoader.class;
         
         try {

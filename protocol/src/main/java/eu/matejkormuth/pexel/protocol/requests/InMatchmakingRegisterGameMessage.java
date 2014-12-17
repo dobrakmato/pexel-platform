@@ -30,26 +30,34 @@ import eu.matejkormuth.pexel.protocol.PexelProtocol;
  */
 public class InMatchmakingRegisterGameMessage extends Request {
     public UUID   gameId;
+    public int    maxPlayers;
     public String minigame;
     
     public InMatchmakingRegisterGameMessage() {
     }
     
-    public InMatchmakingRegisterGameMessage(final UUID gameId, final String minigame) {
+    public InMatchmakingRegisterGameMessage(final UUID gameId, final String minigame,
+            final int maxPlayers) {
         this.gameId = gameId;
+        this.maxPlayers = maxPlayers;
         this.minigame = minigame;
     }
     
     @Override
     public ByteBuffer toByteBuffer() {
-        return ByteUtils.writeUUID(ByteBuffer.allocate(8 + this.minigame.length()),
-                this.gameId).put(this.minigame.getBytes(PexelProtocol.CHARSET));
+        return ByteUtils.writeVarString(
+                ByteUtils.writeUUID(
+                        ByteBuffer.allocate(ByteUtils.UUID_SIZE + ByteUtils.INT_SIZE
+                                + ByteUtils.varStringLength(this.minigame)), this.gameId),
+                PexelProtocol.CHARSET, this.minigame)
+                .putInt(this.maxPlayers);
     }
     
     @Override
     public void fromByteBuffer(final ByteBuffer buffer) {
         this.gameId = ByteUtils.readUUID(buffer);
-        this.minigame = new String(buffer.slice().array(), PexelProtocol.CHARSET);
+        this.minigame = ByteUtils.readVarString(buffer, PexelProtocol.CHARSET);
+        this.maxPlayers = buffer.getInt();
     }
     
 }

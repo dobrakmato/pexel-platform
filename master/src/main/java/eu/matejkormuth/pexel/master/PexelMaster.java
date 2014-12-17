@@ -30,7 +30,6 @@ import com.google.common.base.Optional;
 import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.commons.LoggerHolder;
-import eu.matejkormuth.pexel.commons.ServerComponent;
 import eu.matejkormuth.pexel.commons.Storage;
 import eu.matejkormuth.pexel.commons.StorageImpl;
 import eu.matejkormuth.pexel.master.cache.Caches;
@@ -209,7 +208,7 @@ public final class PexelMaster implements LoggerHolder {
     }
     
     protected void disableComponents() {
-        for (ServerComponent c : this.components) {
+        for (MasterComponent c : this.components) {
             this.disableComponent(c);
         }
     }
@@ -228,14 +227,14 @@ public final class PexelMaster implements LoggerHolder {
         }
     }
     
-    protected void disableComponent(final ServerComponent e) {
+    protected void disableComponent(final MasterComponent e) {
         this.log.info("Disabling [" + e.getClass().getSimpleName() + "] ...");
         e.onDisable();
     }
     
-    public <T extends ServerComponent> T getComponent(final Class<T> type) {
-        for (ServerComponent c : this.components) {
-            if (type.isInstance(c.getClass())) { return type.cast(c); }
+    public <T extends MasterComponent> T getComponent(final Class<T> type) {
+        for (MasterComponent c : this.components) {
+            if (type.isInstance(c)) { return type.cast(c); }
         }
         return null;
     }

@@ -18,7 +18,9 @@
 // @formatter:on
 package eu.matejkormuth.pexel.master.matchmaking;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.Player;
@@ -27,26 +29,19 @@ import eu.matejkormuth.pexel.commons.arenas.ArenaState;
 import eu.matejkormuth.pexel.commons.arenas.LeaveReason;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
 import eu.matejkormuth.pexel.master.PexelMaster;
-import eu.matejkormuth.pexel.network.MessageExtender;
 import eu.matejkormuth.pexel.network.ProxiedPlayer;
 import eu.matejkormuth.pexel.network.ServerInfo;
-import eu.matejkormuth.pexel.network.ServerType;
-import eu.matejkormuth.pexel.protocol.requests.OutMatchmakingGameStatusRequest;
 import eu.matejkormuth.pexel.protocol.requests.OutPlayerMatchmakedMessage;
-import eu.matejkormuth.pexel.protocol.responses.InMatchmakingStatusResponse;
 
 /**
  * Master side implementation of MatchmakingGame.
  */
 @JsonType
-public class MatchmakingGameImpl extends
-        MessageExtender<OutMatchmakingGameStatusRequest, InMatchmakingStatusResponse>
-        implements MatchmakingGame {
+public class MatchmakingGameImpl implements MatchmakingGame {
     
     public MatchmakingGameImpl(final ServerInfo slave, final UUID gameId,
             final String minigameName) {
         // This is master only implementation.
-        super(ServerType.MASTER);
         this.host = slave;
         this.gameId = gameId;
         this.minigameName = minigameName;
@@ -55,22 +50,21 @@ public class MatchmakingGameImpl extends
     protected transient ServerInfo host;
     protected UUID                 gameId;
     
-    public int                     cached_freeSlots;
     public int                     cached_maximumSlots;
-    public ArenaState              cached_state;
-    public int                     cached_playerCount; // Could be replaced with player list.
-                                                        
+    public ArenaState              cached_state   = ArenaState.WAITING_EMPTY;
+    public Set<UUID>               cached_players = new HashSet<UUID>();
+    
     // Name of minigame.                                          
     protected String               minigameName;
     
     @Override
     public int getFreeSlots() {
-        return this.cached_freeSlots;
+        return this.getMaximumSlots() - this.getPlayerCount();
     }
     
     @Override
     public boolean empty() {
-        return this.cached_playerCount == 0;
+        return this.cached_players.size() == 0;
     }
     
     @Override
@@ -85,7 +79,7 @@ public class MatchmakingGameImpl extends
     
     @Override
     public int getPlayerCount() {
-        return this.cached_playerCount;
+        return this.cached_players.size();
     }
     
     @Override
@@ -107,21 +101,10 @@ public class MatchmakingGameImpl extends
         // Send information about player's join on target server.
         this.host.sendRequest(new OutPlayerMatchmakedMessage(player, this.gameId));
         
+        this.cached_players.add(player.getUniqueId());
+        
         // Cross server teleport.
         PexelMaster.getInstance().getProxy().connect(player, this.host);
-    }
-    
-    @Override
-    public void onResponse(final InMatchmakingStatusResponse response) {
-        this.cached_freeSlots = response.freeSlots;
-        this.cached_maximumSlots = response.maximumSlots;
-        this.cached_playerCount = response.playerCount;
-        this.cached_state = response.state;
-    }
-    
-    @Override
-    public OutMatchmakingGameStatusRequest onRequest() {
-        return new OutMatchmakingGameStatusRequest(this.getCallback(), this.gameId);
     }
     
     @Override

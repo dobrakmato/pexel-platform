@@ -53,10 +53,12 @@ public class PexelSlaveBukkitPlugin extends JavaPlugin implements Listener {
     public void onEnable() {
         this.getLogger().info(
                 "[BOOT] Bootstrapping PexelSlave throught PexelSlaveBukkitPlugin...");
-        PexelSlave.init(this.getDataFolder(), SlaveMinecraftServerType.CRAFTBUKKIT);
+        PexelSlave.init(this.getDataFolder(), SlaveMinecraftServerType.CRAFTBUKKIT,
+                this.getClassLoader());
         // Start sync.
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this,
                 PexelSlave.getInstance().getSync().getOnTick(), 0L, 1L);
+        
         setInstance(this);
         this.commandManager = PexelSlave.getInstance()
                 .getComponent(CommandManager.class);

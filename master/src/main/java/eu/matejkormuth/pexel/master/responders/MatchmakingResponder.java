@@ -29,7 +29,7 @@ import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingRequest;
 import eu.matejkormuth.pexel.master.PexelMaster;
 import eu.matejkormuth.pexel.master.matchmaking.Matchmaking;
 import eu.matejkormuth.pexel.master.matchmaking.MatchmakingGameImpl;
-import eu.matejkormuth.pexel.protocol.requests.InGameStateChangedMessage;
+import eu.matejkormuth.pexel.protocol.requests.InArenaUpdateMessage;
 import eu.matejkormuth.pexel.protocol.requests.InMatchmakingRegisterGameMessage;
 import eu.matejkormuth.pexel.protocol.requests.InMatchmakingRequest;
 
@@ -41,6 +41,7 @@ public class MatchmakingResponder {
             final InMatchmakingRegisterGameMessage msg) {
         MatchmakingGameImpl game = new MatchmakingGameImpl(msg.getSender(), msg.gameId,
                 msg.minigame);
+        game.cached_maximumSlots = msg.maxPlayers;
         PexelMaster.getInstance().getComponent(Matchmaking.class).registerArena(game);
     }
     
@@ -66,7 +67,12 @@ public class MatchmakingResponder {
         
     }
     
-    public void onGameStatusChage(final InGameStateChangedMessage msg) {
-        PexelMaster.getInstance().getComponent(Matchmaking.class).getGame(msg.gameId).cached_state = msg.newState;
+    public void onGameStatusChange(final InArenaUpdateMessage msg) {
+        MatchmakingGameImpl game = PexelMaster.getInstance()
+                .getComponent(Matchmaking.class)
+                .getGame(msg.gameId);
+        game.cached_maximumSlots = msg.maximumSlots;
+        game.cached_state = msg.state;
+        game.cached_players = msg.players;
     }
 }

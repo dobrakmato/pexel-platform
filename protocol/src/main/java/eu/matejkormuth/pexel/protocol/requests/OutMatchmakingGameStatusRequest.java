@@ -23,13 +23,12 @@ import java.util.UUID;
 
 import eu.matejkormuth.pexel.network.AsyncRequest;
 import eu.matejkormuth.pexel.network.Callback;
-import eu.matejkormuth.pexel.protocol.responses.InMatchmakingStatusResponse;
 
 public class OutMatchmakingGameStatusRequest extends AsyncRequest {
     public UUID gameId;
     
     public OutMatchmakingGameStatusRequest(
-            final Callback<InMatchmakingStatusResponse> callback, final UUID gameId) {
+            final Callback<InArenaUpdateMessage> callback, final UUID gameId) {
         super(callback);
         this.gameId = gameId;
     }

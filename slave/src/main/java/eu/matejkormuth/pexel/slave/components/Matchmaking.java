@@ -69,7 +69,7 @@ public class Matchmaking extends SlaveComponent {
     }
     
     public Collection<SlaveArena> getArenas() {
-        return this.arenas_byTag.values();
+        return this.arenas_byUUID.values();
     }
     
     public void registerArena(final SlaveArena arena) {
@@ -92,10 +92,10 @@ public class Matchmaking extends SlaveComponent {
                     .getMasterServerInfo()
                     .sendRequest(
                             new InMatchmakingRegisterGameMessage(arena.getGameUUID(),
-                                    arena.getMinigame().getName()));
+                                    arena.getMinigame().getName(),
+                                    arena.getMaximumSlots()));
             count++;
         }
-        this.getLogger().info(
-                "Sent " + count + " InMatchmakingRegisterGameMessage requests!");
+        this.getLogger().info("Sent " + count + " requests!");
     }
 }
