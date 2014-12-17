@@ -31,7 +31,7 @@ public class Logger {
     private final Logger       parent;
     private final String       name;
     private OutputStreamWriter writer;
-    public boolean             timestamp;
+    public boolean             displayTimestamps;
     
     public Logger(final String name) {
         this.name = name;
@@ -119,7 +119,7 @@ public class Logger {
     }
     
     protected void log(final String msg) {
-        if (this.timestamp) {
+        if (this.displayTimestamps) {
             String s = this.timeStamp() + " [" + this.name + "] " + msg;
             System.out.println(s);
             try {

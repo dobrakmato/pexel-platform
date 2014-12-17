@@ -22,7 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * Class that represents handle.
+ * Class that represents method of object.
  */
 public class MethodOfObject {
     protected Method method;

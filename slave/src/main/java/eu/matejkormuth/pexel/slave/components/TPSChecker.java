@@ -29,14 +29,14 @@ import eu.matejkormuth.pexel.slave.TickHandler;
  * Class that checks for TPS (ticks per second) stability and value on server.
  */
 public class TPSChecker extends SlaveComponent implements TickHandler {
-    private final int     targetTPS          = 20;
-    private final int     minimalTPS         = 18;
+    private final int           targetTPS          = 20;
+    private final int           minimalTPS         = 18;
     
-    private long          laggedTicks        = 0;
-    private int           currentLaggedTicks = 0;
+    private long                laggedTicks        = 0;
+    private int                 currentLaggedTicks = 0;
     
-    private AtomicInteger counter;
-    private Timer         timer;
+    private final AtomicInteger counter            = new AtomicInteger(0);
+    private Timer               timer;
     
     @Override
     public void onEnable() {

@@ -24,14 +24,22 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
+import eu.matejkormuth.pexel.commons.Logger;
+
 public class Messenger implements PayloadHandler {
+    
     private final Map<Class<? extends Request>, MethodOfObject> methods = new HashMap<Class<? extends Request>, MethodOfObject>();
     private final CallbackHandler                               callbackHandler;
     private final Protocol                                      protocol;
+    private final Logger                                        log;
+    private final Class<Request>                                requestClass;
     
-    public Messenger(final CallbackHandler listener, final Protocol protocol) {
+    public Messenger(final CallbackHandler listener, final Protocol protocol,
+            final Logger parentLogger) {
         this.callbackHandler = listener;
         this.protocol = protocol;
+        this.log = parentLogger.getChild("Messenger");
+        this.requestClass = Request.class;
     }
     
     /**
@@ -42,17 +50,27 @@ public class Messenger implements PayloadHandler {
      */
     @SuppressWarnings("unchecked")
     public void addResponder(final Object responder) {
+        this.log.debug("New responder " + responder.getClass().getCanonicalName());
         // Register all valid methods.
         for (Method m : responder.getClass().getDeclaredMethods()) {
             Class<?>[] types = m.getParameterTypes();
             // If accepts only one parameter.
             if (types.length == 1) {
                 // And that is some request.
-                if (types[0].isAssignableFrom(Request.class)) {
+                if (this.requestClass.isAssignableFrom(types[0])) {
                     // And that request is supported by protocol.
                     if (this.protocol.supportsRequest((Class<? extends Request>) types[0])) {
+                        this.log.debug("  - handles " + types[0].getCanonicalName());
                         this.methods.put((Class<? extends Request>) types[0],
                                 new MethodOfObject(responder, m));
+                    }
+                    else {
+                        this.log.warn("Responder "
+                                + responder.getClass().getCanonicalName()
+                                + " has request handler for Request ("
+                                + types[0].getCanonicalName()
+                                + ") that is not supported by current protocol ("
+                                + this.protocol.getClass().getCanonicalName() + ")");
                     }
                 }
             }
@@ -61,8 +79,14 @@ public class Messenger implements PayloadHandler {
     
     private void invokeHandler(final ServerInfo sender, final Request request) {
         try {
-            Object response = this.methods.get(request.getClass()).invoke(
-                    new Object[] { request });
+            Class<? extends Request> clazz = request.getClass();
+            if (!this.methods.containsKey(clazz)) {
+                this.log.warn("Request " + clazz.getCanonicalName()
+                        + " does not have registered responder.");
+                return;
+            }
+            
+            Object response = this.methods.get(clazz).invoke(new Object[] { request });
             if (response instanceof Response) {
                 sender.sendResponse((Response) response);
             }
@@ -96,7 +120,10 @@ public class Messenger implements PayloadHandler {
             // Create request object.
             Response response = this.protocol.getResponse(responseType).newInstance();
             response.requestID = requestID;
-            response.fromByteBuffer(ByteBuffer.wrap(payload, 13, payload.length - 13));
+            
+            byte[] packetData = new byte[payload.length - 13];
+            System.arraycopy(payload, 13, packetData, 0, packetData.length);
+            response.fromByteBuffer(ByteBuffer.wrap(packetData));
             
             // Redirect to callback handler.
             this.callbackHandler.onResponse(response);
@@ -114,7 +141,10 @@ public class Messenger implements PayloadHandler {
             Class<? extends Request> requestTypeClazz = this.protocol.getRequest(requestType);
             Request request = requestTypeClazz.newInstance();
             request.requestID = requestID;
-            request.fromByteBuffer(ByteBuffer.wrap(payload, 13, payload.length - 13));
+            request.sender = sender;
+            byte[] packetData = new byte[payload.length - 13];
+            System.arraycopy(payload, 13, packetData, 0, packetData.length);
+            request.fromByteBuffer(ByteBuffer.wrap(packetData));
             
             // Find and invoke handler.
             this.invokeHandler(sender, request);

@@ -75,7 +75,7 @@ public final class PexelMaster implements LoggerHolder {
     
     private PexelMaster(final File dataFolder) {
         this.log = new Logger("PexelMaster");
-        this.log.timestamp = true;
+        this.log.displayTimestamps = true;
         
         try {
             this.log.setOutput(new FileWriter(dataFolder.getAbsolutePath()
@@ -101,7 +101,8 @@ public final class PexelMaster implements LoggerHolder {
         File storageFolder = new File(dataFolder.getAbsolutePath() + "/storage");
         storageFolder.mkdirs();
         this.storage = new MasterStorageProxy(new StorageImpl(storageFolder,
-                this.config.getSection(StorageImpl.class)));
+                this.config.getSection(StorageImpl.class), this.getLogger().getChild(
+                        StorageImpl.class.getSimpleName())));
         this.addComponent(this.storage);
         
         // Set up scheduler.
@@ -221,6 +222,7 @@ public final class PexelMaster implements LoggerHolder {
             e.__initConfig(this.getConfiguration());
             e.onEnable();
         } catch (Exception ex) {
+            ex.printStackTrace();
             this.log.info("Error '" + ex.getMessage() + "' while enabling component "
                     + e.getClass().getSimpleName());
         }

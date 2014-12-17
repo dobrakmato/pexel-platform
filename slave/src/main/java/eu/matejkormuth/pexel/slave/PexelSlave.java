@@ -41,13 +41,13 @@ import eu.matejkormuth.pexel.commons.SlaveMinecraftServer;
 import eu.matejkormuth.pexel.commons.SlaveMinecraftServerType;
 import eu.matejkormuth.pexel.commons.StorageImpl;
 import eu.matejkormuth.pexel.commons.storage.MapDescriptor;
-import eu.matejkormuth.pexel.commons.storage.MinigameDescriptor;
 import eu.matejkormuth.pexel.network.SlaveServer;
 import eu.matejkormuth.pexel.protocol.PexelProtocol;
 import eu.matejkormuth.pexel.protocol.requests.InServerMetaDataMessage;
 import eu.matejkormuth.pexel.slave.bukkit.BukkitObjectFactory;
 import eu.matejkormuth.pexel.slave.bukkit.BukkitSlaveMinecraftSoftware;
 import eu.matejkormuth.pexel.slave.bukkit.BukkitTeleporter;
+import eu.matejkormuth.pexel.slave.components.Matchmaking;
 import eu.matejkormuth.pexel.slave.components.TPSChecker;
 import eu.matejkormuth.pexel.slave.components.chat.ChatEventHandler;
 import eu.matejkormuth.pexel.slave.components.managers.CommandManager;
@@ -90,7 +90,7 @@ public class PexelSlave implements LoggerHolder {
     
     public PexelSlave(final File dataFolder, final SlaveMinecraftServerType software) {
         this.log = new Logger("PexelSlave");
-        this.log.timestamp = true;
+        this.log.displayTimestamps = true;
         
         try {
             this.log.setOutput(new FileWriter(dataFolder.getAbsolutePath()
@@ -148,6 +148,10 @@ public class PexelSlave implements LoggerHolder {
         // Initialize online players list.
         this.onlinePlayers = new ArrayList<Player>(this.serverSoftware.getSlots());
         
+        // Add local matchmaking.
+        Matchmaking matchmaking = new Matchmaking();
+        this.addComponent(matchmaking);
+        
         // Load all components.
         this.log.info("Loading all components...");
         File libsFolder = new File(dataFolder.getAbsoluteFile() + "/libs/");
@@ -167,7 +171,8 @@ public class PexelSlave implements LoggerHolder {
         this.eventBus.register(new ChatEventHandler());
         
         // Add standart TPS checker.
-        this.addComponent(new TPSChecker());
+        TPSChecker tpsChecker = new TPSChecker();
+        this.addComponent(tpsChecker);
         
         // Add managers.
         this.addComponent(new LobbyManager());
@@ -180,7 +185,7 @@ public class PexelSlave implements LoggerHolder {
         this.scheduler = new Scheduler();
         this.sync.addTickHandler(this.scheduler);
         // TPS Checker has direct connection to sync.
-        this.sync.addTickHandler(this.getComponent(TPSChecker.class));
+        this.sync.addTickHandler(tpsChecker);
         
         // Connect to master - other thread.
         this.server = new SlaveServer(this.config.getSection(PexelSlave.class)
@@ -189,18 +194,22 @@ public class PexelSlave implements LoggerHolder {
                 new PexelProtocol());
         
         // Register responders.
-        this.server.getMessenger().addResponder(new MatchmakingResponder());
+        this.server.getMessenger().addResponder(
+                new MatchmakingResponder(this.getEventBus()));
         
         // Register myself on master.
         this.server.getMasterServerInfo()
                 .sendRequest(
-                        new InServerMetaDataMessage(new HashSet<MinigameDescriptor>(1),
+                        new InServerMetaDataMessage(matchmaking.getMinigames(),
                                 new HashSet<MapDescriptor>(1),
                                 this.serverSoftware.getType(),
                                 this.serverSoftware.getVersion(),
                                 this.serverSoftware.getSlots()));
         
         this.enableComponents();
+        
+        // Register all games on master matchmaking.
+        matchmaking.registerGamesOnMaster();
     }
     
     public void shutdown() {
@@ -283,7 +292,11 @@ public class PexelSlave implements LoggerHolder {
         }
         e.__initLogger(this);
         e.__initConfig(this.getConfiguration());
-        e.onEnable();
+        try {
+            e.onEnable();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
     
     protected void disableComponent(final ServerComponent e) {

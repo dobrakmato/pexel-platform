@@ -63,7 +63,8 @@ public class StorageImpl extends ServerComponent implements Storage {
      * 
      * @param storageFolder
      */
-    public StorageImpl(final File storageFolder, final ConfigurationSection config) {
+    public StorageImpl(final File storageFolder, final ConfigurationSection config,
+            final Logger logger) {
         Preconditions.checkNotNull(storageFolder);
         Preconditions.checkArgument(storageFolder.exists(), "storageFolder must exist");
         Preconditions.checkArgument(storageFolder.isDirectory(),
@@ -71,6 +72,7 @@ public class StorageImpl extends ServerComponent implements Storage {
         
         this.config = config;
         this.rootFolder = storageFolder;
+        this.logger = logger;
     }
     
     @Override

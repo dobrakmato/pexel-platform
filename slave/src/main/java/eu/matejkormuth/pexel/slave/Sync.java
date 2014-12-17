@@ -23,6 +23,8 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import com.google.common.base.Preconditions;
+
 /**
  * Class used for synchronizing network with minecraft server instance.
  */
@@ -35,17 +37,21 @@ public class Sync {
     private final Queue<Runnable>  tasks              = new LinkedBlockingQueue<Runnable>();
     private int                    lastTasksCount     = 0;
     private final Set<TickHandler> handlers           = new HashSet<TickHandler>();
+    protected long                 ticks              = 0L;
     
     public Sync() {
         this.onTick = new Runnable() {
-            private long ticks = 0;
             
             @Override
             public void run() {
-                Sync.this.onTick(this.ticks);
-                this.ticks++;
+                Sync.this.onTick(Sync.this.getTicks());
+                Sync.this.incrementTicks();
             }
         };
+    }
+    
+    protected void incrementTicks() {
+        this.ticks++;
     }
     
     public Runnable getOnTick() {
@@ -69,7 +75,13 @@ public class Sync {
      *            tick handler to register
      */
     public void addTickHandler(final TickHandler handler) {
-        this.handlers.add(handler);
+        try {
+            Preconditions.checkNotNull(handler, "handler can't be null");
+            
+            this.handlers.add(handler);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
     
     protected void onTick(final long tick) {
@@ -96,5 +108,9 @@ public class Sync {
         if (this.lastTasksCount > Sync.MAX_TASKS_PER_TICK - 20) {
             // TODO: Send debug requrest about that this slave got too much tasks.
         }
+    }
+    
+    public long getTicks() {
+        return this.ticks;
     }
 }

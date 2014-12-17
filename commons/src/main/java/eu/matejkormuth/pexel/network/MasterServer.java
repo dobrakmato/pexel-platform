@@ -67,7 +67,7 @@ public class MasterServer extends ServerInfo implements Requestable {
         this.callbackHandler = new CallbackHandler(this);
         
         // Create message decoder.
-        this.messenger = new Messenger(this.callbackHandler, this.protocol);
+        this.messenger = new Messenger(this.callbackHandler, this.protocol, this.log);
         
         // Start netty comunicator.
         this.comunicator = new NettyServerComunicator(this.messenger, this.config.get(

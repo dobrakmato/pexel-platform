@@ -54,7 +54,8 @@ public class SlaveServer extends ServerInfo implements Requestable {
         this.log.info("Initializing protocol...");
         this.protocol = protocol;
         this.log.info("Initializing Messenger...");
-        this.messenger = new Messenger(new CallbackHandler(this), this.protocol);
+        this.messenger = new Messenger(new CallbackHandler(this), this.protocol,
+                this.log);
         
         this.masterServerInfo = new ServerInfo("master") {
             @Override

@@ -24,7 +24,6 @@ import java.util.Set;
 import eu.matejkormuth.pexel.commons.Providers;
 import eu.matejkormuth.pexel.commons.SlaveMinecraftServerType;
 import eu.matejkormuth.pexel.commons.storage.MapDescriptor;
-import eu.matejkormuth.pexel.commons.storage.MinigameDescriptor;
 import eu.matejkormuth.pexel.network.Request;
 import eu.matejkormuth.pexel.protocol.PexelProtocol;
 
@@ -32,7 +31,7 @@ import eu.matejkormuth.pexel.protocol.PexelProtocol;
  * Reports minigames and maps on this server. Sent by slave server after connecting to master.
  */
 public class InServerMetaDataMessage extends Request {
-    public Set<MinigameDescriptor>  minigames;
+    public Set<String>              minigames;
     public Set<MapDescriptor>       maps;
     public SlaveMinecraftServerType software;
     public String                   softwareVersion;
@@ -41,7 +40,7 @@ public class InServerMetaDataMessage extends Request {
     public InServerMetaDataMessage() {
     }
     
-    public InServerMetaDataMessage(final Set<MinigameDescriptor> minigames,
+    public InServerMetaDataMessage(final Set<String> minigames,
             final Set<MapDescriptor> maps, final SlaveMinecraftServerType software,
             final String softwareVersion, final int slots) {
         this.minigames = minigames;
@@ -52,7 +51,7 @@ public class InServerMetaDataMessage extends Request {
     }
     
     static class ServerConfiguration {
-        public Set<MinigameDescriptor>  minigames;
+        public Set<String>              minigames;
         public Set<MapDescriptor>       maps;
         public SlaveMinecraftServerType software;
         public int                      slots;
@@ -86,8 +85,9 @@ public class InServerMetaDataMessage extends Request {
     
     @Override
     public void fromByteBuffer(final ByteBuffer buffer) {
-        ServerConfiguration conf = Providers.JSON.fromJson(new String(buffer.array(),
-                PexelProtocol.CHARSET), ServerConfiguration.class);
+        String json = new String(buffer.array(), PexelProtocol.CHARSET);
+        ServerConfiguration conf = Providers.JSON.fromJson(json,
+                ServerConfiguration.class);
         conf.apply(this);
     }
 }

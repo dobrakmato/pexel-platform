@@ -18,10 +18,18 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave.components;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
-import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingGame;
+import com.google.common.base.Preconditions;
+
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingRequest;
+import eu.matejkormuth.pexel.commons.minigame.Minigame;
+import eu.matejkormuth.pexel.protocol.requests.InMatchmakingRegisterGameMessage;
 import eu.matejkormuth.pexel.protocol.requests.InMatchmakingRequest;
 import eu.matejkormuth.pexel.slave.PexelSlave;
 import eu.matejkormuth.pexel.slave.SlaveComponent;
@@ -31,6 +39,10 @@ import eu.matejkormuth.pexel.slave.SlaveComponent;
  */
 public class Matchmaking extends SlaveComponent {
     
+    private final Set<String>             minigames     = new HashSet<String>();
+    private final Map<String, SlaveArena> arenas_byTag  = new HashMap<String, SlaveArena>();
+    private final Map<UUID, SlaveArena>   arenas_byUUID = new HashMap<UUID, SlaveArena>();
+    
     public void addRequest(final MatchmakingRequest request) {
         PexelSlave.getInstance()
                 .getServer()
@@ -38,7 +50,52 @@ public class Matchmaking extends SlaveComponent {
                 .sendRequest(new InMatchmakingRequest(request));
     }
     
-    public MatchmakingGame getGame(final UUID gameId) {
-        return null; //TODO: Impl
+    public void registerGame(final Minigame minigame) {
+        Preconditions.checkNotNull(minigame);
+        
+        this.minigames.add(minigame.getName());
+    }
+    
+    public Set<String> getMinigames() {
+        return this.minigames;
+    }
+    
+    public SlaveArena getArena(final String tag) {
+        return this.arenas_byTag.get(tag);
+    }
+    
+    public SlaveArena getArena(final UUID gameId) {
+        return this.arenas_byUUID.get(gameId);
+    }
+    
+    public Collection<SlaveArena> getArenas() {
+        return this.arenas_byTag.values();
+    }
+    
+    public void registerArena(final SlaveArena arena) {
+        Preconditions.checkNotNull(arena);
+        
+        this.arenas_byTag.put(arena.getTag(), arena);
+        this.arenas_byUUID.put(arena.getGameUUID(), arena);
+    }
+    
+    /**
+     * Registers all arenas on master matchmaking. Called from {@link PexelSlave} automatically.
+     */
+    public void registerGamesOnMaster() {
+        this.getLogger().info("Registering all games on master matchmaking...");
+        int count = 0;
+        for (SlaveArena arena : this.getArenas()) {
+            // Register each game on master.
+            PexelSlave.getInstance()
+                    .getServer()
+                    .getMasterServerInfo()
+                    .sendRequest(
+                            new InMatchmakingRegisterGameMessage(arena.getGameUUID(),
+                                    arena.getMinigame().getName()));
+            count++;
+        }
+        this.getLogger().info(
+                "Sent " + count + " InMatchmakingRegisterGameMessage requests!");
     }
 }

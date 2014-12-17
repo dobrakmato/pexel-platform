@@ -33,6 +33,7 @@ import eu.matejkormuth.pexel.protocol.requests.InPlayerUnresolvableError;
 import eu.matejkormuth.pexel.protocol.requests.InServerMetaDataMessage;
 import eu.matejkormuth.pexel.protocol.requests.OutMatchmakingGameStatusRequest;
 import eu.matejkormuth.pexel.protocol.requests.OutPlayerMatchmakedMessage;
+import eu.matejkormuth.pexel.protocol.requests.PlayerTeleportRequest;
 import eu.matejkormuth.pexel.protocol.requests.ServerStatusRequest;
 import eu.matejkormuth.pexel.protocol.requests.SlaveServerSetModeRequest;
 import eu.matejkormuth.pexel.protocol.responses.InMatchmakingStatusResponse;
@@ -52,6 +53,7 @@ public class PexelProtocol extends Protocol {
         this.registerRequest(2, DebugMessageRequest.class);
         this.registerRequest(3, FileTransferRequest.class);
         this.registerRequest(5, SlaveServerSetModeRequest.class);
+        this.registerRequest(0, PlayerTeleportRequest.class);
         
         // Messages
         this.registerRequest(4, InServerMetaDataMessage.class);

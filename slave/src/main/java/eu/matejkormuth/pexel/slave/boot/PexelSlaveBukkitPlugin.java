@@ -60,6 +60,7 @@ public class PexelSlaveBukkitPlugin extends JavaPlugin implements Listener {
         setInstance(this);
         this.commandManager = PexelSlave.getInstance()
                 .getComponent(CommandManager.class);
+        //PexelSlave.getInstance().getLogger().displayTimestamps = false;
     }
     
     @Override

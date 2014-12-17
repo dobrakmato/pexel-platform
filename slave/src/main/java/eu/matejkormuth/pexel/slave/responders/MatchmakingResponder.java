@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
 import eu.matejkormuth.pexel.commons.Player;
@@ -37,9 +38,9 @@ import eu.matejkormuth.pexel.slave.events.player.PlayerJoinEvent;
 public class MatchmakingResponder {
     private final Map<UUID, OutPlayerMatchmakedMessage> matchmaked = new HashMap<UUID, OutPlayerMatchmakedMessage>();
     
-    public MatchmakingResponder() {
+    public MatchmakingResponder(final EventBus bus) {
         // Register events.
-        PexelSlave.getInstance().getEventBus().register(this);
+        bus.register(this);
     }
     
     public void onPlayerMatchmaked(final OutPlayerMatchmakedMessage msg) {
@@ -49,7 +50,7 @@ public class MatchmakingResponder {
         if (player != null) {
             PexelSlave.getInstance()
                     .getComponent(Matchmaking.class)
-                    .getGame(msg.gameId)
+                    .getArena(msg.gameId)
                     .join(player);
         }
         else {
@@ -64,7 +65,7 @@ public class MatchmakingResponder {
                     .getUniqueId()).createdAt + 5000) {
                 PexelSlave.getInstance()
                         .getComponent(Matchmaking.class)
-                        .getGame(
+                        .getArena(
                                 this.matchmaked.get(event.getPlayer().getUniqueId()).gameId)
                         .join(event.getPlayer());
             }
