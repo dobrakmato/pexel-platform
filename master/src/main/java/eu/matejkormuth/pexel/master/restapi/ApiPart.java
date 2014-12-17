@@ -30,4 +30,6 @@ import java.lang.annotation.Target;
 @Target({ ElementType.METHOD })
 public @interface ApiPart {
     String desc() default "";
+    
+    String category() default "";
 }
