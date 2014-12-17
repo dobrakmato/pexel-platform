@@ -48,12 +48,15 @@ public class ApiResource {
     @Path("/help")
     public String help() {
         String jquery = "https://code.jquery.com/jquery-2.1.2.min.js";
-        String script = "function api_s(text) { $('.api_call').css('display', 'none'); $('.api_call:contains(' + text + ')').css('display', 'block'); }";
+        String script = "function api_s(text) { $('.api_call').css('display', 'none'); $('.api_call:contains(' + text + ')').css('display', 'block'); }"
+                + " function api_ex(url) { $('#api_result_window').hide(); $('#api_result').html(''); $('#api_result').load(url); $('#api_result_window').show(400); } ";
         String html = "<html><head><script src="
                 + jquery
                 + "></script><script>"
                 + script
-                + "</script></head><body style=\"background:#fafafa;font-family:sans-serif;\"><center><h1>API Documentation (generated)</h1>"
+                + "</script></head><body style=\"background:#fafafa;font-family:sans-serif;\">"
+                + "<div id=\"api_result_window\" onclick=\"$('#api_result_window').hide(400);\" style=\"display:none;padding:2em;margin:1em;font-family: monospace;white-space: pre;border:1px solid black;box-shadow: 1px 1px 10px 0px rgba(0,0,0,0.23);background: #FFFFE5;border-radius: 3px;\"><b>Result:</b>\n<div id=\"api_result\"></div></div>"
+                + "<center><h1>API Documentation (generated)</h1>"
                 + "<div><span>Search: </span><input type=\"text\" placeholder=\"start typing...\" onkeyup=\"api_s(this.value);\"></div>"
                 + "</center>";
         // Build help.
@@ -68,7 +71,7 @@ public class ApiResource {
                     if (GET.class.isInstance(a) || POST.class.isInstance(a)
                             || DELETE.class.isInstance(a) || PUT.class.isInstance(a)
                             || a.getClass().isAssignableFrom(HEAD.class)) {
-                        methodHtml = "<span style=\"background:#fff;padding:4px;margin: 0px 12px 0px 0px;;box-shadow:inset 1px 1px 3px rgba(0,0,0,0.5);border-radius:3px;\">"
+                        methodHtml = "<span style=\"background:#fff;padding:4px;margin: 0px 12px 0px 0px;box-shadow:inset 1px 1px 3px rgba(0,0,0,0.5);border-radius:3px;\">"
                                 + a.annotationType().getSimpleName() + "</span>";
                         String methodName = a.annotationType().getSimpleName();
                         
@@ -93,9 +96,12 @@ public class ApiResource {
                         + ";font-size:18px;display:block;padding:8px;border-radius: 4px;\">"
                         + methodHtml
                         + m.getAnnotation(Path.class).value()
-                        + "<span style=\"float: right;font-style: italic;font-weight: 100;\">"
-                        + m.getAnnotation(ApiPart.class).category() + "</span>"
-                        + "</span>");
+                        + "<span style=\"background:white;box-shadow:0px 0px 4px 0px black;border-radius:3px;cursor:pointer;float: right;margin: 0px 11px;padding: 4px;font-size: 14px;\" onclick="
+                        + "api_ex('."
+                        + m.getAnnotation(Path.class).value()
+                        + "')"
+                        + ">Execute</span><span style=\"float: right;font-style: italic;font-weight: 100;\">"
+                        + m.getAnnotation(ApiPart.class).category() + "</span></span>");
                 
                 localHtml.append("<div style=\"padding:0.5em;\"><span>Description: "
                         + m.getAnnotation(ApiPart.class).desc() + "</span><br/>");
