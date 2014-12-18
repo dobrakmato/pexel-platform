@@ -18,9 +18,9 @@
 // @formatter:on
 package eu.matejkormuth.pexel.master;
 
-import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.LoggerHolder;
 import eu.matejkormuth.pexel.commons.ServerComponent;
+import eu.matejkormuth.pexel.commons.configuration.Configuration;
 
 /**
  * Interface that represents component in MasterServer.

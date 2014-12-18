@@ -40,6 +40,8 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 
+import eu.matejkormuth.pexel.commons.configuration.Configuration;
+import eu.matejkormuth.pexel.commons.configuration.ConfigurationSection;
 import eu.matejkormuth.pexel.commons.storage.MapDescriptor;
 import eu.matejkormuth.pexel.commons.storage.MinigameDescriptor;
 import eu.matejkormuth.pexel.network.ServerSide;

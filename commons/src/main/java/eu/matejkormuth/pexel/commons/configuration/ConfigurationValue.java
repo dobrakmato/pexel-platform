@@ -16,12 +16,14 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons;
+package eu.matejkormuth.pexel.commons.configuration;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import eu.matejkormuth.pexel.commons.MultiValueMap;
 
 /**
  * Entry (name and value) in configuration.

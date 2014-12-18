@@ -29,7 +29,6 @@ import java.util.UUID;
 import com.google.common.base.Optional;
 
 import eu.matejkormuth.pexel.commons.AbstractObjectFactory;
-import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.commons.LoggerHolder;
 import eu.matejkormuth.pexel.commons.Player;
@@ -40,6 +39,7 @@ import eu.matejkormuth.pexel.commons.ServerMode;
 import eu.matejkormuth.pexel.commons.SlaveMinecraftServer;
 import eu.matejkormuth.pexel.commons.SlaveMinecraftServerType;
 import eu.matejkormuth.pexel.commons.StorageImpl;
+import eu.matejkormuth.pexel.commons.configuration.Configuration;
 import eu.matejkormuth.pexel.commons.storage.MapDescriptor;
 import eu.matejkormuth.pexel.network.SlaveServer;
 import eu.matejkormuth.pexel.protocol.PexelProtocol;

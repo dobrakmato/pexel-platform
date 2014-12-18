@@ -16,7 +16,7 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons;
+package eu.matejkormuth.pexel.commons.configuration;
 
 import java.io.File;
 import java.util.ArrayList;

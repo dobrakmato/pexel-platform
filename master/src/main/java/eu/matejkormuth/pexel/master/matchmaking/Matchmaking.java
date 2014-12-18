@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Preconditions;
 
-import eu.matejkormuth.pexel.commons.Configuration;
+import eu.matejkormuth.pexel.commons.configuration.Configuration;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingRequest;
 import eu.matejkormuth.pexel.master.MasterComponent;
 import eu.matejkormuth.pexel.master.PexelMaster;

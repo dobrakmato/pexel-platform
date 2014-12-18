@@ -22,10 +22,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-import eu.matejkormuth.pexel.commons.Configuration;
-import eu.matejkormuth.pexel.commons.ConfigurationSection;
 import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.commons.annotations.JsonType;
+import eu.matejkormuth.pexel.commons.configuration.Configuration;
+import eu.matejkormuth.pexel.commons.configuration.ConfigurationSection;
 
 @JsonType
 public class SlaveServer extends ServerInfo implements Requestable {

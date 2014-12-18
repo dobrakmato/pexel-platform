@@ -23,7 +23,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.UUID;
 
-import eu.matejkormuth.pexel.commons.Configuration;
+import eu.matejkormuth.pexel.commons.configuration.Configuration;
 import eu.matejkormuth.pexel.master.MasterComponent;
 
 /**

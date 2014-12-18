@@ -18,6 +18,9 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons;
 
+import eu.matejkormuth.pexel.commons.configuration.Configuration;
+import eu.matejkormuth.pexel.commons.configuration.ConfigurationSection;
+
 /**
  * Interface that represents component that can be enabled, disabled and have own {@link Logger}.
  */

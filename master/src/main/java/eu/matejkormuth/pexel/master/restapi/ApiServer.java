@@ -27,7 +27,7 @@ import javax.net.ssl.SSLContext;
 import com.sun.jersey.api.core.DefaultResourceConfig;
 import com.sun.jersey.simple.container.SimpleServerFactory;
 
-import eu.matejkormuth.pexel.commons.Configuration;
+import eu.matejkormuth.pexel.commons.configuration.Configuration;
 import eu.matejkormuth.pexel.master.MasterComponent;
 
 /**

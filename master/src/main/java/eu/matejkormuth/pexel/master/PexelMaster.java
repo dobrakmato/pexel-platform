@@ -27,11 +27,11 @@ import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Optional;
 
-import eu.matejkormuth.pexel.commons.Configuration;
 import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.commons.LoggerHolder;
 import eu.matejkormuth.pexel.commons.Storage;
 import eu.matejkormuth.pexel.commons.StorageImpl;
+import eu.matejkormuth.pexel.commons.configuration.Configuration;
 import eu.matejkormuth.pexel.master.cache.Caches;
 import eu.matejkormuth.pexel.master.db.Database;
 import eu.matejkormuth.pexel.master.matchmaking.Matchmaking;
