@@ -40,6 +40,14 @@ public interface Minigame extends Bannable {
     public String getName();
     
     /**
+     * Returns map prefix for maps compactibile with this minigame. For example game called "TNT Run" could return
+     * "tr_", "Annihiliation" could return "anni_".
+     * 
+     * @return short prefix
+     */
+    public String getMinigameMapPrefix();
+    
+    /**
      * Return's name of author of this minigame.
      * 
      * @return author's name

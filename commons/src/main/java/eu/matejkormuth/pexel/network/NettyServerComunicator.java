@@ -39,6 +39,7 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
+import java.net.InetSocketAddress;
 import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Map;
@@ -235,6 +236,8 @@ public class NettyServerComunicator extends MessageComunicator {
                     NettyServerComunicatorHandler.this.i.channels.add(ctx.channel());
                     String name = NettyRegisterMesssage.extractName(msg.payload);
                     SlaveServer server = new SlaveServer(name);
+                    server.setCustom("ip", ((InetSocketAddress) ctx.channel()
+                            .remoteAddress()).getHostString());
                     NettyServerComunicatorHandler.this.i.ctxByName.put(name, ctx);
                     NettyServerComunicatorHandler.this.i.server.addSlave(server);
                     NettyServerComunicatorHandler.this.i.serverInfoByCTX.put(ctx, server);
