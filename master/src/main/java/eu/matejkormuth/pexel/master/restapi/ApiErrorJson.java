@@ -16,8 +16,26 @@
  *
  */
 // @formatter:on
+package eu.matejkormuth.pexel.master.restapi;
 
-@javax.xml.bind.annotation.XmlSchema(xmlns = {
-        @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2001/XMLSchema-instance", prefix = "xsi"),
-        @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2001/XMLSchema", prefix = "xs") })
-package eu.matejkormuth.pexel.commons.configuration;
+import eu.matejkormuth.pexel.commons.Providers;
+
+/**
+ * Class used for generating json errors.
+ */
+public class ApiErrorJson {
+    public static final int NO_ACCESSKEY_HEADER = 1;
+    public static final int INVALID_ACCESSKEY   = 2;
+    
+    public String           message;
+    public int              error;
+    
+    public ApiErrorJson(final int error, final String message) {
+        this.error = error;
+        this.message = message;
+    }
+    
+    public String getJson() {
+        return Providers.JSON.toJson(this);
+    }
+}

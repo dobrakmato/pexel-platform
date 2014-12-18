@@ -131,11 +131,11 @@ public class ApiResource {
     
     //----------------------------------------------------- LOGIN AND AUTH
     
-    @ApiPart(desc = "Verifies password.", category = "auth")
-    @POST
+    @ApiPart(desc = "Verifies access key sent in header.", category = "auth")
+    @GET
     @Path("/verify")
-    public String verify(@FormParam("password") final String password) {
-        return "{}";
+    public String verify() {
+        return "{ \"success\": \"true\" }";
     }
     
     //----------------------------------------------------- USERS

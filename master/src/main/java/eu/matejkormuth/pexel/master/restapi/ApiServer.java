@@ -54,7 +54,9 @@ public class ApiServer extends MasterComponent {
                             .asInteger();
             
             DefaultResourceConfig resourceConfig = new DefaultResourceConfig(
-                    ApiResource.class, StringBodyWriter.class);
+                    ApiResource.class, StringBodyWriter.class,
+                    ApiAccessKeyRequestFilter.class);
+            
             this.logger.info("Starting HTTP api server...");
             this.http_server = SimpleServerFactory.create(http_address, resourceConfig);
             

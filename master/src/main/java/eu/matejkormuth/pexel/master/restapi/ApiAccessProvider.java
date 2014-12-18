@@ -16,8 +16,25 @@
  *
  */
 // @formatter:on
+package eu.matejkormuth.pexel.master.restapi;
 
-@javax.xml.bind.annotation.XmlSchema(xmlns = {
-        @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2001/XMLSchema-instance", prefix = "xsi"),
-        @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.w3.org/2001/XMLSchema", prefix = "xs") })
-package eu.matejkormuth.pexel.commons.configuration;
+import eu.matejkormuth.pexel.master.MasterComponent;
+
+/**
+ * Master component for providing API access.
+ */
+public class ApiAccessProvider extends MasterComponent {
+    private String validAccessKey;
+    
+    public boolean isValid(final String accessKey) {
+        return accessKey.equals(this.validAccessKey);
+    }
+    
+    @Override
+    public void onEnable() {
+        this.validAccessKey = this.getConfiguration()
+                .get("accessKey", "9fcf75de50a08115bf1a463a6970ab5d")
+                .asString();
+    }
+    
+}

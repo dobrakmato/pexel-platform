@@ -45,11 +45,13 @@ public class MatchmakingGameImpl implements MatchmakingGame {
         this.host = slave;
         this.gameId = gameId;
         this.minigameName = minigameName;
+        this.slaveName = slave.getName();
     }
     
     protected transient ServerInfo host;
     protected UUID                 gameId;
     
+    public String                  slaveName;
     public int                     cached_maximumSlots;
     public ArenaState              cached_state   = ArenaState.WAITING_EMPTY;
     public Set<UUID>               cached_players = new HashSet<UUID>();
