@@ -41,6 +41,7 @@ import eu.matejkormuth.pexel.master.responders.ErrorResponder;
 import eu.matejkormuth.pexel.master.responders.MatchmakingResponder;
 import eu.matejkormuth.pexel.master.responders.ServerStatusResponder;
 import eu.matejkormuth.pexel.master.responders.TeleportationResponder;
+import eu.matejkormuth.pexel.master.restapi.ApiAccessProvider;
 import eu.matejkormuth.pexel.master.restapi.ApiServer;
 import eu.matejkormuth.pexel.network.Callback;
 import eu.matejkormuth.pexel.network.MasterServer;
@@ -132,6 +133,9 @@ public final class PexelMaster implements LoggerHolder {
         
         // Set up Database.
         // this.addComponent(new Database());
+        
+        // Set up access provider to web api.
+        this.addComponent(new ApiAccessProvider());
         
         // Set up API server.
         this.addComponent(new ApiServer());

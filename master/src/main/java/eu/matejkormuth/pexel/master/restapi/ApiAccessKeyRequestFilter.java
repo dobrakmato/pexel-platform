@@ -37,13 +37,22 @@ public class ApiAccessKeyRequestFilter implements ContainerRequestFilter {
     
     @Override
     public ContainerRequest filter(final ContainerRequest request) {
-        String accessKey = request.getHeaderValue("Access-Key");
+        // Try to obtain accessKey from headers.
+        String accessKey = request.getHeaderValue("PAPI-Access-Key");
+        
         if (accessKey == null) {
-            ResponseBuilder builder = null;
-            builder = Response.status(Response.Status.UNAUTHORIZED).entity(
-                    new ApiErrorJson(ApiErrorJson.NO_ACCESSKEY_HEADER,
-                            "No Access-Key header!").getJson());
-            throw new WebApplicationException(builder.build());
+            // Try to obtain access key from GET params.
+            accessKey = request.getQueryParameters().getFirst("accessKey");
+            
+            // If is accessKey still null, filter request.
+            if (accessKey == null) {
+                // If can't found key, throw exception!
+                ResponseBuilder builder = null;
+                builder = Response.status(Response.Status.UNAUTHORIZED).entity(
+                        new ApiErrorJson(ApiErrorJson.NO_ACCESSKEY_HEADER,
+                                "No Access-Key header!").getJson());
+                throw new WebApplicationException(builder.build());
+            }
         }
         
         if (this.provider == null) {

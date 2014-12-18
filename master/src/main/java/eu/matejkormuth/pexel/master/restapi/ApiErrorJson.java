@@ -27,8 +27,8 @@ public class ApiErrorJson {
     public static final int NO_ACCESSKEY_HEADER = 1;
     public static final int INVALID_ACCESSKEY   = 2;
     
-    public String           message;
     public int              error;
+    public String           message;
     
     public ApiErrorJson(final int error, final String message) {
         this.error = error;

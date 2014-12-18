@@ -33,6 +33,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import eu.matejkormuth.pexel.commons.Providers;
@@ -46,10 +47,10 @@ public class ApiResource {
     @GET
     @Produces({ MediaType.TEXT_HTML })
     @Path("/help")
-    public String help() {
+    public String help(@QueryParam("accessKey") final String accessKey) {
         String jquery = "https://code.jquery.com/jquery-2.1.2.min.js";
         String script = "function api_s(text) { $('.api_call').css('display', 'none'); $('.api_call:contains(' + text + ')').css('display', 'block'); }"
-                + " function api_ex(url) { $('#api_result_window').hide(); $('#api_result').html(''); $('#api_result').load(url); $('#api_result_window').show(400); } ";
+                + " function api_ex(url) { $('#api_result_window').hide(); $('#api_result').html(''); $('#api_result').load(url + '?accessKey=' + $('#accessKey').val()); $('#api_result_window').show(400); } ";
         String html = "<html><head><script src="
                 + jquery
                 + "></script><script>"
@@ -57,8 +58,8 @@ public class ApiResource {
                 + "</script></head><body style=\"background:#fafafa;font-family:sans-serif;\">"
                 + "<div id=\"api_result_window\" onclick=\"$('#api_result_window').hide(400);\" style=\"display:none;padding:2em;margin:1em;font-family: monospace;white-space: pre;border:1px solid black;box-shadow: 1px 1px 10px 0px rgba(0,0,0,0.23);background: #FFFFE5;border-radius: 3px;\"><b>Result:</b>\n<div id=\"api_result\"></div></div>"
                 + "<center><h1>API Documentation (generated)</h1>"
-                + "<div><span>Search: </span><input type=\"text\" placeholder=\"start typing...\" onkeyup=\"api_s(this.value);\"></div>"
-                + "</center>";
+                + "<div><span>Search: </span><input type=\"text\" placeholder=\"start typing...\" onkeyup=\"api_s(this.value);\"> | <span>Access Key:</span><input type=\"text\" id=\"accessKey\" value=\""
+                + accessKey + "\"></div>" + "</center>";
         // Build help.
         for (Method m : this.getClass().getDeclaredMethods()) {
             if (m.isAnnotationPresent(ApiPart.class)) {

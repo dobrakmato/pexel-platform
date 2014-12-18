@@ -37,6 +37,7 @@ public class ApiServer extends MasterComponent {
     private Closeable http_server;
     private Closeable https_server;
     
+    @SuppressWarnings("unchecked")
     @Override
     public void onEnable() {
         try {
@@ -46,6 +47,7 @@ public class ApiServer extends MasterComponent {
                             .getSection(ApiServer.class)
                             .get(Configuration.Keys.KEY_PORT_API_HTTP, 10361)
                             .asInteger();
+            
             String https_address = "https://0.0.0.0:"
                     + this.getMaster()
                             .getConfiguration()
@@ -54,8 +56,11 @@ public class ApiServer extends MasterComponent {
                             .asInteger();
             
             DefaultResourceConfig resourceConfig = new DefaultResourceConfig(
-                    ApiResource.class, StringBodyWriter.class,
-                    ApiAccessKeyRequestFilter.class);
+                    ApiResource.class, StringBodyWriter.class);
+            
+            // Apply filter.
+            resourceConfig.getContainerRequestFilters().add(
+                    new ApiAccessKeyRequestFilter());
             
             this.logger.info("Starting HTTP api server...");
             this.http_server = SimpleServerFactory.create(http_address, resourceConfig);
