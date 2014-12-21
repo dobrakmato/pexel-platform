@@ -18,7 +18,7 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons.bans;
 
-import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.data.Profile;
 
 /**
  * Interface that specified ban.
@@ -46,14 +46,14 @@ public interface Ban {
      * 
      * @return banned player.
      */
-    public Player getPlayer();
+    public Profile getPlayer();
     
     /**
      * Returns part of network, from which is player banned.
      * 
      * @return part of network.
      */
-    public Bannable getPart();
+    public Bannable getNetworkPart();
     
     /**
      * Returns reason of this ban.
@@ -74,12 +74,12 @@ public interface Ban {
      * 
      * @return timestamp of time at creation.
      */
-    public long getCreated();
+    public long getCreatedAt();
     
     /**
      * Returns time, when ban expiries or -1, if is ban permanent.
      * 
      * @return epoch timestamp
      */
-    public long getExpirationTime();
+    public long getExpireAt();
 }

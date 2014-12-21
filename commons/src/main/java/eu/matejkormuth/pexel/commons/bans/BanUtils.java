@@ -24,17 +24,17 @@ import java.util.Date;
 /**
  * Class that contains basic ban utils for text formating.
  */
-public abstract class BanUtils {
+public final class BanUtils {
     private static final SimpleDateFormat format = new SimpleDateFormat(
                                                          "yyyy 'years', MM 'moths', dd 'days' 'and' HH 'hours', mm 'minutes', ss 'seconds'");
     
     public static final String formatBannedMessage(final Ban ban) {
         if (ban.isPermanent()) {
-            return "You have been banned from " + ban.getPart().getBannableName()
+            return "You have been banned from " + ban.getNetworkPart().getBannableName()
                     + " permanently!";
         }
         else {
-            return "You have been banned from " + ban.getPart().getBannableName()
+            return "You have been banned from " + ban.getNetworkPart().getBannableName()
                     + " for " + format.format(new Date(ban.getLength())) + "!";
         }
     }

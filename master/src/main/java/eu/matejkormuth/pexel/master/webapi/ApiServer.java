@@ -16,7 +16,7 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.master.restapi;
+package eu.matejkormuth.pexel.master.webapi;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -58,9 +58,10 @@ public class ApiServer extends MasterComponent {
             DefaultResourceConfig resourceConfig = new DefaultResourceConfig(
                     ApiResource.class, StringBodyWriter.class);
             
-            // Apply filter.
+            // Apply filters.
             resourceConfig.getContainerRequestFilters().add(
                     new ApiAccessKeyRequestFilter());
+            resourceConfig.getContainerRequestFilters().add(new ApiLoggingFilter());
             
             this.logger.info("Starting HTTP api server...");
             this.http_server = SimpleServerFactory.create(http_address, resourceConfig);

@@ -16,26 +16,20 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.master.restapi;
+package eu.matejkormuth.pexel.master.webapi;
 
-import eu.matejkormuth.pexel.commons.Providers;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Class used for generating json errors.
+ * Annotation that specifies that function is part of api.
  */
-public class ApiErrorJson {
-    public static final int NO_ACCESSKEY_HEADER = 1;
-    public static final int INVALID_ACCESSKEY   = 2;
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.METHOD })
+public @interface ApiPart {
+    String desc() default "";
     
-    public int              error;
-    public String           message;
-    
-    public ApiErrorJson(final int error, final String message) {
-        this.error = error;
-        this.message = message;
-    }
-    
-    public String getJson() {
-        return Providers.JSON.toJson(this);
-    }
+    String category() default "";
 }

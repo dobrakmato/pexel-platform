@@ -16,7 +16,7 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.master.restapi;
+package eu.matejkormuth.pexel.master.webapi;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -54,6 +54,9 @@ public class ApiAccessKeyRequestFilter implements ContainerRequestFilter {
                 throw new WebApplicationException(builder.build());
             }
         }
+        else {
+            request.getQueryParameters().add("accessKey", accessKey);
+        }
         
         if (this.provider == null) {
             this.provider = PexelMaster.getInstance().getComponent(
@@ -67,6 +70,7 @@ public class ApiAccessKeyRequestFilter implements ContainerRequestFilter {
                             "Invalid Access-Key!").getJson());
             throw new WebApplicationException(builder.build());
         }
+        
         return request;
     }
 }

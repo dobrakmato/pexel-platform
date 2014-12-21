@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ConfigurationSection extends Unmarshaller.Listener {
     @XmlAttribute
     protected String                                    key;
+    
     protected List<ConfigurationValue>                  entry;
     // Internal map.
     protected transient Map<String, ConfigurationValue> map;

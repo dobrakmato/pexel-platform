@@ -16,25 +16,29 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.master.restapi;
-
-import eu.matejkormuth.pexel.master.MasterComponent;
+package eu.matejkormuth.pexel.commons.bans;
 
 /**
- * Master component for providing API access.
+ * Bannable implementation with id only.
  */
-public class ApiAccessProvider extends MasterComponent {
-    private String validAccessKey;
+public class BannableIdImpl implements Bannable {
+    private final String id;
     
-    public boolean isValid(final String accessKey) {
-        return accessKey.equals(this.validAccessKey);
+    public BannableIdImpl(final String networkPartId) {
+        this.id = networkPartId;
     }
     
     @Override
-    public void onEnable() {
-        this.validAccessKey = this.getConfiguration()
-                .get("accessKey", "9fcf75de50a08115bf1a463a6970ab5d")
-                .asString();
+    public String getBannableName() {
+        throw new UnsupportedOperationException();
     }
     
+    @Override
+    public String getBannableID() {
+        return this.id;
+    }
+    
+    public boolean isSameAs(final Bannable another) {
+        return another.getBannableID().equals(this.id);
+    }
 }

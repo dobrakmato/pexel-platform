@@ -81,10 +81,6 @@ public class ConfigurationValue {
         this(value, key);
     }
     
-    public ConfigurationValue(final String key, final String value) {
-        this((Object) value, key);
-    }
-    
     public ConfigurationValue(final String key, final ConfigurationSection value) {
         this(value, key);
     }

@@ -16,7 +16,7 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.master.restapi;
+package eu.matejkormuth.pexel.master.webapi;
 
 import java.io.IOException;
 import java.io.OutputStream;

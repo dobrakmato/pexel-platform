@@ -16,14 +16,26 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons.bans;
+package eu.matejkormuth.pexel.master.webapi;
+
+import eu.matejkormuth.pexel.commons.Providers;
 
 /**
- * Represents server (automated) author of {@link Ban}.
+ * Class used for generating json errors.
  */
-public class ServerBanAuthor implements BanAuthor {
-    @Override
-    public String getName() {
-        return "Server";
+public class ApiErrorJson {
+    public static final int NO_ACCESSKEY_HEADER = 1;
+    public static final int INVALID_ACCESSKEY   = 2;
+    
+    public int              error;
+    public String           message;
+    
+    public ApiErrorJson(final int error, final String message) {
+        this.error = error;
+        this.message = message;
+    }
+    
+    public String getJson() {
+        return Providers.JSON.toJson(this);
     }
 }

@@ -16,23 +16,25 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons.bans;
+package eu.matejkormuth.pexel.master.webapi;
 
-import eu.matejkormuth.pexel.commons.Player;
-import eu.matejkormuth.pexel.commons.data.Profile;
+import eu.matejkormuth.pexel.master.MasterComponent;
 
 /**
- * Represents {@link Player} author of {@link Ban}.
+ * Master component for providing API access.
  */
-public class PlayerBanAuthor implements BanAuthor {
-    private final Profile invoker;
+public class ApiAccessProvider extends MasterComponent {
+    private String validAccessKey;
     
-    public PlayerBanAuthor(final Profile invoker) {
-        this.invoker = invoker;
+    public boolean isValid(final String accessKey) {
+        return accessKey.equals(this.validAccessKey);
     }
     
     @Override
-    public String getName() {
-        return this.invoker.getLastKnownName();
+    public void onEnable() {
+        this.validAccessKey = this.getConfiguration()
+                .get("accessKey", "9fcf75de50a08115bf1a463a6970ab5d")
+                .asString();
     }
+    
 }

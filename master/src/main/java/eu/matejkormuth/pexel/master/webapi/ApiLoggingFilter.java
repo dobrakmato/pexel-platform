@@ -16,20 +16,28 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.master.restapi;
+package eu.matejkormuth.pexel.master.webapi;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.logging.Logger;
+
+import com.sun.jersey.spi.container.ContainerRequest;
+import com.sun.jersey.spi.container.ContainerRequestFilter;
 
 /**
- * Annotation that specifies that function is part of api.
+ * Logging fitler for API.
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD })
-public @interface ApiPart {
-    String desc() default "";
+public class ApiLoggingFilter implements ContainerRequestFilter {
+    private final Logger log = Logger.getLogger(this.getClass().getCanonicalName());
     
-    String category() default "";
+    @Override
+    public ContainerRequest filter(final ContainerRequest request) {
+        String accessKey = request.getQueryParameters().getFirst("accessKey");
+        String url = request.getPath();
+        this.log.info(accessKey + " accesses " + url);
+        return request;
+    }
+    
+    public Logger getLogger() {
+        return this.log;
+    }
 }

@@ -19,6 +19,7 @@
 package eu.matejkormuth.pexel.master.cache;
 
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import com.google.common.cache.CacheBuilder;
@@ -26,6 +27,7 @@ import com.google.common.cache.LoadingCache;
 import com.google.gson.JsonObject;
 
 import eu.matejkormuth.pexel.commons.Providers;
+import eu.matejkormuth.pexel.commons.data.Profile;
 import eu.matejkormuth.pexel.master.cache.loaders.DatabaseProfileEntityLoader;
 import eu.matejkormuth.pexel.master.db.ProfileEntity;
 
@@ -45,6 +47,15 @@ public class Caches {
     
     public LoadingCache<UUID, ProfileEntity> getProfileCache() {
         return this.profiles;
+    }
+    
+    public Profile getProfile(final UUID uuid) {
+        try {
+            return this.profiles.get(uuid);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
     public long totalSize() {
