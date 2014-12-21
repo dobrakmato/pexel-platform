@@ -41,6 +41,6 @@ public class ErrorResponder {
         // Log error occurance
         PexelMaster.getInstance()
                 .getLogger()
-                .error("Unresolvable error happend: " + msg.error);
+                .error("Unresolvable error happend: {0}", msg.error);
     }
 }

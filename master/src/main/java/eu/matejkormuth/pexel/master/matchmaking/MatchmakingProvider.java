@@ -21,7 +21,9 @@ package eu.matejkormuth.pexel.master.matchmaking;
 import java.util.Collection;
 import java.util.UUID;
 
-import eu.matejkormuth.pexel.commons.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingRequest;
 
 /**
@@ -29,7 +31,7 @@ import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingRequest;
  */
 public abstract class MatchmakingProvider {
     protected Matchmaking matchmaking;
-    protected Logger      log;
+    protected Logger      log = LoggerFactory.getLogger(MatchmakingProvider.class);
     
     /**
      * Set's instance of {@link Matchmaking} in this {@link MatchmakingProvider}.
@@ -39,7 +41,6 @@ public abstract class MatchmakingProvider {
      */
     protected void setMatchmaking(final Matchmaking matchmaking) {
         this.matchmaking = matchmaking;
-        this.log = matchmaking.getLogger();
     }
     
     /**

@@ -49,7 +49,7 @@ import eu.matejkormuth.pexel.network.ServerSide;
 /**
  * Class that represents storage.
  */
-public class StorageImpl extends ServerComponent implements Storage {
+public class StorageImpl extends AbstractComponent implements Storage {
     protected ServerSide              side;
     protected File                    rootFolder;
     
@@ -65,8 +65,7 @@ public class StorageImpl extends ServerComponent implements Storage {
      * 
      * @param storageFolder
      */
-    public StorageImpl(final File storageFolder, final ConfigurationSection config,
-            final Logger logger) {
+    public StorageImpl(final File storageFolder, final ConfigurationSection config) {
         Preconditions.checkNotNull(storageFolder);
         Preconditions.checkArgument(storageFolder.exists(), "storageFolder must exist");
         Preconditions.checkArgument(storageFolder.isDirectory(),
@@ -74,7 +73,6 @@ public class StorageImpl extends ServerComponent implements Storage {
         
         this.config = config;
         this.rootFolder = storageFolder;
-        this.logger = logger;
     }
     
     @Override
@@ -229,12 +227,13 @@ public class StorageImpl extends ServerComponent implements Storage {
                 this.uncheckedUpdate(desc);
             }
             else {
-                this.logger.warn("Plugin " + desc.getName()
-                        + " comes from untrusted source! Not updating.");
+                this.logger.warn(
+                        "Plugin {0} comes from untrusted source! Not updating.",
+                        desc.getName());
             }
             
         } catch (URISyntaxException e) {
-            this.logger.error("Plugin " + desc.getName() + " has invalid sourceUrl!");
+            this.logger.error("Plugin {0} has invalid sourceUrl!", desc.getName());
         }
     }
     
@@ -245,8 +244,8 @@ public class StorageImpl extends ServerComponent implements Storage {
                 + "/description.xml");
         // Stupid null check...
         if (remoteDescriptorFile == null) {
-            this.logger.error("Can't load remote desccriptor of plugin "
-                    + localDescriptor.getName() + "!");
+            this.logger.error("Can't load remote desccriptor of plugin {0} !",
+                    localDescriptor.getName());
             return;
         }
         

@@ -19,19 +19,20 @@
 package eu.matejkormuth.pexel.master;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
-import eu.matejkormuth.pexel.commons.Logger;
-import eu.matejkormuth.pexel.commons.LoggerHolder;
 import eu.matejkormuth.pexel.commons.Storage;
 import eu.matejkormuth.pexel.commons.StorageImpl;
 import eu.matejkormuth.pexel.commons.configuration.Configuration;
+import eu.matejkormuth.pexel.commons.data.Profile;
 import eu.matejkormuth.pexel.master.cache.Caches;
 import eu.matejkormuth.pexel.master.db.Database;
 import eu.matejkormuth.pexel.master.matchmaking.Matchmaking;
@@ -55,7 +56,7 @@ import eu.matejkormuth.pexel.protocol.responses.ServerStatusResponse;
 /**
  * Pexel master server singleton object.
  */
-public final class PexelMaster implements LoggerHolder {
+public final class PexelMaster {
     private static PexelMaster instance = null;
     
     public static final PexelMaster getInstance() {
@@ -63,7 +64,7 @@ public final class PexelMaster implements LoggerHolder {
     }
     
     private final MasterServer          master;
-    private final Logger                log;
+    private final Logger                log               = LoggerFactory.getLogger(PexelMaster.class);
     private Configuration               config;
     private final Scheduler             scheduler;
     private final MasterStorageProxy    storage;
@@ -74,16 +75,6 @@ public final class PexelMaster implements LoggerHolder {
     private boolean                     componentsEnabled = false;
     
     private PexelMaster(final File dataFolder) {
-        this.log = new Logger("PexelMaster");
-        this.log.displayTimestamps = true;
-        
-        try {
-            this.log.setOutput(new FileWriter(dataFolder.getAbsolutePath()
-                    + "/pexel.log"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
         this.log.info("Booting up PexelMaster...");
         
         // Load configuration.
@@ -101,8 +92,7 @@ public final class PexelMaster implements LoggerHolder {
         File storageFolder = new File(dataFolder.getAbsolutePath() + "/storage");
         storageFolder.mkdirs();
         this.storage = new MasterStorageProxy(new StorageImpl(storageFolder,
-                this.config.getSection(StorageImpl.class), this.getLogger().getChild(
-                        StorageImpl.class.getSimpleName())));
+                this.config.getSection(StorageImpl.class)));
         this.addComponent(this.storage);
         
         // Set up scheduler.
@@ -172,9 +162,6 @@ public final class PexelMaster implements LoggerHolder {
         
         this.log.info("Shutting down!");
         this.log.info("Thanks for using and bye!");
-        
-        // Close logger.
-        this.log.close();
     }
     
     // Each 2 seconds sends ServerStatusRequest to all servers.
@@ -221,7 +208,6 @@ public final class PexelMaster implements LoggerHolder {
         this.log.info("Enabling [" + e.getClass().getSimpleName() + "] ...");
         try {
             e.master = this;
-            e.__initLogger(this);
             e.__initConfig(this.getConfiguration());
             e.onEnable();
         } catch (Exception ex) {
@@ -255,7 +241,6 @@ public final class PexelMaster implements LoggerHolder {
         PexelMaster.instance = new PexelMaster(dataFolder);
     }
     
-    @Override
     public Logger getLogger() {
         return this.log;
     }
@@ -317,5 +302,9 @@ public final class PexelMaster implements LoggerHolder {
             this.slave.setCustom("maxMem", Long.toString(response.maxMem));
             this.slave.setCustom("usedMem", Long.toString(response.usedMem));
         }
+    }
+    
+    public Profile getProfile(final UUID uuid) {
+        return this.getCaches().getProfile(uuid);
     }
 }

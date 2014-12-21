@@ -22,7 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-import eu.matejkormuth.pexel.commons.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.matejkormuth.pexel.commons.annotations.JsonType;
 import eu.matejkormuth.pexel.commons.configuration.Configuration;
 import eu.matejkormuth.pexel.commons.configuration.ConfigurationSection;
@@ -35,27 +37,24 @@ public class SlaveServer extends ServerInfo implements Requestable {
     private transient Map<Long, Callback<?>> callbacks     = new HashMap<Long, Callback<?>>(
                                                                    255);
     
-    private transient Messenger              messenger;
+    private transient NetworkMessenger       messenger;
     private transient MessageComunicator     comunicator;
     private transient ServerInfo             masterServerInfo;
     private transient Protocol               protocol;
     private transient ConfigurationSection   config;
-    private transient Logger                 log;
+    private transient Logger                 log           = LoggerFactory.getLogger(SlaveServer.class);
     
     public SlaveServer(final String name, final ConfigurationSection config,
-            final Logger logger, final Protocol protocol) {
+            final Protocol protocol) {
         super(name);
-        
-        this.log = logger.getChild("Net");
         
         this.config = config;
         
         this.side = ServerSide.LOCAL;
         this.log.info("Initializing protocol...");
         this.protocol = protocol;
-        this.log.info("Initializing Messenger...");
-        this.messenger = new Messenger(new CallbackHandler(this), this.protocol,
-                this.log);
+        this.log.info("Initializing NetworkMessenger...");
+        this.messenger = new NetworkMessenger(new CallbackHandler(this), this.protocol);
         
         this.masterServerInfo = new ServerInfo("master") {
             @Override
@@ -143,7 +142,7 @@ public class SlaveServer extends ServerInfo implements Requestable {
         return this.log;
     }
     
-    public Messenger getMessenger() {
+    public NetworkMessenger getMessenger() {
         return this.messenger;
     }
     

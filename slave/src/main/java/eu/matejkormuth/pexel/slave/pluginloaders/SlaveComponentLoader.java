@@ -29,12 +29,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
 
-import eu.matejkormuth.pexel.commons.Logger;
 import eu.matejkormuth.pexel.slave.PexelSlave;
 import eu.matejkormuth.pexel.slave.SlaveComponent;
 
@@ -42,11 +44,10 @@ import eu.matejkormuth.pexel.slave.SlaveComponent;
  * Standart slave component type plugin loader.
  */
 public class SlaveComponentLoader {
-    private final Logger     log;
+    private final Logger     log = LoggerFactory.getLogger(SlaveComponentLoader.class);
     private final PexelSlave slave;
     
-    public SlaveComponentLoader(final Logger log, final PexelSlave slave) {
-        this.log = log.getChild("ComponentLoader");
+    public SlaveComponentLoader(final PexelSlave slave) {
         this.slave = slave;
     }
     
@@ -83,7 +84,7 @@ public class SlaveComponentLoader {
             }
             JsonElement element = Streams.parse(new JsonReader(new InputStreamReader(in)));
             JsonObject obj = element.getAsJsonObject();
-            this.log.info("Enabling " + obj.get("name").getAsString() + "...");
+            this.log.info("Enabling {0}...", obj.get("name").getAsString());
             Class<?> clazz = Class.forName(obj.get("slaveComponentClass").getAsString());
             if (SlaveComponent.class.isAssignableFrom(clazz)) {
                 try {

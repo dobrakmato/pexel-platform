@@ -37,13 +37,14 @@ import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLException;
 
-import eu.matejkormuth.pexel.commons.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NettyClientComunicator extends MessageComunicator {
     private Bootstrap                     b;
     private Channel                       channelToMaster;
     private final ServerInfo              master;
-    private final Logger                  log;
+    private final Logger                  log      = LoggerFactory.getLogger(NettyClientComunicator.class);
     
     // Queue.
     protected BlockingQueue<NettyMessage> payloads = new PriorityBlockingQueue<NettyMessage>(
@@ -55,7 +56,6 @@ public class NettyClientComunicator extends MessageComunicator {
         super(handler);
         
         this.master = server.getMasterServerInfo();
-        this.log = server.getLogger().getChild("Netty");
         
         try {
             this.init(port, host, server.getName(), authKey);
@@ -73,7 +73,7 @@ public class NettyClientComunicator extends MessageComunicator {
         EventLoopGroup group = new NioEventLoopGroup();
         this.b = new Bootstrap();
         
-        this.log.info("Connecting to master server (" + host + ":" + port + ")...");
+        this.log.info("Connecting to master server ({0}:{1})...", host, port);
         // Start the connection attempt. All in one.
         this.channelToMaster = this.b.group(group)
                 .channel(NioSocketChannel.class)
@@ -90,7 +90,7 @@ public class NettyClientComunicator extends MessageComunicator {
         }, 0L, 10L, TimeUnit.MILLISECONDS);
         
         // Log in.
-        this.log.info("Sending NettyRegisterMesssage...");
+        this.log.info("Sending register message...");
         this.payloads.add(new NettyMessage(NettyRegisterMesssage.create(authKey,
                 thisSlaveName)));
         

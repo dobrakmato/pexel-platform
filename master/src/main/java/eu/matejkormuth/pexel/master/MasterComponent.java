@@ -18,14 +18,13 @@
 // @formatter:on
 package eu.matejkormuth.pexel.master;
 
-import eu.matejkormuth.pexel.commons.LoggerHolder;
-import eu.matejkormuth.pexel.commons.ServerComponent;
+import eu.matejkormuth.pexel.commons.AbstractComponent;
 import eu.matejkormuth.pexel.commons.configuration.Configuration;
 
 /**
  * Interface that represents component in MasterServer.
  */
-public abstract class MasterComponent extends ServerComponent {
+public abstract class MasterComponent extends AbstractComponent {
     protected PexelMaster master;
     
     /**
@@ -33,10 +32,6 @@ public abstract class MasterComponent extends ServerComponent {
      */
     public PexelMaster getMaster() {
         return this.master;
-    }
-    
-    void __initLogger(final LoggerHolder holder) {
-        this._initLogger(holder);
     }
     
     void __initConfig(final Configuration configuration) {

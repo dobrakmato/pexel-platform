@@ -19,22 +19,21 @@
 package eu.matejkormuth.pexel.slave;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Optional;
 
+import eu.matejkormuth.pexel.commons.AbstractComponent;
 import eu.matejkormuth.pexel.commons.AbstractObjectFactory;
-import eu.matejkormuth.pexel.commons.Logger;
-import eu.matejkormuth.pexel.commons.LoggerHolder;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.PluginLoader;
 import eu.matejkormuth.pexel.commons.Providers;
-import eu.matejkormuth.pexel.commons.ServerComponent;
 import eu.matejkormuth.pexel.commons.ServerMode;
 import eu.matejkormuth.pexel.commons.SlaveMinecraftServer;
 import eu.matejkormuth.pexel.commons.SlaveMinecraftServerType;
@@ -67,11 +66,11 @@ import eu.matejkormuth.pexel.slave.staticmc.StaticMCSlaveMinecraftSoftware;
 /**
  * PexelSlave server singleton object.
  */
-public class PexelSlave implements LoggerHolder {
+public class PexelSlave {
     private static PexelSlave       instance;
     
     protected SlaveServer           server;
-    protected Logger                log;
+    protected Logger                log               = LoggerFactory.getLogger(PexelSlave.class);
     protected Configuration         config;
     protected Sync                  sync;
     protected PluginLoader          pluginLoader;
@@ -92,17 +91,8 @@ public class PexelSlave implements LoggerHolder {
     
     public PexelSlave(final File dataFolder, final SlaveMinecraftServerType software,
             final ClassLoader classLoader) {
-        this.log = new Logger("PexelSlave");
-        this.log.displayTimestamps = true;
         
         this.classLoader = classLoader;
-        
-        try {
-            this.log.setOutput(new FileWriter(dataFolder.getAbsolutePath()
-                    + "/pexel.log"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         
         this.log.info("Booting up PexelSlave...");
         
@@ -164,7 +154,7 @@ public class PexelSlave implements LoggerHolder {
         this.log.info("Loading all components...");
         File libsFolder = new File(dataFolder.getAbsoluteFile() + "/libs/");
         libsFolder.mkdirs();
-        new SlaveComponentLoader(this.log, this).loadAll(libsFolder);
+        new SlaveComponentLoader(this).loadAll(libsFolder);
         
         // TODO: Load all plugins.
         this.pluginLoader.loadAll();
@@ -198,7 +188,7 @@ public class PexelSlave implements LoggerHolder {
         // Connect to master - other thread.
         this.server = new SlaveServer(this.config.getSection(PexelSlave.class)
                 .get(Configuration.Keys.KEY_SLAVE_NAME, Providers.RANDOM_NAME.next())
-                .asString(), this.config.getSection(SlaveServer.class), this.log,
+                .asString(), this.config.getSection(SlaveServer.class),
                 new PexelProtocol());
         
         // Register responders.
@@ -237,9 +227,6 @@ public class PexelSlave implements LoggerHolder {
         
         this.log.info("Shutting down!");
         this.log.info("Thanks for using and bye!");
-        
-        // Close logger.
-        this.log.close();
     }
     
     public void addPlayer(final Player player) {
@@ -305,7 +292,6 @@ public class PexelSlave implements LoggerHolder {
     protected void enableComponent(final SlaveComponent e) {
         this.log.info("Enabling [" + e.getClass().getSimpleName() + "]...");
         e.slave = this;
-        e.__initLogger(this);
         e.__initConfig(this.getConfiguration());
         try {
             e.onEnable();
@@ -314,7 +300,7 @@ public class PexelSlave implements LoggerHolder {
         }
     }
     
-    protected void disableComponent(final ServerComponent e) {
+    protected void disableComponent(final AbstractComponent e) {
         this.log.info("Disabling [" + e.getClass().getSimpleName() + "]...");
         e.onDisable();
     }
@@ -352,7 +338,6 @@ public class PexelSlave implements LoggerHolder {
         return this.sync;
     }
     
-    @Override
     public Logger getLogger() {
         return this.log;
     }

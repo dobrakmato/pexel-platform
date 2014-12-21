@@ -25,7 +25,7 @@ import eu.matejkormuth.pexel.slave.bukkit.HardCoded;
 import eu.matejkormuth.pexel.slave.bukkit.PexelCore;
 
 /**
- * ServerComponent that does initialize legacy PexelCore code.
+ * AbstractComponent that does initialize legacy PexelCore code.
  */
 public class LegacyCoreComponent extends SlaveComponent {
     @Override

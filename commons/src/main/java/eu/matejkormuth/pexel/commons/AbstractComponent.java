@@ -18,31 +18,24 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.matejkormuth.pexel.commons.configuration.Configuration;
 import eu.matejkormuth.pexel.commons.configuration.ConfigurationSection;
 
 /**
  * Interface that represents component that can be enabled, disabled and have own {@link Logger}.
  */
-public abstract class ServerComponent implements Component {
+public abstract class AbstractComponent implements Component {
     /**
      * Logger object of this componenet.
      */
-    protected Logger               logger;
+    protected Logger               logger = LoggerFactory.getLogger(this.getClass());
     /**
      * Configuration section of this component.
      */
     protected ConfigurationSection config;
-    
-    /**
-     * Called when internal logic of component (not buisness logic) should be initialized.
-     * 
-     * @param parentLogger
-     *            object that contains parent logger.
-     */
-    protected void _initLogger(final LoggerHolder parentLogger) {
-        this.logger = parentLogger.getLogger().getChild(this.getClass().getSimpleName());
-    }
     
     /**
      * Called when internal logic of component (not buisness logic) should be initialized.

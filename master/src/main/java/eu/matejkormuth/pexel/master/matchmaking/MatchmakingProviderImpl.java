@@ -213,8 +213,9 @@ public class MatchmakingProviderImpl extends MatchmakingProvider {
             }
             
             if (playercount != 0) {
-                this.log.info("Processed " + playercount + " players in " + matchcount
-                        + " matches! " + this.requests.size() + " requests left.");
+                this.log.info(
+                        "Processed {0} players in {1} matches! {2} requests left.",
+                        playercount, matchcount, this.requests.size());
             }
             
         }

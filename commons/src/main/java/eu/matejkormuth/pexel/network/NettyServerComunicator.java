@@ -48,7 +48,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLException;
 
-import eu.matejkormuth.pexel.commons.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NettyServerComunicator extends MessageComunicator {
     protected final ChannelGroup                                              channels        = new DefaultChannelGroup(
@@ -60,7 +61,7 @@ public class NettyServerComunicator extends MessageComunicator {
     
     protected Map<ChannelHandlerContext, PriorityBlockingQueue<NettyMessage>> queues          = new HashMap<ChannelHandlerContext, PriorityBlockingQueue<NettyMessage>>();
     
-    protected Logger                                                          log;
+    protected Logger                                                          log             = LoggerFactory.getLogger(NettyServerComunicator.class);
     protected ServerBootstrap                                                 b;
     protected int                                                             port;
     
@@ -71,7 +72,6 @@ public class NettyServerComunicator extends MessageComunicator {
         super(handler);
         
         this.authKey = authKey;
-        this.log = server.getLogger().getChild("Netty");
         this.server = server;
         this.port = port;
     }
@@ -241,12 +241,12 @@ public class NettyServerComunicator extends MessageComunicator {
                     NettyServerComunicatorHandler.this.i.ctxByName.put(name, ctx);
                     NettyServerComunicatorHandler.this.i.server.addSlave(server);
                     NettyServerComunicatorHandler.this.i.serverInfoByCTX.put(ctx, server);
-                    this.i.log.info("Registered new SLAVE server:" + name + ";ctx:"
-                            + ctx.hashCode());
+                    this.i.log.info("Registered new SLAVE server:{0};ctx:{1}", name,
+                            ctx.hashCode());
                 }
                 else {
                     // Bad login. Disconnect.
-                    this.i.log.warn("Bad login authKey from " + ctx.name());
+                    this.i.log.warn("Bad login authKey from {0}", ctx.name());
                     ctx.close();
                 }
             }

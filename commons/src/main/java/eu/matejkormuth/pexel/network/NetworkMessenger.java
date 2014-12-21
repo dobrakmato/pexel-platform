@@ -24,21 +24,20 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-import eu.matejkormuth.pexel.commons.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class Messenger implements PayloadHandler {
+public class NetworkMessenger implements PayloadHandler {
     
     private final Map<Class<? extends Request>, MethodOfObject> methods = new HashMap<Class<? extends Request>, MethodOfObject>();
     private final CallbackHandler                               callbackHandler;
     private final Protocol                                      protocol;
-    private final Logger                                        log;
+    private final Logger                                        log     = LoggerFactory.getLogger(NetworkMessenger.class);
     private final Class<Request>                                requestClass;
     
-    public Messenger(final CallbackHandler listener, final Protocol protocol,
-            final Logger parentLogger) {
+    public NetworkMessenger(final CallbackHandler listener, final Protocol protocol) {
         this.callbackHandler = listener;
         this.protocol = protocol;
-        this.log = parentLogger.getChild("Messenger");
         this.requestClass = Request.class;
     }
     
@@ -50,7 +49,7 @@ public class Messenger implements PayloadHandler {
      */
     @SuppressWarnings("unchecked")
     public void addResponder(final Object responder) {
-        this.log.debug("New responder " + responder.getClass().getCanonicalName());
+        this.log.debug("New responder {0}", responder.getClass().getCanonicalName());
         // Register all valid methods.
         for (Method m : responder.getClass().getDeclaredMethods()) {
             Class<?>[] types = m.getParameterTypes();
@@ -60,17 +59,16 @@ public class Messenger implements PayloadHandler {
                 if (this.requestClass.isAssignableFrom(types[0])) {
                     // And that request is supported by protocol.
                     if (this.protocol.supportsRequest((Class<? extends Request>) types[0])) {
-                        this.log.debug("  - handles " + types[0].getCanonicalName());
+                        this.log.debug("  - handles {0}", types[0].getCanonicalName());
                         this.methods.put((Class<? extends Request>) types[0],
                                 new MethodOfObject(responder, m));
                     }
                     else {
-                        this.log.warn("Responder "
-                                + responder.getClass().getCanonicalName()
-                                + " has request handler for Request ("
-                                + types[0].getCanonicalName()
-                                + ") that is not supported by current protocol ("
-                                + this.protocol.getClass().getCanonicalName() + ")");
+                        this.log.warn(
+                                "Responder {0} has request handler for Request ({1}) that is not supported by current protocol ({2})",
+                                responder.getClass().getCanonicalName(),
+                                types[0].getCanonicalName(), this.protocol.getClass()
+                                        .getCanonicalName());
                     }
                 }
             }
@@ -81,8 +79,8 @@ public class Messenger implements PayloadHandler {
         try {
             Class<? extends Request> clazz = request.getClass();
             if (!this.methods.containsKey(clazz)) {
-                this.log.warn("Request " + clazz.getCanonicalName()
-                        + " does not have registered responder.");
+                this.log.warn("Request {0} does not have registered responder.",
+                        clazz.getCanonicalName());
                 return;
             }
             

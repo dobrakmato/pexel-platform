@@ -66,14 +66,12 @@ public class BanEntity implements Ban {
     
     @Override
     public BanAuthor getAuthor() {
-        return new PlayerBanAuthor(PexelMaster.getInstance()
-                .getCaches()
-                .getProfile(this.author));
+        return new PlayerBanAuthor(PexelMaster.getInstance().getProfile(this.author));
     }
     
     @Override
     public Profile getPlayer() {
-        return PexelMaster.getInstance().getCaches().getProfile(this.player);
+        return PexelMaster.getInstance().getProfile(this.player);
     }
     
     @Override

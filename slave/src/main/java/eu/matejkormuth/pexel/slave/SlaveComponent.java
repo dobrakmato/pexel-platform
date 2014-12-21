@@ -18,14 +18,13 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave;
 
-import eu.matejkormuth.pexel.commons.LoggerHolder;
-import eu.matejkormuth.pexel.commons.ServerComponent;
+import eu.matejkormuth.pexel.commons.AbstractComponent;
 import eu.matejkormuth.pexel.commons.configuration.Configuration;
 
 /**
  * Interface that represents component in MasterServer.
  */
-public abstract class SlaveComponent extends ServerComponent {
+public abstract class SlaveComponent extends AbstractComponent {
     PexelSlave slave;
     
     /**
@@ -42,10 +41,6 @@ public abstract class SlaveComponent extends ServerComponent {
     @Override
     public void onDisable() {
     };
-    
-    protected void __initLogger(final LoggerHolder holder) {
-        this._initLogger(holder);
-    }
     
     protected void __initConfig(final Configuration parentConfiguration) {
         this._initConfig(parentConfiguration);

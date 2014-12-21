@@ -23,7 +23,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-import eu.matejkormuth.pexel.commons.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.matejkormuth.pexel.commons.configuration.Configuration;
 import eu.matejkormuth.pexel.commons.configuration.ConfigurationSection;
 
@@ -33,10 +35,10 @@ import eu.matejkormuth.pexel.commons.configuration.ConfigurationSection;
 public class MasterServer extends ServerInfo implements Requestable {
     private final Platform                 platform;
     private final Proxy                    proxy;
-    private final Logger                   log;
+    private final Logger                   log           = LoggerFactory.getLogger(MasterServer.class);
     private final Protocol                 protocol;
-    private final Messenger                messenger;
-    private final CallbackHandler          callbackHandler;                                   // May be replaced with array of listeners.
+    private final NetworkMessenger         messenger;
+    private final CallbackHandler          callbackHandler;                                            // May be replaced with array of listeners.
     private final MessageComunicator       comunicator;
     private final ConfigurationSection     config;
     
@@ -48,9 +50,6 @@ public class MasterServer extends ServerInfo implements Requestable {
     public MasterServer(final String name, final ConfigurationSection config,
             final Logger logger, final Protocol protocol) {
         super(name);
-        
-        // Logger.
-        this.log = logger.getChild("Net");
         
         this.log.info("Starting MasterServer...");
         
@@ -67,7 +66,7 @@ public class MasterServer extends ServerInfo implements Requestable {
         this.callbackHandler = new CallbackHandler(this);
         
         // Create message decoder.
-        this.messenger = new Messenger(this.callbackHandler, this.protocol, this.log);
+        this.messenger = new NetworkMessenger(this.callbackHandler, this.protocol);
         
         // Start netty comunicator.
         this.comunicator = new NettyServerComunicator(this.messenger, this.config.get(
@@ -140,7 +139,7 @@ public class MasterServer extends ServerInfo implements Requestable {
      * 
      * @return current messanger
      */
-    public Messenger getMessenger() {
+    public NetworkMessenger getMessenger() {
         return this.messenger;
     }
     
