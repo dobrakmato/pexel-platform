@@ -31,6 +31,7 @@ import com.google.common.base.Optional;
 
 import eu.matejkormuth.pexel.commons.AbstractComponent;
 import eu.matejkormuth.pexel.commons.AbstractObjectFactory;
+import eu.matejkormuth.pexel.commons.ComponentList;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.PluginLoader;
 import eu.matejkormuth.pexel.commons.Providers;
@@ -67,27 +68,27 @@ import eu.matejkormuth.pexel.slave.staticmc.StaticMCSlaveMinecraftSoftware;
  * PexelSlave server singleton object.
  */
 public class PexelSlave {
-    private static PexelSlave       instance;
+    private static PexelSlave               instance;
     
-    protected SlaveServer           server;
-    protected Logger                log               = LoggerFactory.getLogger(PexelSlave.class);
-    protected Configuration         config;
-    protected Sync                  sync;
-    protected PluginLoader          pluginLoader;
-    protected StorageImpl           storage;
-    protected AbstractObjectFactory objectFactory;
-    protected SlaveMinecraftServer  serverSoftware;
-    protected Scheduler             scheduler;
-    protected SlaveEventBus         eventBus;
+    protected SlaveServer                   server;
+    protected Logger                        log               = LoggerFactory.getLogger(PexelSlave.class);
+    protected Configuration                 config;
+    protected Sync                          sync;
+    protected PluginLoader                  pluginLoader;
+    protected StorageImpl                   storage;
+    protected AbstractObjectFactory         objectFactory;
+    protected SlaveMinecraftServer          serverSoftware;
+    protected Scheduler                     scheduler;
+    protected SlaveEventBus                 eventBus;
     
-    protected ServerMode            mode;
+    protected ServerMode                    mode;
     
-    protected ComponentList         components        = new ComponentList();
-    protected boolean               componentsEnabled = false;
+    protected ComponentList<SlaveComponent> components        = new ComponentList<SlaveComponent>();
+    protected boolean                       componentsEnabled = false;
     
-    private final List<Player>      onlinePlayers;
+    private final List<Player>              onlinePlayers;
     
-    private final ClassLoader       classLoader;
+    private final ClassLoader               classLoader;
     
     public PexelSlave(final File dataFolder, final SlaveMinecraftServerType software,
             final ClassLoader classLoader) {

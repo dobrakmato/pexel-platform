@@ -16,24 +16,24 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.slave;
+package eu.matejkormuth.pexel.commons;
 
 import java.util.LinkedList;
 
 /**
  * Component list that maintains ordering system first, then user.
  */
-public class ComponentList extends LinkedList<SlaveComponent> {
+public class ComponentList<T> extends LinkedList<T> {
     private static final long serialVersionUID = 1L;
     private int               systemCount      = 0;
     private int               userCount        = 0;
     
-    public void addSystem(final SlaveComponent component) {
+    public void addSystem(final T component) {
         this.add(this.systemCount, component);
         this.systemCount++;
     }
     
-    public void addUser(final SlaveComponent component) {
+    public void addUser(final T component) {
         this.add(this.systemCount + this.userCount, component);
         this.userCount++;
     }
