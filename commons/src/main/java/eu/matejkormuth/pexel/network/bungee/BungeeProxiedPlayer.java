@@ -16,7 +16,9 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network;
+package eu.matejkormuth.pexel.network.bungee;
+
+import eu.matejkormuth.pexel.network.ProxiedPlayer;
 
 /**
  * Bungee implementation of proxied player.

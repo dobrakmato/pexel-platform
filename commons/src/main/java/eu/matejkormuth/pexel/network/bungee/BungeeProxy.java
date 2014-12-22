@@ -16,7 +16,7 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.network;
+package eu.matejkormuth.pexel.network.bungee;
 
 import java.util.UUID;
 
@@ -24,6 +24,11 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 
 import com.google.common.base.Optional;
+
+import eu.matejkormuth.pexel.network.ProxiedPlayer;
+import eu.matejkormuth.pexel.network.Proxy;
+import eu.matejkormuth.pexel.network.ProxyBrand;
+import eu.matejkormuth.pexel.network.ServerInfo;
 
 /**
  * Class that executes {@link Proxy} functions on BungeeCord server.

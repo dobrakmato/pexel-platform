@@ -22,13 +22,14 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gson.reflect.TypeToken;
+import com.google.common.reflect.TypeToken;
 
 /**
  * Class that holds metadata.
  */
 public class MetadataStore implements Metadatable {
     private static Type               MAP_TYPE = new TypeToken<Map<String, String>>() {
+                                                   private static final long serialVersionUID = 7820627094834822190L;
                                                }.getType();
     // Internal map containing metadata.                                           
     private final Map<String, String> internal;

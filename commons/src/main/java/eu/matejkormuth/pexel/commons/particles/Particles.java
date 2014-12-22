@@ -16,16 +16,11 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons;
-
+package eu.matejkormuth.pexel.commons.particles;
 
 /**
- * Interface that represents class that provides access to worlds.
+ * Class that holds all available particles.
  */
-public interface WorldProvider {
-    
-    //public World getWorld(String name);
-    
-    //public World getWorld(UUID uuid);
+public class Particles {
     
 }

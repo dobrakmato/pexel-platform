@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.bukkit.Sound;
-
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.text.ChatColor;
 
@@ -221,9 +219,10 @@ public class ChatChannel {
                         && !message.startsWith(p.getName().toLowerCase())) {
                     p.sendMessage(this.prefix + ChatColor.BLUE + message);
                     if (p instanceof PlayerChannelSubscriber) {
-                        ((PlayerChannelSubscriber) p).getPlayer().playSound(
-                                ((PlayerChannelSubscriber) p).getPlayer().getLocation(),
-                                Sound.LEVEL_UP, 0.5F, 1);
+                        //((PlayerChannelSubscriber) p).getPlayer().playSound(
+                        //        ((PlayerChannelSubscriber) p).getPlayer().getLocation(),
+                        //        Sound.LEVEL_UP, 0.5F, 1);
+                        // TODO: Add support for sounds.
                     }
                 }
                 else {

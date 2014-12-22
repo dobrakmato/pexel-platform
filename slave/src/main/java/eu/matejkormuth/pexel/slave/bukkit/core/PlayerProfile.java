@@ -35,7 +35,7 @@ import org.bukkit.entity.Player;
 
 import com.google.common.collect.ImmutableList;
 
-import eu.matejkormuth.pexel.slave.bukkit.util.ParticleEffect2;
+import eu.matejkormuth.pexel.slave.bukkit.particles.ParticleEffect;
 
 /**
  * Object for storing player's friends and unfriends.
@@ -70,7 +70,7 @@ public class PlayerProfile {
     protected transient boolean            spectating    = false;
     
     //Dont mind this one...
-    private ParticleEffect2                particleType;
+    private ParticleEffect                 particleType;
     
     /**
      * Last known name of this player.
@@ -262,12 +262,12 @@ public class PlayerProfile {
     }
     
     // Will be removed
-    public void setParticleType(final ParticleEffect2 effect) {
+    public void setParticleType(final ParticleEffect effect) {
         this.particleType = effect;
     }
     
     // Will be removed
-    public ParticleEffect2 getParticleType() {
+    public ParticleEffect getParticleType() {
         return this.particleType;
     }
     

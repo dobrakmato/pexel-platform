@@ -46,9 +46,9 @@ import eu.matejkormuth.pexel.slave.bukkit.core.Log;
 import eu.matejkormuth.pexel.slave.bukkit.core.StorageEngine;
 import eu.matejkormuth.pexel.slave.bukkit.menu.InventoryMenu;
 import eu.matejkormuth.pexel.slave.bukkit.menu.InventoryMenuItem;
+import eu.matejkormuth.pexel.slave.bukkit.particles.ParticleEffect;
 import eu.matejkormuth.pexel.slave.bukkit.util.ItemUtils;
 import eu.matejkormuth.pexel.slave.bukkit.util.ParametrizedRunnable;
-import eu.matejkormuth.pexel.slave.bukkit.util.ParticleEffect2;
 
 /**
  * Alternate method of handling commands. I'm lazy to do this in plugin.yml.
@@ -71,9 +71,9 @@ public class AlternativeCommands implements Listener {
         List<InventoryMenuItem> particleAmountMenuItems = new ArrayList<InventoryMenuItem>();
         List<InventoryMenuItem> particleAnimationMenuItems = new ArrayList<InventoryMenuItem>();
         
-        ParticleEffect2[] values = ParticleEffect2.values();
+        ParticleEffect[] values = ParticleEffect.values();
         for (int i = 0; i < values.length; i++) {
-            final ParticleEffect2 effect = values[i];
+            final ParticleEffect effect = values[i];
             particleTypesMenuItems.add(new InventoryMenuItem(ItemUtils.namedItemStack(
                     Material.NETHER_STAR, effect.toString(), null),
                     new JavaArbitraryAction(new ParametrizedRunnable() {

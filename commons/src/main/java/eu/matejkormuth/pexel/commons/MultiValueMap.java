@@ -25,11 +25,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.apache.commons.lang.math.RandomUtils;
 
 /**
  * Special map that can have multiple values on one key.
@@ -43,6 +42,7 @@ import org.apache.commons.lang.math.RandomUtils;
 public class MultiValueMap<K, V> implements Map<K, V>, Serializable {
     private static final long     serialVersionUID = -2507916622202922554L;
     private final Map<K, List<V>> internalMap;
+    private final Random          random           = new Random();
     
     /**
      * Constructs a new {@link MultiValueMap}.
@@ -82,7 +82,7 @@ public class MultiValueMap<K, V> implements Map<K, V>, Serializable {
     }
     
     public V getRandom(final K key) {
-        return this.get(key, RandomUtils.nextInt(this.size(key)));
+        return this.get(key, this.random.nextInt(this.size(key)));
     }
     
     public void clear(final K key) {

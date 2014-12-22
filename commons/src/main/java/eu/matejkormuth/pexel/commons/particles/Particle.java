@@ -16,16 +16,14 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons;
+package eu.matejkormuth.pexel.commons.particles;
 
+import eu.matejkormuth.pexel.commons.math.Vector3d;
 
 /**
- * Interface that represents class that provides access to worlds.
+ * Interface that represents a particle.
  */
-public interface WorldProvider {
+public interface Particle {
     
-    //public World getWorld(String name);
-    
-    //public World getWorld(UUID uuid);
-    
+    public void display(Vector3d location);
 }

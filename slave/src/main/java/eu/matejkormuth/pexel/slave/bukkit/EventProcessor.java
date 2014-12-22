@@ -59,8 +59,7 @@ import eu.matejkormuth.pexel.slave.bukkit.areas.AreaFlag;
 import eu.matejkormuth.pexel.slave.bukkit.core.Log;
 import eu.matejkormuth.pexel.slave.bukkit.core.StorageEngine;
 import eu.matejkormuth.pexel.slave.bukkit.menu.InventoryMenu;
-import eu.matejkormuth.pexel.slave.bukkit.util.ParticleEffect;
-import eu.matejkormuth.pexel.slave.bukkit.util.ParticleEffect2;
+import eu.matejkormuth.pexel.slave.bukkit.particles.ParticleEffect;
 
 /**
  * Event processor for pexel.
@@ -86,9 +85,9 @@ public class EventProcessor implements Listener {
                             .multiply(1.2F);
                     StorageEngine.getProfile(event.getPlayer().getUniqueId())
                             .getParticleType()
-                            .display(
+                            .display(0.50F, 0.20F, 0.50F, 1, 8,
                                     event.getFrom().subtract(diff).clone().add(0, i, 0),
-                                    0.50F, 0.20F, 0.50F, 1, 8);
+                                    100D);
                 }
             }
         }
@@ -227,17 +226,17 @@ public class EventProcessor implements Listener {
                         //        loc.getBlockY(), loc.getBlockZ(), 1 + Pexel.getRandom()
                         //                .nextInt(5));
                         
-                        for (Player p : Bukkit.getOnlinePlayers()) {
-                            //PacketHelper.send(p, packet);
-                        }
-                        ParticleEffect.displayBlockCrack(loc,
-                                loc.getBlock().getTypeId(), loc.getBlock().getData(),
-                                0.3F, 0.3F, 0.3F, 1, 50);
-                        ParticleEffect.FIREWORKS_SPARK.display(loc, 0, 0, 0, 1, 1);
+                        //for (Player p : Bukkit.getOnlinePlayers()) {
+                        //PacketHelper.send(p, packet);
+                        //}
+                        //ParticleEffect.displayBlockCrack(loc,
+                        //        loc.getBlock().getTypeId(), loc.getBlock().getData(),
+                        ////        0.3F, 0.3F, 0.3F, 1, 50);
+                        //ParticleEffect.FIREWORKS_SPARK.display(loc, 0, 0, 0, 1, 1);
                         
                         break;
                     }
-                    ParticleEffect.FIREWORKS_SPARK.display(loc, 0, 0, 0, 0, 1);
+                    //ParticleEffect.FIREWORKS_SPARK.display(loc, 0, 0, 0, 0, 1);
                 }
             }
         }
@@ -297,7 +296,7 @@ public class EventProcessor implements Listener {
                 Log.info("Generated frame X:" + x + ", Y:" + y);
                 animation.addFrame(new ParticleFrame(
                         Arrays.asList(new ParticleFrame.Particle(x, 2.5, y,
-                                ParticleEffect2.HEART))));
+                                ParticleEffect.HEART))));
             }
             
             EntityAnimationPlayer player = new EntityAnimationPlayer(animation,

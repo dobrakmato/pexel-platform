@@ -24,7 +24,8 @@ import java.util.Iterator;
 
 import eu.matejkormuth.pexel.commons.Location;
 import eu.matejkormuth.pexel.commons.animations.Frame;
-import eu.matejkormuth.pexel.slave.bukkit.util.ParticleEffect2;
+import eu.matejkormuth.pexel.slave.bukkit.FastLocationTransformer;
+import eu.matejkormuth.pexel.slave.bukkit.particles.ParticleEffect;
 
 public class ParticleFrame implements Frame, Collection<ParticleFrame.Particle>,
         Serializable {
@@ -41,10 +42,10 @@ public class ParticleFrame implements Frame, Collection<ParticleFrame.Particle>,
         public double             relX;
         public double             relY;
         public double             relZ;
-        public ParticleEffect2    type;
+        public ParticleEffect     type;
         
         public Particle(final double relX, final double relY, final double relZ,
-                final ParticleEffect2 type) {
+                final ParticleEffect type) {
             super();
             this.relX = relX;
             this.relY = relY;
@@ -53,7 +54,9 @@ public class ParticleFrame implements Frame, Collection<ParticleFrame.Particle>,
         }
         
         public void play(final Location loc) {
-            //this.type.display(loc.add(this.relX, this.relY, this.relZ), 0, 0, 0, 1, 1);
+            this.type.display(0F, 0F, 0F, 1F, 1,
+                    FastLocationTransformer.trans(loc.add(this.relX, this.relY,
+                            this.relZ)), 100D);
         }
     }
     

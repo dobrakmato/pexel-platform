@@ -18,7 +18,7 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons.chat;
 
-import org.bukkit.ChatColor;
+import eu.matejkormuth.pexel.commons.text.ChatColor;
 
 /**
  * Class that represents chat message.

@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import eu.matejkormuth.pexel.commons.configuration.Configuration;
 import eu.matejkormuth.pexel.commons.configuration.ConfigurationSection;
+import eu.matejkormuth.pexel.network.bungee.BungeeProxy;
 
 /**
  * Main class of master server.
