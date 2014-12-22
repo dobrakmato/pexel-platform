@@ -18,8 +18,8 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave.events.player;
 
+import eu.matejkormuth.pexel.commons.DamageCause;
 import eu.matejkormuth.pexel.commons.Player;
-import eu.matejkormuth.pexel.slave.DamageCause;
 import eu.matejkormuth.pexel.slave.events.Cancellable;
 
 /**
