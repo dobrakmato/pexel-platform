@@ -18,24 +18,30 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
+
+import eu.matejkormuth.pexel.commons.annotations.JsonType;
 
 /**
  * Class that represents revision.
  */
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Revision {
+@JsonType
+public class Revision implements Serializable {
+    private static final long serialVersionUID = 1L;
     /**
      * Higher revision will be evaluated as newer version.
      */
-    protected int    revision;
+    protected int             revision;
     /**
      * String representation of this revision.
      */
-    protected String name;
+    protected String          name;
     
     public Revision() {
     }

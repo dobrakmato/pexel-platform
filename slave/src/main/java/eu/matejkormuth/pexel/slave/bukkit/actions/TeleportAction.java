@@ -18,8 +18,11 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave.bukkit.actions;
 
+import java.util.Collection;
+
 import eu.matejkormuth.pexel.commons.Location;
 import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.actions.Action;
 import eu.matejkormuth.pexel.network.ServerInfo;
 
 /**
@@ -70,5 +73,11 @@ public class TeleportAction implements Action {
             // out.writeUTF(this.server.());
             // player.sendPluginMessage(Pexel.getCore(), "BungeeCord", out.toByteArray());
         }
+    }
+    
+    @Override
+    public void execute(final Collection<Player> players) {
+        // TODO Auto-generated method stub
+        
     }
 }

@@ -18,12 +18,10 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons;
 
-
 /**
  * Interface that specifies all actions that slave minecraft software should do.
  */
 public interface SlaveMinecraftServer {
-    
     /**
      * Returns minecraft server's version.
      * 

@@ -16,7 +16,7 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.slave.bukkit.kits;
+package eu.matejkormuth.pexel.commons.kits;
 
 import java.util.List;
 

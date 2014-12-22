@@ -21,7 +21,7 @@ package eu.matejkormuth.pexel.slave.bukkit.menu;
 import org.bukkit.inventory.ItemStack;
 
 import eu.matejkormuth.pexel.commons.Player;
-import eu.matejkormuth.pexel.slave.bukkit.actions.Action;
+import eu.matejkormuth.pexel.commons.actions.Action;
 
 /**
  * Class that represents item in inventory menu.

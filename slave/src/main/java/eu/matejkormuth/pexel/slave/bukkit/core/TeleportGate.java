@@ -20,7 +20,7 @@ package eu.matejkormuth.pexel.slave.bukkit.core;
 
 import eu.matejkormuth.pexel.commons.CuboidRegion;
 import eu.matejkormuth.pexel.commons.Player;
-import eu.matejkormuth.pexel.slave.bukkit.actions.Action;
+import eu.matejkormuth.pexel.commons.actions.Action;
 
 /**
  * Class representating teleport portal.

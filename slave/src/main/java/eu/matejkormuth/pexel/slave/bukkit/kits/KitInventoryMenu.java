@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.kits.Kit;
 import eu.matejkormuth.pexel.slave.bukkit.actions.JavaArbitraryAction;
 import eu.matejkormuth.pexel.slave.bukkit.menu.InventoryMenu;
 import eu.matejkormuth.pexel.slave.bukkit.menu.InventoryMenuItem;

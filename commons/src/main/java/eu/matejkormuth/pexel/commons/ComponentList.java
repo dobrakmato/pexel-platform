@@ -21,20 +21,33 @@ package eu.matejkormuth.pexel.commons;
 import java.util.LinkedList;
 
 /**
- * Component list that maintains ordering system first, then user.
+ * Component list is a linked list that maintains ordering system first, user second. So the system items are on top of
+ * the list and user are ordered after system items part.
  */
 public class ComponentList<T> extends LinkedList<T> {
     private static final long serialVersionUID = 1L;
     private int               systemCount      = 0;
     private int               userCount        = 0;
     
-    public void addSystem(final T component) {
-        this.add(this.systemCount, component);
+    /**
+     * Adds item to list to system (first) part.
+     * 
+     * @param item
+     *            item to add
+     */
+    public void addSystem(final T item) {
+        this.add(this.systemCount, item);
         this.systemCount++;
     }
     
-    public void addUser(final T component) {
-        this.add(this.systemCount + this.userCount, component);
+    /**
+     * Adds item to list to user (second) part.
+     * 
+     * @param item
+     *            item to add
+     */
+    public void addUser(final T item) {
+        this.add(this.systemCount + this.userCount, item);
         this.userCount++;
     }
 }

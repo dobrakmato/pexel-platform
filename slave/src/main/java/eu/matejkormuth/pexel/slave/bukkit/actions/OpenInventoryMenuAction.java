@@ -18,7 +18,10 @@
 // @formatter:on
 package eu.matejkormuth.pexel.slave.bukkit.actions;
 
+import java.util.Collection;
+
 import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.actions.Action;
 import eu.matejkormuth.pexel.slave.bukkit.menu.InventoryMenu;
 
 /**
@@ -40,5 +43,11 @@ public class OpenInventoryMenuAction implements Action {
     @Override
     public void execute(final Player player) {
         this.inventoryMenu.showTo(player);
+    }
+    
+    @Override
+    public void execute(final Collection<Player> players) {
+        // TODO Auto-generated method stub
+        
     }
 }
