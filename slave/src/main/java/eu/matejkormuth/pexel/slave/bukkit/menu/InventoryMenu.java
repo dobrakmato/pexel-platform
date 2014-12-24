@@ -32,14 +32,14 @@ import eu.matejkormuth.pexel.slave.bukkit.core.Log;
 import eu.matejkormuth.pexel.slave.bukkit.util.ItemUtils;
 
 /**
- * Class used for Inventory Menu.
+ * Class used for InventoryImpl Menu.
  * 
  * @author Mato Kormuth
  * 
  */
 public class InventoryMenu implements InventoryHolder {
     /**
-     * Inventory of this menu.
+     * InventoryImpl of this menu.
      */
     private final Inventory                       inventory;
     /**
@@ -48,7 +48,7 @@ public class InventoryMenu implements InventoryHolder {
     private final Map<Integer, InventoryMenuItem> items = new HashMap<Integer, InventoryMenuItem>();
     
     /**
-     * Creates new Inventory menu object with specified type of inventory, title and list of items.
+     * Creates new InventoryImpl menu object with specified type of inventory, title and list of items.
      * 
      * @see InventoryMenuItem
      * @see Action
@@ -79,7 +79,7 @@ public class InventoryMenu implements InventoryHolder {
     
     /**
      * 
-     * Creates new Inventory menu object with specified size of inventory, title and list of items.
+     * Creates new InventoryImpl menu object with specified size of inventory, title and list of items.
      * 
      * @param size
      *            size of inventory

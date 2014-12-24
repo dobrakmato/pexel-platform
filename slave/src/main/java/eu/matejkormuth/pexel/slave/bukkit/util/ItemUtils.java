@@ -42,7 +42,7 @@ public class ItemUtils {
         @SuppressWarnings("deprecation") ItemStack is = new ItemStack(material, amount,
                 damage, data);
         ItemMeta im = is.getItemMeta();
-        if (im != null)
+        if (displayName != null)
             im.setDisplayName(displayName);
         if (lore != null)
             im.setLore(lore);
@@ -54,7 +54,7 @@ public class ItemUtils {
             final String displayName, final List<String> lore) {
         ItemStack is = new ItemStack(material, amount);
         ItemMeta im = is.getItemMeta();
-        if (im != null)
+        if (displayName != null)
             im.setDisplayName(displayName);
         if (lore != null)
             im.setLore(lore);
@@ -85,7 +85,7 @@ public class ItemUtils {
             final String displayName, final List<String> lore) {
         ItemStack is = new ItemStack(material);
         ItemMeta im = is.getItemMeta();
-        if (im != null)
+        if (displayName != null)
             im.setDisplayName(displayName);
         if (lore != null)
             im.setLore(lore);

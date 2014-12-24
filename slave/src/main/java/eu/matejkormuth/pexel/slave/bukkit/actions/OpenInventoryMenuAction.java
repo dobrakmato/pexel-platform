@@ -25,7 +25,7 @@ import eu.matejkormuth.pexel.commons.actions.Action;
 import eu.matejkormuth.pexel.slave.bukkit.menu.InventoryMenu;
 
 /**
- * Inventory menu action that opens another inventory menu.
+ * InventoryImpl menu action that opens another inventory menu.
  */
 public class OpenInventoryMenuAction implements Action {
     private final InventoryMenu inventoryMenu;

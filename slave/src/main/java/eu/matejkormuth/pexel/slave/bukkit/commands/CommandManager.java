@@ -24,6 +24,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -201,12 +203,11 @@ public class CommandManager {
      *            args
      */
     private void invoke(final Object command, final Method subcommand,
-            final Player invoker, final Object... args) {
+            final Player invoker, final @Nonnull Object... args) {
         try {
             String argsString = "[";
-            if (args != null)
-                for (Object o : args)
-                    argsString += o.toString() + ",";
+            for (Object o : args)
+                argsString += o.toString() + ",";
             
             if (argsString.length() > 1)
                 argsString = argsString.substring(0, argsString.length() - 1);

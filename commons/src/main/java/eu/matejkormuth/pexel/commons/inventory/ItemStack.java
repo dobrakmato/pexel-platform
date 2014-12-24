@@ -16,7 +16,9 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.commons;
+package eu.matejkormuth.pexel.commons.inventory;
+
+import eu.matejkormuth.pexel.commons.Material;
 
 /**
  * Class that represents an item stack.
@@ -60,7 +62,7 @@ public class ItemStack {
         this.data = data;
     }
     
-    public Material getType() {
+    public Material getMaterial() {
         return this.type;
     }
     

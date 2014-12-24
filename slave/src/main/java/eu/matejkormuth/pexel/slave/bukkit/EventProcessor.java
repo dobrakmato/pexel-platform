@@ -149,7 +149,6 @@ public class EventProcessor implements Listener {
                 event.setCancelled(true);
     }
     
-    @SuppressWarnings("deprecation")
     @EventHandler
     private void onPlayerInteract(final PlayerInteractEvent event) {
         if (event.getClickedBlock() != null) {

@@ -20,6 +20,8 @@ package eu.matejkormuth.pexel.commons;
 
 import java.util.UUID;
 
+import eu.matejkormuth.pexel.commons.inventory.ItemStackBuilder;
+
 /**
  * Factory for creating objects their creation depends on platform.
  */

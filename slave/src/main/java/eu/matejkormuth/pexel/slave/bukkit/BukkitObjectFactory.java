@@ -23,9 +23,9 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 
 import eu.matejkormuth.pexel.commons.AbstractObjectFactory;
-import eu.matejkormuth.pexel.commons.ItemStackBuilder;
 import eu.matejkormuth.pexel.commons.Material;
 import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.inventory.ItemStackBuilder;
 
 /**
  * Bukkit implementation of {@link AbstractObjectFactory}.

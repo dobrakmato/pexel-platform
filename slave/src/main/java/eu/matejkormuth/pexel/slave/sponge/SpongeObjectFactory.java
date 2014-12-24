@@ -21,9 +21,9 @@ package eu.matejkormuth.pexel.slave.sponge;
 import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.AbstractObjectFactory;
-import eu.matejkormuth.pexel.commons.ItemStackBuilder;
 import eu.matejkormuth.pexel.commons.Material;
 import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.inventory.ItemStackBuilder;
 import eu.matejkormuth.pexel.slave.boot.PexelSlaveSpongePlugin;
 
 /**

@@ -20,8 +20,8 @@ package eu.matejkormuth.pexel.slave.events.player;
 
 import java.util.List;
 
-import eu.matejkormuth.pexel.commons.ItemStack;
 import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.inventory.ItemStack;
 
 /**
  * Fired when player entity dies.

@@ -26,7 +26,7 @@ import eu.matejkormuth.pexel.commons.actions.Action;
 import eu.matejkormuth.pexel.network.ServerInfo;
 
 /**
- * Inventory action that teleports player to specified location.
+ * InventoryImpl action that teleports player to specified location.
  */
 public class TeleportAction implements Action {
     /**

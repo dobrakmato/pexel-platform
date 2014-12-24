@@ -45,7 +45,7 @@ public class InventoryMenuItem {
     private final boolean   closeAfterClick;
     
     /**
-     * Creates new Inventory menu item from specified params.
+     * Creates new InventoryImpl menu item from specified params.
      * 
      * @param item
      *            itemstack to use as icon.

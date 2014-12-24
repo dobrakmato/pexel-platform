@@ -20,9 +20,9 @@ package eu.matejkormuth.pexel.slave.sponge;
 
 import java.util.List;
 
-import eu.matejkormuth.pexel.commons.ItemStack;
-import eu.matejkormuth.pexel.commons.ItemStackBuilder;
 import eu.matejkormuth.pexel.commons.Material;
+import eu.matejkormuth.pexel.commons.inventory.ItemStack;
+import eu.matejkormuth.pexel.commons.inventory.ItemStackBuilder;
 
 /**
  * Sponge item stack builder.
