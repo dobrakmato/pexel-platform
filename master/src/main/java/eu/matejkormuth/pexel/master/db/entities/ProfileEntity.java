@@ -16,7 +16,7 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.master.db;
+package eu.matejkormuth.pexel.master.db.entities;
 
 import java.util.Locale;
 import java.util.Set;
@@ -36,13 +36,15 @@ import eu.matejkormuth.pexel.commons.data.Profile;
 import eu.matejkormuth.pexel.commons.permissions.Permission;
 import eu.matejkormuth.pexel.commons.permissions.Role;
 import eu.matejkormuth.pexel.commons.permissions.Roles;
+import eu.matejkormuth.pexel.master.db.MutableEntity;
+import eu.matejkormuth.pexel.master.db.Database;
 
 /**
  * Entity that represnts {@link Player}'s {@link Profile} in {@link Database}.
  */
 @Entity
 @Table(name = "profiles")
-public class ProfileEntity implements Profile {
+public class ProfileEntity extends MutableEntity implements Profile {
     @Transient
     private final Set<Permission> userPermisisons;
     

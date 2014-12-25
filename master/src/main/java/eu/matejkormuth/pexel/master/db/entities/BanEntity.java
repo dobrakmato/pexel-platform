@@ -16,7 +16,7 @@
  *
  */
 // @formatter:on
-package eu.matejkormuth.pexel.master.db;
+package eu.matejkormuth.pexel.master.db.entities;
 
 import java.util.UUID;
 
@@ -34,16 +34,17 @@ import eu.matejkormuth.pexel.commons.bans.BannableIdImpl;
 import eu.matejkormuth.pexel.commons.bans.PlayerBanAuthor;
 import eu.matejkormuth.pexel.commons.data.Profile;
 import eu.matejkormuth.pexel.master.PexelMaster;
+import eu.matejkormuth.pexel.master.db.SoftDeletesImmutableEntity;
 
 /**
  * {@link Ban} database entity.
  */
 @Entity
 @Table(name = "bans")
-public class BanEntity implements Ban {
+public class BanEntity extends SoftDeletesImmutableEntity implements Ban {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long    id;
+    private int     id;
     @Column(name = "permanent")
     private boolean permanent;
     @Column(name = "reason", nullable = true, length = 255)
@@ -58,6 +59,8 @@ public class BanEntity implements Ban {
     private UUID    player;
     @Column(name = "partId")
     private String  networkPartId;
+    @Column(name = "active")
+    private boolean active;
     
     @Override
     public boolean isPermanent() {
@@ -99,4 +102,7 @@ public class BanEntity implements Ban {
         return this.createdAt + this.length;
     }
     
+    public boolean isActive() {
+        return this.active;
+    }
 }

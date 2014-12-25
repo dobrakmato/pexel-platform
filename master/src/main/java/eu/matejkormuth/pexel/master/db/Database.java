@@ -25,6 +25,7 @@ import java.util.UUID;
 
 import eu.matejkormuth.pexel.commons.configuration.Configuration;
 import eu.matejkormuth.pexel.master.MasterComponent;
+import eu.matejkormuth.pexel.master.db.entities.ProfileEntity;
 
 /**
  * Databse component on master.

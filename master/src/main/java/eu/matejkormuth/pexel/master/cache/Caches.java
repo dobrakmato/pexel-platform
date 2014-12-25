@@ -27,31 +27,54 @@ import com.google.common.cache.LoadingCache;
 import com.google.gson.JsonObject;
 
 import eu.matejkormuth.pexel.commons.Providers;
+import eu.matejkormuth.pexel.commons.bans.Ban;
 import eu.matejkormuth.pexel.commons.data.Profile;
-import eu.matejkormuth.pexel.master.cache.loaders.DatabaseProfileEntityLoader;
-import eu.matejkormuth.pexel.master.db.ProfileEntity;
+import eu.matejkormuth.pexel.master.cache.loaders.BanEntityLoader;
+import eu.matejkormuth.pexel.master.cache.loaders.ProfileEntityLoader;
+import eu.matejkormuth.pexel.master.db.entities.BanEntity;
+import eu.matejkormuth.pexel.master.db.entities.ProfileEntity;
 
 /**
  * Object that holds all caches on master.
  */
 public class Caches {
     private final LoadingCache<UUID, ProfileEntity> profiles;
+    private final LoadingCache<Integer, BanEntity>  bans;
     
     public Caches() {
         this.profiles = CacheBuilder.newBuilder()
                 .concurrencyLevel(4)
-                .expireAfterWrite(30, TimeUnit.MINUTES)
+                .expireAfterAccess(30, TimeUnit.MINUTES)
                 .maximumSize(2000)
-                .build(new DatabaseProfileEntityLoader());
+                .build(new ProfileEntityLoader());
+        
+        this.bans = CacheBuilder.newBuilder()
+                .concurrencyLevel(4)
+                .expireAfterAccess(10, TimeUnit.MINUTES)
+                .maximumSize(2000)
+                .build(new BanEntityLoader());
     }
     
     public LoadingCache<UUID, ProfileEntity> getProfileCache() {
         return this.profiles;
     }
     
+    public LoadingCache<Integer, BanEntity> getBansCache() {
+        return this.bans;
+    }
+    
     public Profile getProfile(final UUID uuid) {
         try {
             return this.profiles.get(uuid);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public Ban getBan(final int id) {
+        try {
+            return this.bans.get(id);
         } catch (ExecutionException e) {
             e.printStackTrace();
             return null;

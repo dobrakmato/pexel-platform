@@ -184,6 +184,6 @@ public interface Inventory {
      * @param title
      *            new title for this inventory
      */
-    void setTitle(String title);
+    void setTitle(@Nonnull String title);
     
 }

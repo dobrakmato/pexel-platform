@@ -32,54 +32,54 @@ public interface Ban {
      * 
      * @return true if ban is permanent, false otherwise.
      */
-    public boolean isPermanent();
+    boolean isPermanent();
     
     /**
      * Returns author of ban.
      * 
      * @return author of ban.
      */
-    public BanAuthor getAuthor();
+    BanAuthor getAuthor();
     
     /**
      * Return banned player.
      * 
      * @return banned player.
      */
-    public Profile getPlayer();
+    Profile getPlayer();
     
     /**
      * Returns part of network, from which is player banned.
      * 
      * @return part of network.
      */
-    public Bannable getNetworkPart();
+    Bannable getNetworkPart();
     
     /**
      * Returns reason of this ban.
      * 
      * @return reson of ban.
      */
-    public String getReason();
+    String getReason();
     
     /**
      * Returns length of ban in miliseconds if is ban temporary, -1 if is ban permanent.
      * 
      * @return lenght in ms or -1.
      */
-    public long getLength();
+    long getLength();
     
     /**
      * Returns creation time of ban in epoch time format or -1, if is ban permanent.
      * 
      * @return timestamp of time at creation.
      */
-    public long getCreatedAt();
+    long getCreatedAt();
     
     /**
      * Returns time, when ban expiries or -1, if is ban permanent.
      * 
      * @return epoch timestamp
      */
-    public long getExpireAt();
+    long getExpireAt();
 }

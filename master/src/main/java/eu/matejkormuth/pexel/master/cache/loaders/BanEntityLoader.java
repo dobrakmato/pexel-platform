@@ -18,19 +18,17 @@
 // @formatter:on
 package eu.matejkormuth.pexel.master.cache.loaders;
 
-import java.util.UUID;
-
 import com.avaje.ebean.Ebean;
 import com.google.common.cache.CacheLoader;
 
-import eu.matejkormuth.pexel.master.db.ProfileEntity;
+import eu.matejkormuth.pexel.master.db.entities.BanEntity;
 
 /**
- * Profile loader.
+ * Ban entity loader.
  */
-public class DatabaseProfileEntityLoader extends CacheLoader<UUID, ProfileEntity> {
+public class BanEntityLoader extends CacheLoader<Integer, BanEntity> {
     @Override
-    public ProfileEntity load(final UUID key) throws Exception {
-        return Ebean.find(ProfileEntity.class, key);
+    public BanEntity load(final Integer id) throws Exception {
+        return Ebean.find(BanEntity.class, id);
     }
 }
