@@ -25,12 +25,13 @@ import com.google.common.base.Charsets;
 import eu.matejkormuth.pexel.network.Protocol;
 import eu.matejkormuth.pexel.protocol.requests.DebugMessageRequest;
 import eu.matejkormuth.pexel.protocol.requests.FileTransferRequest;
+import eu.matejkormuth.pexel.protocol.requests.InArenaUpdateMessage;
 import eu.matejkormuth.pexel.protocol.requests.InIsBannedFromRequest;
 import eu.matejkormuth.pexel.protocol.requests.InMatchmakingRegisterGameMessage;
 import eu.matejkormuth.pexel.protocol.requests.InMatchmakingRequest;
-import eu.matejkormuth.pexel.protocol.requests.InArenaUpdateMessage;
 import eu.matejkormuth.pexel.protocol.requests.InPlayerUnresolvableError;
 import eu.matejkormuth.pexel.protocol.requests.InServerMetaDataMessage;
+import eu.matejkormuth.pexel.protocol.requests.InUnregisterSlaveRequest;
 import eu.matejkormuth.pexel.protocol.requests.OutMatchmakingGameStatusRequest;
 import eu.matejkormuth.pexel.protocol.requests.OutPlayerMatchmakedMessage;
 import eu.matejkormuth.pexel.protocol.requests.PlayerTeleportRequest;
@@ -63,6 +64,8 @@ public class PexelProtocol extends Protocol {
         this.registerRequest(8, InMatchmakingRequest.class);
         // Sent by slave when master should take care of misplaced player.
         this.registerRequest(9, InPlayerUnresolvableError.class);
+        // Sent by slave, when going off. Should unregister slave and games on master.
+        this.registerRequest(10, InUnregisterSlaveRequest.class);
         
         // When matchmaking on this player is done. This is sent to server that player will be connected to.
         this.registerRequest(101, OutPlayerMatchmakedMessage.class);
@@ -71,8 +74,8 @@ public class PexelProtocol extends Protocol {
         this.registerResponse(1, ServerStatusResponse.class);
         
         // Request with responses
-        this.registerRequest(10, OutMatchmakingGameStatusRequest.class); //nezmysel
-        this.registerRequest(11, InIsBannedFromRequest.class);
+        this.registerRequest(810, OutMatchmakingGameStatusRequest.class); //nezmysel
+        this.registerRequest(811, InIsBannedFromRequest.class);
         
         // Responses to requests
         this.registerResponse(11, OutIsBannedFromResponse.class);

@@ -87,6 +87,13 @@ public class MasterServer extends ServerInfo implements Requestable {
         this.slaves.put(server.getName(), server);
     }
     
+    public void removeSlave(final SlaveServer server) {
+        // Close connection.
+        ((NettyServerComunicator) this.comunicator).closeConnection(server);
+        // Remove.
+        this.slaves.remove(server.getName());
+    }
+    
     /**
      * Shutsdown all workers and closes all connections.
      */

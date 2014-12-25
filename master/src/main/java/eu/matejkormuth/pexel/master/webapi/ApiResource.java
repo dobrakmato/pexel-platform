@@ -136,6 +136,7 @@ public class ApiResource {
     @GET
     @Path("/verify")
     public String verify() {
+        // Checked with filter before.
         return "{ \"success\": \"true\" }";
     }
     

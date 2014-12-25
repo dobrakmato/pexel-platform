@@ -76,6 +76,20 @@ public class NettyServerComunicator extends MessageComunicator {
         this.port = port;
     }
     
+    public void closeConnection(final ServerInfo server) {
+        this.log.info("Closing connection for slave {0}...", server.getName());
+        ChannelHandlerContext ctx = this.ctxByName.get(server.getName());
+        if (!this.queues.get(ctx).isEmpty()) {
+            this.log.warn(" Throwing to trash " + this.queues.get(ctx).size()
+                    + " unsend messages!");
+        }
+        this.queues.remove(ctx);
+        
+        this.serverInfoByCTX.remove(this.ctxByName.get(server.getName()));
+        ctx.close();
+        this.ctxByName.remove(server.getName());
+    }
+    
     @Override
     public void start() {
         // Use separated thread for netty, to not block main thread.

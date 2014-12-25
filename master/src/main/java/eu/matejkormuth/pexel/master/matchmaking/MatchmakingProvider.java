@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingRequest;
+import eu.matejkormuth.pexel.network.ServerInfo;
 
 /**
  * Class that does matchmaking.
@@ -95,4 +96,6 @@ public abstract class MatchmakingProvider {
      * @return game object
      */
     public abstract MatchmakingGameImpl getGame(final UUID gameId);
+    
+    public abstract void unregisterSlaveGames(final ServerInfo slave);
 }

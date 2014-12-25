@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,6 +33,7 @@ import net.md_5.bungee.api.ChatColor;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingRequest;
 import eu.matejkormuth.pexel.master.PexelMaster;
 import eu.matejkormuth.pexel.network.ProxiedPlayer;
+import eu.matejkormuth.pexel.network.ServerInfo;
 
 /**
  * Basic implementation of matchmaking.
@@ -264,5 +266,21 @@ public class MatchmakingProviderImpl extends MatchmakingProvider {
     @Override
     public MatchmakingGameImpl getGame(final UUID gameId) {
         return this.uuidMapping.get(gameId);
+    }
+    
+    @Override
+    public void unregisterSlaveGames(final ServerInfo slave) {
+        for (Iterator<MatchmakingGameImpl> iterator = this.uuidMapping.values()
+                .iterator(); iterator.hasNext();) {
+            MatchmakingGameImpl game = iterator.next();
+            if (game.host == slave) {
+                this.log.info("Unregistering game {0} from matchmaking.",
+                        game.gameId.toString());
+                // Remove game from arena list.
+                this.arenas.remove(game.getMinigameName()).remove(game);
+                // Remove game from mapping.
+                iterator.remove();
+            }
+        }
     }
 }

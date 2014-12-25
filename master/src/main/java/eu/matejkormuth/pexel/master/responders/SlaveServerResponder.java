@@ -18,17 +18,34 @@
 // @formatter:on
 package eu.matejkormuth.pexel.master.responders;
 
+import eu.matejkormuth.pexel.master.PexelMaster;
+import eu.matejkormuth.pexel.master.matchmaking.Matchmaking;
+import eu.matejkormuth.pexel.network.ServerInfo;
+import eu.matejkormuth.pexel.network.SlaveServer;
 import eu.matejkormuth.pexel.protocol.requests.InServerMetaDataMessage;
+import eu.matejkormuth.pexel.protocol.requests.InUnregisterSlaveRequest;
 
 /**
  * Responder for server status packets.
  */
-public class ServerStatusResponder {
+public class SlaveServerResponder {
     public void onInServerMetaDataMessage(final InServerMetaDataMessage msg) {
         msg.getSender().setCustom("softwareVersion", msg.softwareVersion);
         msg.getSender().setCustom("software", msg.software.toString());
         msg.getSender().setCustom("slots", msg.slots);
         msg.getSender().setCustom("maps", msg.maps);
         msg.getSender().setCustom("minigames", msg.minigames);
+    }
+    
+    public void onSlaveUnresgister(final InUnregisterSlaveRequest msg) {
+        ServerInfo slave = msg.getSender();
+        // Unregister registered games from matchmaking.
+        PexelMaster.getInstance()
+                .getComponent(Matchmaking.class)
+                .unregisterSlaveGames(slave);
+        // Remove from slaves on master.
+        PexelMaster.getInstance()
+                .getMasterServer()
+                .removeSlave((SlaveServer) msg.getSender());
     }
 }

@@ -29,6 +29,7 @@ import eu.matejkormuth.pexel.commons.configuration.Configuration;
 import eu.matejkormuth.pexel.commons.matchmaking.MatchmakingRequest;
 import eu.matejkormuth.pexel.master.MasterComponent;
 import eu.matejkormuth.pexel.master.PexelMaster;
+import eu.matejkormuth.pexel.network.ServerInfo;
 
 /**
  * Master component class that is used for matchamking.
@@ -101,5 +102,9 @@ public class Matchmaking extends MasterComponent {
     
     public MatchmakingGameImpl getGame(final UUID gameId) {
         return this.provider.getGame(gameId);
+    }
+    
+    public void unregisterSlaveGames(final ServerInfo slave) {
+        this.provider.unregisterSlaveGames(slave);
     }
 }

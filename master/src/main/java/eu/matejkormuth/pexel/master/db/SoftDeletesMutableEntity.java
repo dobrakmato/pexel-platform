@@ -25,7 +25,7 @@ import com.avaje.ebean.Ebean;
 /**
  * Abstract class for easier implementation of delete and soft-delete on mutable entities.
  */
-public class SoftDeletesMutableEntity extends MutableEntity {
+public abstract class SoftDeletesMutableEntity extends MutableEntity {
     @Column(name = "deletedAt")
     private long deletedAt;
     

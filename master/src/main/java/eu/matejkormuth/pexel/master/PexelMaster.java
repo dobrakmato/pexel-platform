@@ -40,7 +40,7 @@ import eu.matejkormuth.pexel.master.matchmaking.MatchmakingProviderImpl;
 import eu.matejkormuth.pexel.master.responders.BansResponder;
 import eu.matejkormuth.pexel.master.responders.ErrorResponder;
 import eu.matejkormuth.pexel.master.responders.MatchmakingResponder;
-import eu.matejkormuth.pexel.master.responders.ServerStatusResponder;
+import eu.matejkormuth.pexel.master.responders.SlaveServerResponder;
 import eu.matejkormuth.pexel.master.responders.TeleportationResponder;
 import eu.matejkormuth.pexel.master.webapi.ApiAccessProvider;
 import eu.matejkormuth.pexel.master.webapi.ApiServer;
@@ -115,7 +115,7 @@ public final class PexelMaster {
                 new PexelProtocol());
         
         // Set up responders.
-        this.master.getMessenger().addResponder(new ServerStatusResponder());
+        this.master.getMessenger().addResponder(new SlaveServerResponder());
         this.master.getMessenger().addResponder(new TeleportationResponder());
         this.master.getMessenger().addResponder(new BansResponder());
         this.master.getMessenger().addResponder(new MatchmakingResponder());
