@@ -28,6 +28,7 @@ public class ItemStack {
     private short          durability;
     private int            amount;
     private byte           data;
+    private String         displayName;
     
     public ItemStack(final Material type) {
         this(type, 1);
@@ -66,4 +67,12 @@ public class ItemStack {
         return this.type;
     }
     
+    // NBT methods
+    public String getDisplayName() {
+        return this.displayName;
+    }
+    
+    public void setDisplayName(final String displayName) {
+        this.displayName = displayName;
+    }
 }

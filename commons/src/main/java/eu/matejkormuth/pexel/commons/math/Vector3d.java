@@ -153,8 +153,13 @@ public class Vector3d implements Serializable {
         return this.z;
     }
     
+    public Vector3d floor() {
+        return new Vector3d(Math.floor(this.x), Math.floor(this.y), Math.floor(this.z));
+    }
+    
     @Override
     public String toString() {
         return "Vector3d [x=" + this.x + ", y=" + this.y + ", z=" + this.z + "]";
     }
+    
 }

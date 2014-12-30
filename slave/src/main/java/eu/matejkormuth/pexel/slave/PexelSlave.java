@@ -55,6 +55,7 @@ import eu.matejkormuth.pexel.slave.components.managers.LobbyManager;
 import eu.matejkormuth.pexel.slave.events.SlaveEventBus;
 import eu.matejkormuth.pexel.slave.events.player.PlayerJoinEvent;
 import eu.matejkormuth.pexel.slave.events.player.PlayerLeaveEvent;
+import eu.matejkormuth.pexel.slave.modules.ModuleManager;
 import eu.matejkormuth.pexel.slave.pluginloaders.BukkitPluginLoader;
 import eu.matejkormuth.pexel.slave.pluginloaders.SlaveComponentLoader;
 import eu.matejkormuth.pexel.slave.responders.MatchmakingResponder;
@@ -196,6 +197,9 @@ public class PexelSlave {
         this.server.getMessenger().addResponder(
                 new MatchmakingResponder(this.getEventBus()));
         
+        // Register module manager.
+        this.addComponentSystem(new ModuleManager());
+        
         // Enable all components before registering on master. Buisness logic (minigames) can be registered trough components.
         this.enableComponents();
         
@@ -295,6 +299,7 @@ public class PexelSlave {
         e.slave = this;
         e.__initConfig(this.getConfiguration());
         try {
+            this.eventBus.register(e);
             e.onEnable();
         } catch (Exception ex) {
             ex.printStackTrace();

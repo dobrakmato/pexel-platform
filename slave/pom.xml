@@ -36,6 +36,29 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <compilerId>groovy-eclipse-compiler</compilerId>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-eclipse-compiler</artifactId>
+            <version>2.6.0-01</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.groovy</groupId>
+        <artifactId>groovy-eclipse-compiler</artifactId>
+        <version>2.6.0-01</version>
+        <extensions>true</extensions>
+      </plugin>
     </plugins>
   </build>
   <repositories>
@@ -53,6 +76,11 @@
   </repositories>
   <dependencies>
     <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>2.0.5</version>
+    </dependency>
+    <dependency>
       <groupId>org.bukkit</groupId>
       <artifactId>bukkit</artifactId>
       <version>1.7.9-R0.2</version>
@@ -63,11 +91,11 @@
       <artifactId>commons</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
-     <dependency>
-        <groupId>org.spongepowered</groupId>
-        <artifactId>spongeapi</artifactId>
-        <version>1.0</version>
-        <scope>provided</scope>
+    <dependency>
+      <groupId>org.spongepowered</groupId>
+      <artifactId>spongeapi</artifactId>
+      <version>1.0</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>eu.matejkormuth.pexel</groupId>
