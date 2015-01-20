@@ -20,6 +20,7 @@ package eu.matejkormuth.pexel.slave.sponge;
 
 import org.bukkit.Sound;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -96,7 +97,7 @@ public class SpongePlayer extends Player {
     }
     
     @Override
-    public Inventory getInventory() {
+    public PlayerInventory getInventory() {
         // TODO Auto-generated method stub
         return null;
     }

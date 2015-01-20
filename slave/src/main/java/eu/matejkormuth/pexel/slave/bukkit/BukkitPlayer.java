@@ -23,6 +23,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -115,7 +116,7 @@ public class BukkitPlayer extends Player {
     }
     
     @Override
-    public Inventory getInventory() {
+    public PlayerInventory getInventory() {
         return this.internal.getInventory();
     }
     

@@ -34,16 +34,13 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import eu.matejkormuth.pexel.commons.Location;
 import eu.matejkormuth.pexel.commons.Player;
+import eu.matejkormuth.pexel.commons.arenas.Arena;
 import eu.matejkormuth.pexel.commons.text.ChatColor;
 import eu.matejkormuth.pexel.slave.PexelSlave;
 import eu.matejkormuth.pexel.slave.boot.PexelSlaveBukkitPlugin;
-import eu.matejkormuth.pexel.slave.bukkit.arenas.AbstractArena;
 
 /**
  * Class used for managing teams.
- * 
- * @author Mato Kormuth
- * 
  */
 public class TeamManager implements Listener {
     /**
@@ -55,7 +52,7 @@ public class TeamManager implements Listener {
      */
     private final Map<Location, Team> signs    = new HashMap<Location, Team>();
     private int                       varience = 1;
-    private final AbstractArena       arena;
+    private final Arena               arena;
     
     /**
      * Creates new Team manager
@@ -63,7 +60,7 @@ public class TeamManager implements Listener {
      * @param arena
      *            arena in which team manager runs.
      */
-    public TeamManager(final AbstractArena arena) {
+    public TeamManager(final Arena arena) {
         Bukkit.getPluginManager().registerEvents(this,
                 PexelSlaveBukkitPlugin.getInstance());
         this.arena = arena;
@@ -171,8 +168,7 @@ public class TeamManager implements Listener {
                     team.addPlayer(player);
                     team.applyArmor(player);
                     //this.updateSign(clickedBlock.getLocation(), team);
-                }
-                else {
+                } else {
                     player.sendMessage(ChatColor.RED
                             + "You can't join this team at this time!");
                 }

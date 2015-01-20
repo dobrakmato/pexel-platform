@@ -18,8 +18,9 @@
 // @formatter:on
 package eu.matejkormuth.pexel.commons.menu;
 
+import org.bukkit.inventory.ItemStack;
+
 import eu.matejkormuth.pexel.commons.actions.Action;
-import eu.matejkormuth.pexel.commons.inventory.ItemStack;
 
 /**
  * Interface that represents item in {@link InventoryMenu}.
@@ -37,5 +38,5 @@ public interface InventoryMenuItem {
      * 
      * @return {@link ItemStack} of this menu item
      */
-    ItemStack getItemStack();
+    org.bukkit.inventory.ItemStack getItemStack();
 }

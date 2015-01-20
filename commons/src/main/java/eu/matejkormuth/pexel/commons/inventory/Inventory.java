@@ -20,8 +20,8 @@ package eu.matejkormuth.pexel.commons.inventory;
 
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 import eu.matejkormuth.pexel.commons.Material;
 import eu.matejkormuth.pexel.commons.Player;
@@ -40,7 +40,7 @@ public interface Inventory {
      * @throws RuntimeException
      *             when there is not enough space for this transaction
      */
-    void add(@Nonnull ItemStack itemStack);
+    void add(@NotNull ItemStack itemStack);
     
     /**
      * Adds to inventory item specified by arguments. Fails if transaction cannot be completed without loosing any
@@ -80,7 +80,7 @@ public interface Inventory {
      * @param itemStack
      *            itemStack to add
      */
-    void take(@Nonnull ItemStack itemStack);
+    void take(@NotNull ItemStack itemStack);
     
     /**
      * Takes item from inventory specified by arguments. Fails if item with specified durability and data is not found
@@ -143,7 +143,7 @@ public interface Inventory {
      * @param itemStack
      *            content to be set
      */
-    void setSlotContents(int slot, @Nullable ItemStack itemStack);
+    void setSlotContents(int slot, @Null ItemStack itemStack);
     
     /**
      * Removes all items from inventory.
@@ -184,6 +184,6 @@ public interface Inventory {
      * @param title
      *            new title for this inventory
      */
-    void setTitle(@Nonnull String title);
+    void setTitle(@NotNull String title);
     
 }

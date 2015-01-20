@@ -20,8 +20,8 @@ package eu.matejkormuth.pexel.commons.inventory;
 
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 import com.google.common.base.Preconditions;
 
@@ -43,7 +43,7 @@ public class InventoryImpl implements Inventory {
         this.slots = new ItemStack[size];
     }
     
-    public int addItem(@Nonnull final ItemStack itemStack) {
+    public int addItem(@NotNull final ItemStack itemStack) {
         Preconditions.checkNotNull(itemStack);
         Preconditions.checkArgument(itemStack.getAmount() != 0,
                 "Can't add ItemStack with zero amount!");
@@ -80,7 +80,7 @@ public class InventoryImpl implements Inventory {
     }
     
     @Override
-    public void setSlotContents(final int slot, @Nullable final ItemStack itemStack) {
+    public void setSlotContents(final int slot, @Null final ItemStack itemStack) {
         this.slots[slot] = itemStack;
     }
     
@@ -110,7 +110,7 @@ public class InventoryImpl implements Inventory {
     }
     
     @Override
-    public void add(@Nonnull final ItemStack itemStack) {
+    public void add(@NotNull final ItemStack itemStack) {
         // TODO Auto-generated method stub
         
     }
@@ -129,7 +129,7 @@ public class InventoryImpl implements Inventory {
     }
     
     @Override
-    public void take(@Nonnull final ItemStack itemStack) {
+    public void take(@NotNull final ItemStack itemStack) {
         // TODO Auto-generated method stub
         
     }

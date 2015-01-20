@@ -22,6 +22,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Material;
+
 import eu.matejkormuth.pexel.commons.Location;
 import eu.matejkormuth.pexel.commons.Player;
 import eu.matejkormuth.pexel.commons.PlayerHolder;
@@ -30,6 +32,7 @@ import eu.matejkormuth.pexel.commons.chat.PlayerChannelSubscriber;
 import eu.matejkormuth.pexel.commons.chat.SubscribeMode;
 import eu.matejkormuth.pexel.commons.text.ChatColor;
 import eu.matejkormuth.pexel.slave.PexelSlave;
+import eu.matejkormuth.pexel.slave.bukkit.util.ItemUtils;
 
 /**
  * Class that represetns a team.
@@ -155,14 +158,17 @@ public class Team implements PlayerHolder {
      */
     public void applyArmor(final Player player) {
         // TODO: Apply armor
-        //player.getInventory().setHelmet(
-        //        ItemUtils.coloredLetherArmor(Material.LEATHER_HELMET, this.color));
-        //player.getInventory().setChestplate(
-        //        ItemUtils.coloredLetherArmor(Material.LEATHER_CHESTPLATE, this.color));
-        //player.getInventory().setLeggings(
-        //        ItemUtils.coloredLetherArmor(Material.LEATHER_LEGGINGS, this.color));
-        //player.getInventory().setBoots(
-        //        ItemUtils.coloredLetherArmor(Material.LEATHER_BOOTS, this.color));
+        org.bukkit.Color color = org.bukkit.Color.fromRGB(this.color.getRed(),
+                this.color.getGreen(), this.color.getBlue());
+        
+        player.getInventory().setHelmet(
+                ItemUtils.coloredLetherArmor(Material.LEATHER_HELMET, color));
+        player.getInventory().setChestplate(
+                ItemUtils.coloredLetherArmor(Material.LEATHER_CHESTPLATE, color));
+        player.getInventory().setLeggings(
+                ItemUtils.coloredLetherArmor(Material.LEATHER_LEGGINGS, color));
+        player.getInventory().setBoots(
+                ItemUtils.coloredLetherArmor(Material.LEATHER_BOOTS, color));
     }
     
     /**

@@ -104,11 +104,8 @@ public abstract class Player extends ProxiedPlayer {
     public abstract void playSound(final Location location, final Sound sound,
             final float volume, final float pitch);
     
-    /**
-     * @return
-     */
     //DEBUKKITIZE:
-    public abstract Inventory getInventory();
+    public abstract org.bukkit.inventory.PlayerInventory getInventory();
     
     /**
      * @param adventure
@@ -169,8 +166,6 @@ public abstract class Player extends ProxiedPlayer {
     
     /**
      * Returns player's current world.
-     * 
-     * @return
      */
     //TODO: Extract from location.
     //DEBUKKITIZE:
