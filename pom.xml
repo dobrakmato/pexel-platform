@@ -42,6 +42,17 @@
       <id>spigot-repo</id>
       <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
     </repository>
+    <repository>
+      <id>sponge-repo</id>
+      <name>Sponge maven repo</name>
+      <url>http://repo.spongepowered.org/maven/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
   </repositories>
   <build>
     <plugins>
