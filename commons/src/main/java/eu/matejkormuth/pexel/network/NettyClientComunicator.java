@@ -73,7 +73,7 @@ public class NettyClientComunicator extends MessageComunicator {
         EventLoopGroup group = new NioEventLoopGroup();
         this.b = new Bootstrap();
         
-        this.log.info("Connecting to master server ({0}:{1})...", host, port);
+        this.log.info("Connecting to master server ({}:{})...", host, port);
         // Start the connection attempt. All in one.
         this.channelToMaster = this.b.group(group)
                 .channel(NioSocketChannel.class)
@@ -111,8 +111,7 @@ public class NettyClientComunicator extends MessageComunicator {
         if (target != this.master) {
             throw new UnsupportedOperationException(
                     "Sorry, slave can only send payloads to master.");
-        }
-        else {
+        } else {
             
             this.payloads.offer(new NettyMessage(payload, priority));
         }

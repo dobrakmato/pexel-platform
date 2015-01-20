@@ -77,7 +77,7 @@ public class NettyServerComunicator extends MessageComunicator {
     }
     
     public void closeConnection(final ServerInfo server) {
-        this.log.info("Closing connection for slave {0}...", server.getName());
+        this.log.info("Closing connection for slave {}...", server.getName());
         ChannelHandlerContext ctx = this.ctxByName.get(server.getName());
         if (!this.queues.get(ctx).isEmpty()) {
             this.log.warn(" Throwing to trash " + this.queues.get(ctx).size()
@@ -156,8 +156,7 @@ public class NettyServerComunicator extends MessageComunicator {
         ChannelHandlerContext ctx = this.getCTX(target);
         if (this.queues.containsKey(ctx)) {
             this.queues.get(ctx).add(new NettyMessage(payload, priority));
-        }
-        else {
+        } else {
             this.queues.put(ctx, new PriorityBlockingQueue<NettyMessage>());
             this.queues.get(ctx).add(new NettyMessage(payload, priority));
         }
@@ -242,8 +241,7 @@ public class NettyServerComunicator extends MessageComunicator {
             // Invoke onReceive if registered server.
             if (this.i.channels.contains(ctx.channel())) {
                 this.i.onReceive(this.i.getServerInfo(ctx), msg.payload);
-            }
-            else {
+            } else {
                 // Try to register.
                 if (NettyRegisterMesssage.validate(msg.payload, this.i.authKey)) {
                     // Add connected server to pool.
@@ -255,12 +253,11 @@ public class NettyServerComunicator extends MessageComunicator {
                     NettyServerComunicatorHandler.this.i.ctxByName.put(name, ctx);
                     NettyServerComunicatorHandler.this.i.server.addSlave(server);
                     NettyServerComunicatorHandler.this.i.serverInfoByCTX.put(ctx, server);
-                    this.i.log.info("Registered new SLAVE server:{0};ctx:{1}", name,
+                    this.i.log.info("Registered new SLAVE server:{};ctx:{}", name,
                             ctx.hashCode());
-                }
-                else {
+                } else {
                     // Bad login. Disconnect.
-                    this.i.log.warn("Bad login authKey from {0}", ctx.name());
+                    this.i.log.warn("Bad login authKey from {}", ctx.name());
                     ctx.close();
                 }
             }
